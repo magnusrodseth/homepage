@@ -2,12 +2,14 @@ import client from "../../lib/client"
 import { GetStaticPaths, GetStaticProps } from "next"
 
 const Project = ({ project }: any) => {
-    return <div className="flex justify-center align-center mt-20 text-white">
-        <h1>{project.title}</h1>
-    </div>
+    return (
+        <div className="flex justify-center align-center mt-20 text-white">
+            <h1>{project.title}</h1>
+        </div>
+    )
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
     const paths = await client.fetch(
         `*[_type == "project" && defined(slug.current)][].slug.current`
     )
