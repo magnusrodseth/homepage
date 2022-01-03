@@ -4,6 +4,7 @@ import React from "react";
 import Layout from "../components/Layout";
 import { useRouter } from "next/dist/client/router";
 import capitalize from "../utils/capitalize";
+import { ThemeProvider } from "../utils/theme/ThemeContext";
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -15,14 +16,20 @@ const App = ({ Component, pageProps }: AppProps) => {
   const hasSubPage = router.pathname.split("/").length > 1;
 
   if (is404Page) {
-    return <Component {...pageProps} />;
+    return (
+      <ThemeProvider>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    );
   }
 
   if (isHomePage) {
     return (
-      <Layout title={"Home"}>
-        <Component {...pageProps} />
-      </Layout>
+      <ThemeProvider>
+        <Layout title={"Home"}>
+          <Component {...pageProps} />
+        </Layout>
+      </ThemeProvider>
     );
   }
 
@@ -34,16 +41,20 @@ const App = ({ Component, pageProps }: AppProps) => {
     const title = split[1];
 
     return (
-      <Layout title={capitalize(title)}>
-        <Component {...pageProps} />
-      </Layout>
+      <ThemeProvider>
+        <Layout title={capitalize(title)}>
+          <Component {...pageProps} />
+        </Layout>
+      </ThemeProvider>
     );
   }
 
   return (
-    <Layout title={capitalize(router.pathname.substring(1))}>
-      <Component {...pageProps} />
-    </Layout>
+    <ThemeProvider>
+      <Layout title={capitalize(router.pathname.substring(1))}>
+        <Component {...pageProps} />
+      </Layout>
+    </ThemeProvider>
   );
 };
 export default App;

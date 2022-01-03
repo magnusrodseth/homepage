@@ -4,6 +4,7 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import classNames from "../utils/classNames";
 import Link from "next/link";
 import Logo from "./Logo";
+import ToggleDarkMode from "./ToggleDarkMode";
 
 const navigation = [
   { name: "Projects", href: "/projects" },
@@ -18,7 +19,7 @@ const Navbar = () => {
   return (
     <Disclosure
       as="nav"
-      className="bg-gray-100 shadow-lg font-mono text-center fixed top-0 w-screen z-50"
+      className="bg-gray-100 dark:bg-gray-800 shadow-lg font-mono text-center fixed top-0 w-screen z-50"
     >
       {({ open }) => (
         <>
@@ -64,6 +65,8 @@ const Navbar = () => {
                       </a>
                     ))}
                   </div>
+
+                  <ToggleDarkMode />
                 </div>
               </div>
             </div>
