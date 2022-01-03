@@ -7,14 +7,17 @@ const Index = () => {
   const typewriterStrings = ['fundamentally curious.', 'an engineer at heart.', 'eager to challenge myself.'];
 
   return (
+    // Jumbotron
     <div className="flex h-screen justify-center items-center">
       <div className="smooth dark:bg-indigo-300 bg-indigo-400 opacity-90 w-screen">
         <div className="max-w-8xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
 
+          {/* Memoji Logo */}
           <div className="bottom-0">
-            <Image src="/img/logo.png" alt="Me as a Memoji" width="400" height="400" />
+            <Image src="/img/logo.png" alt="Momoji Logo" width="400" height="400" />
           </div>
 
+          {/* Middle part of Jumbotron with description */}
           <h2 className="text-3xl tracking-wide text-gray-900 sm:text-4xl">
             <span className="block text-md my-4 font-bold tracking-wide">
               Hello, my name is Magnus Rødseth.
@@ -23,6 +26,7 @@ const Index = () => {
               I&apos;m a software developer based in Norway, currently studying Computer Science at NTNU.
             </span>
 
+            {/* Typewriter */}
             <div className="flex flex-row my-2 text-2xl">
               <span className="tracking-wide mr-4">
                 I&apos;m{" "}
@@ -40,10 +44,13 @@ const Index = () => {
               </span>
             </div>
 
+            {/* Bottom part of jumbotron */}
             <span className="block text-sky-100 font-extrabold">
               Why not check out some of my projects?
             </span>
           </h2>
+
+          {/* Buttons for call of action */}
           <div className="m-4 space-x-10 flex lg:mt-0 lg:flex-shrink-0">
             <div className="inline-flex rounded-md shadow">
               <Link href="/projects">

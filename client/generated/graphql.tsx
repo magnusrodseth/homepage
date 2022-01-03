@@ -961,7 +961,7 @@ export type UsersPermissionsUserRelationResponseCollection = {
 export type CompactProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CompactProjectsQuery = { __typename?: 'Query', projects?: { __typename?: 'ProjectEntityResponseCollection', data: Array<{ __typename?: 'ProjectEntity', id?: string | null | undefined, attributes?: { __typename?: 'Project', title: string, subtitle?: string | null | undefined } | null | undefined }> } | null | undefined };
+export type CompactProjectsQuery = { __typename?: 'Query', projects?: { __typename?: 'ProjectEntityResponseCollection', data: Array<{ __typename?: 'ProjectEntity', id?: string | null | undefined, attributes?: { __typename?: 'Project', title: string, subtitle?: string | null | undefined, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null | undefined } | null | undefined } | null | undefined } | null | undefined }> } | null | undefined };
 
 
 export const CompactProjectsDocument = gql`
@@ -972,6 +972,13 @@ export const CompactProjectsDocument = gql`
       attributes {
         title
         subtitle
+        thumbnail {
+          data {
+            attributes {
+              url
+            }
+          }
+        }
       }
     }
   }

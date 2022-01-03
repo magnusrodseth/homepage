@@ -14,7 +14,7 @@ const Wrapper: React.FC<WrapperProps> = ({
   return (
     <div
       className={`${style} rounded-lg shadow-md hover:shadow-lg 
-      transition duration-500 ease-in-out m-2 p-2`}
+      smooth m-2 p-2`}
     >
       {children}
     </div>

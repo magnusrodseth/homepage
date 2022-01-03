@@ -5,6 +5,13 @@ query CompactProjects {
       attributes {
         title
         subtitle
+        thumbnail {
+          data {
+            attributes {
+              url
+            }
+          }
+        }
       }
     }
   }
