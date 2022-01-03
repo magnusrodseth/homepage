@@ -12,7 +12,7 @@ const Projects = () => {
 
     console.log(data)
 
-    return <div className="bg-blue-200 h-10"></div>
+    return <div className="h-screen">Heres some content</div>
 }
 
 export default Projects

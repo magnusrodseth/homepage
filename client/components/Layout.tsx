@@ -30,7 +30,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }: LayoutProps) => {
           <Navbar />
         </header>
 
-        <main className={classNames("smooth dark:bg-gray-900 h-screen")}>{children}</main>
+        <main className={classNames("smooth dark:bg-gray-900 mt-16 min-h-container text-white")}>{children}</main>
 
         <footer >
           <Footer />
