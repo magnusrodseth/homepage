@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React from "react";
+import classNames from "../utils/classNames";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
@@ -21,17 +22,17 @@ const Layout: React.FC<LayoutProps> = ({ children, title }: LayoutProps) => {
         />
         <meta name="keywords" content="Software, Engineering, Norway, Blog, Projects, NTNU, Web, Full-stack, GitHub, LinkedIn" />
 
-        <link rel="icon" href="/img/favicon.png" />
+        <link rel="icon" href="/img/logo.png" />
       </Head>
 
       <div className="flex flex-col h-screen justify-between">
-        <header className="bg-red-200">
+        <header >
           <Navbar />
         </header>
 
-        <main className="h-auto bg-green-200">{children}</main>
+        <main className={classNames("smooth dark:bg-gray-900 h-screen")}>{children}</main>
 
-        <footer className="bg-blue-200">
+        <footer >
           <Footer />
         </footer>
       </div>

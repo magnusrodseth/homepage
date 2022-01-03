@@ -2,8 +2,11 @@
 @tailwind components;
 
 @layer utilities {
-  .rise-on-hover {
+  .smooth {
     @apply transition duration-500 ease-in-out transform;
+  }
+  .rise-on-hover {
+    @apply smooth;
   }
 
   .rise-on-hover:hover {

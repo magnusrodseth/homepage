@@ -13,13 +13,12 @@ const navigation = [
   { name: "Contact", href: "/contact" },
 ];
 
-interface NavbarProps { }
 
 const Navbar = () => {
   return (
     <Disclosure
       as="nav"
-      className="bg-gray-100 dark:bg-gray-800 shadow-lg font-mono text-center fixed top-0 w-screen z-50"
+      className="smooth bg-gray-100 dark:bg-gray-800 dark:text-gray-100 shadow-lg font-mono text-center fixed top-0 w-screen z-50"
     >
       {({ open }) => (
         <>
@@ -29,15 +28,15 @@ const Navbar = () => {
                 {/* Mobile menu button*/}
                 <Disclosure.Button
                   className={classNames(
-                    "inline-flex items-center justify-center p-2 rounded-md hover:text-indigo-500",
-                    "transition transform duration-500 ease-in-out focus:outline-none ring-2 ring-inset ring-indigo-500"
+                    "inline-flex items-center justify-center p-2 rounded-md",
+                    "smooth focus:outline-none"
                   )}
                 >
                   <span className="sr-only">Open main menu</span>
                   {open ? (
-                    <XIcon className="block h-6 w-6" aria-hidden="true" />
+                    <XIcon className="icon" aria-hidden="true" />
                   ) : (
-                    <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                    <MenuIcon className="icon" aria-hidden="true" />
                   )}
                 </Disclosure.Button>
               </div>
@@ -57,6 +56,7 @@ const Navbar = () => {
                         href={item.href}
                         className={classNames(
                           "hover:bg-gray-300",
+                          "dark:hover:bg-gray-700",
                           "px-3 py-2 rounded-md text-sm font-medium",
                           "rise-on-hover"
                         )}
@@ -65,10 +65,11 @@ const Navbar = () => {
                       </a>
                     ))}
                   </div>
-
-                  <ToggleDarkMode />
                 </div>
               </div>
+
+              {/* Dark mode toggle is always to the right in the navbar */}
+              <ToggleDarkMode />
             </div>
           </div>
 
@@ -80,6 +81,7 @@ const Navbar = () => {
                   href={item.href}
                   className={classNames(
                     "hover:bg-gray-300",
+                    "dark:hover:bg-gray-700",
                     "block px-3 py-2 rounded-md text-base font-medium",
                     "rise-on-hover"
                   )}
