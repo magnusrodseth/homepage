@@ -1,5 +1,10 @@
+import { useRouter } from 'next/router'
+
+
 const Projects = () => {
-    return <div className="bg-blue-200 dark:bg-indigo-800"><h1>hello</h1></div>
+    const router = useRouter()
+
+    return <div className="mt-20 text-white"><h1>{router.query.slug}</h1></div>
 }
 
 export default Projects

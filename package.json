@@ -4,10 +4,13 @@
   "version": "1.0.0",
   "description": "👋🏼 My personal homepage.",
   "workspaces": [
-    "client"
+    "client",
+    "cms"
   ],
   "scripts": {
-    "client:dev": "npm run dev --workspace=client"
+    "client:dev": "npm run dev --workspace=client",
+    "cms:start": "npm run start --workspace=cms",
+    "cms:gen": "cd cms && npx sanity-codegen"
   },
   "author": {
     "name": "magnusrodseth",

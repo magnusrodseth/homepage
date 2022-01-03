@@ -1,0 +1,42 @@
+{
+  "name": "cms",
+  "private": true,
+  "version": "1.0.0",
+  "description": "📂 The content management system (CMS) of the website.",
+  "main": "package.json",
+  "author": {
+    "name": "magnusrodseth",
+    "email": "magnus.rodseth@gmail.com",
+    "url": "https://github.com/magnusrodseth"
+  },
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "sanity start",
+    "build": "sanity build",
+    "gen": "npx sanity-codegen"
+  },
+  "keywords": [
+    "sanity"
+  ],
+  "dependencies": {
+    "@sanity/base": "^2.23.2",
+    "@sanity/core": "^2.23.2",
+    "@sanity/default-layout": "^2.23.2",
+    "@sanity/default-login": "^2.23.2",
+    "@sanity/desk-tool": "^2.23.2",
+    "@sanity/production-preview": "^2.15.0",
+    "@sanity/vision": "^2.23.2",
+    "prop-types": "^15.7",
+    "react": "^17.0",
+    "react-dom": "^17.0",
+    "styled-components": "^5.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/magnusrodseth/homepage.git"
+  },
+  "devDependencies": {
+    "prettier": "^2.5.1",
+    "sanity-codegen": "^0.9.8"
+  }
+}

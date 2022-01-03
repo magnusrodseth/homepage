@@ -1,19 +1,25 @@
 {
   "name": "client",
   "private": true,
+  "description": "🌐 The frontend of the website.",
+  "author": {
+    "name": "magnusrodseth",
+    "email": "magnus.rodseth@gmail.com",
+    "url": "https://github.com/magnusrodseth"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.36",
-    "@fortawesome/free-brands-svg-icons": "^5.15.4",
-    "@fortawesome/free-solid-svg-icons": "^5.15.4",
-    "@fortawesome/react-fontawesome": "^0.1.16",
+    "@graphql-codegen/cli": "^2.3.1",
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
+    "@sanity/client": "^2.23.2",
+    "graphql": "^16.2.0",
     "next": "12.0.7",
     "react": "17.0.2",
     "react-dom": "17.0.2",
@@ -26,6 +32,8 @@
     "eslint": "8.6.0",
     "eslint-config-next": "12.0.7",
     "postcss": "^8.4.5",
+    "prettier": "^2.5.1",
+    "sanity-codegen": "^0.9.8",
     "tailwindcss": "^3.0.8",
     "typescript": "4.5.4"
   }
