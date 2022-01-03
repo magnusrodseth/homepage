@@ -1,0 +1,18 @@
+{
+  "name": "homepage",
+  "private": true,
+  "version": "1.0.0",
+  "description": "👋🏼 My personal homepage.",
+  "workspaces": [
+    "client"
+  ],
+  "scripts": {
+    "client:dev": "npm run dev --workspace=client"
+  },
+  "author": {
+    "name": "magnusrodseth",
+    "email": "magnus.rodseth@gmail.com",
+    "url": "https://github.com/magnusrodseth"
+  },
+  "license": "ISC"
+}
