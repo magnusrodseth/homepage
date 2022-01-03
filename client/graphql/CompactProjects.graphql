@@ -1,0 +1,11 @@
+query CompactProjects {
+  projects {
+    data {
+      id
+      attributes {
+        title
+        subtitle
+      }
+    }
+  }
+}

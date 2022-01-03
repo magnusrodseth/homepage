@@ -9,8 +9,8 @@
   ],
   "scripts": {
     "client:dev": "npm run dev --workspace=client",
-    "cms:start": "npm run start --workspace=cms",
-    "cms:gen": "cd cms && npx sanity-codegen"
+    "client:gen": "npm run gen --workspace=client",
+    "cms:dev": "npm run dev --workspace=cms"
   },
   "author": {
     "name": "magnusrodseth",

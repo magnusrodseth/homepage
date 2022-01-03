@@ -3,7 +3,7 @@ import Link from "next/link"
 import classNames from "../utils/classNames"
 import Typewriter from 'typewriter-effect';
 
-const Home = () => {
+const Index = () => {
   const typewriterStrings = ['fundamentally curious.', 'an engineer at heart.', 'eager to challenge myself.'];
 
   return (
@@ -72,8 +72,6 @@ const Home = () => {
               </Link>
             </div>
           </div>
-
-
         </div>
       </div>
     </div >
@@ -82,4 +80,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Index;
