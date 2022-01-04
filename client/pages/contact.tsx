@@ -1,6 +1,17 @@
-import UnderDevelopment from "../components/UnderDevelopment"
+import { ChevronDoubleDownIcon } from "@heroicons/react/outline"
 
 const Contact = () => {
-    return <div className="h-screen"><UnderDevelopment /></div>
+    return <div className="flex h-screen">
+        <div className="m-auto text-center text-2xl md:text-4xl dark:text-gray-200">
+            <p className="mx-6 my-8">Click on one of the links at the bottom of the page to contact me.</p>
+
+            <p className="mx-6 my-8">I&apos;m looking forward to get in touch with you 👋🏼</p>
+
+            <div className="w-screen">
+                <ChevronDoubleDownIcon className="icon drop-on-hover m-auto" />
+            </div>
+
+        </div>
+    </div>
 }
 export default Contact

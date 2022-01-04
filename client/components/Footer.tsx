@@ -28,26 +28,29 @@ const Footer = () => {
                 <div className="flex flex-row space-x-16 justify-center items-center">
                     <Link href={github as string} passHref
                     >
-                        <a target="_blank" rel="noreferrer">
-                            <Icon className={classNames("text-gray-800 dark:text-gray-300 rise-on-hover")}>
+                        <a target="_blank" rel="noreferrer" className="flex flex-col space-y-2 justify-center rise-on-hover">
+                            <Icon className={classNames("text-gray-800 m-auto dark:text-gray-300")}>
                                 <GitHubIcon />
                             </Icon>
+                            <span className="dark:text-gray-300 text-xs">GitHub</span>
                         </a>
                     </Link>
 
                     <Link href={`mailto:${email as string}`} passHref>
-                        <a target="_blank" rel="noreferrer">
-                            <Icon className={classNames("text-gray-800 dark:text-gray-300 rise-on-hover")}>
+                        <a target="_blank" rel="noreferrer" className="flex flex-col space-y-2 justify-center rise-on-hover">
+                            <Icon className={classNames("text-gray-800 m-auto dark:text-gray-300 ")}>
                                 < MailIcon />
                             </Icon>
+                            <span className="dark:text-gray-300 text-xs">E-mail</span>
                         </a>
                     </Link>
 
                     <Link href={linkedin as string} passHref>
-                        <a target="_blank" rel="noreferrer">
-                            <Icon className={classNames("text-gray-800 dark:text-gray-300 rise-on-hover")}>
+                        <a target="_blank" rel="noreferrer" className="flex flex-col space-y-2 justify-center rise-on-hover">
+                            <Icon className={classNames("text-gray-800 m-auto dark:text-gray-300")}>
                                 < LinkedInIcon />
                             </Icon>
+                            <span className="dark:text-gray-300 text-xs">LinkedIn</span>
                         </a>
                     </Link>
                 </div>

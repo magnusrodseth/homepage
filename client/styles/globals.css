@@ -13,6 +13,14 @@
     @apply -translate-y-1;
   }
 
+  .drop-on-hover {
+    @apply smooth;
+  }
+
+  .drop-on-hover:hover {
+    @apply translate-y-2;
+  }
+
   .icon {
     @apply block h-8 w-8;
   }
