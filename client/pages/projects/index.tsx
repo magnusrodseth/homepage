@@ -18,7 +18,6 @@ const ProjectIndex = () => {
     return <div className={classNames("h-screen bg-gradient-to-b",
         "from-gray-100 to-indigo-300",
         "dark:from-gray-800 dark:to-indigo-900")}>
-        <img src="/img/logo.png" className="absolute" alt="" />
         {
             compactProjects != null ? compactProjects?.map((project) => {
                 let url: string | undefined = undefined;
