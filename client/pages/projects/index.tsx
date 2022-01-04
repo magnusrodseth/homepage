@@ -15,8 +15,7 @@ const ProjectIndex = () => {
     if (error) return <h1>error!</h1>
 
 
-    return <div className={classNames("h-screen bg-gradient-to-b",
-        "bg-sky-100 dark:bg-gray-900 opacity-80")}>
+    return <div className={classNames("h-screen")}>
         {
             compactProjects != null ? compactProjects?.map((project) => {
                 let url: string | undefined = undefined;

@@ -1,0 +1,12 @@
+query CompactBlogPosts {
+  blogPosts {
+    data {
+      attributes {
+        title
+        description
+        slug
+        updatedAt
+      }
+    }
+  }
+}

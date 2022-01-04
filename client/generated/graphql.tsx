@@ -47,6 +47,103 @@ export type AboutInput = {
   publishedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
+export type Author = {
+  __typename?: 'Author';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  link?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type AuthorEntity = {
+  __typename?: 'AuthorEntity';
+  attributes?: Maybe<Author>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type AuthorEntityResponse = {
+  __typename?: 'AuthorEntityResponse';
+  data?: Maybe<AuthorEntity>;
+};
+
+export type AuthorEntityResponseCollection = {
+  __typename?: 'AuthorEntityResponseCollection';
+  data: Array<AuthorEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type AuthorFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<AuthorFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  id?: InputMaybe<IdFilterInput>;
+  link?: InputMaybe<StringFilterInput>;
+  name?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<AuthorFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<AuthorFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type AuthorInput = {
+  link?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type BlogPost = {
+  __typename?: 'BlogPost';
+  author?: Maybe<AuthorEntityResponse>;
+  content?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  description?: Maybe<Scalars['String']>;
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  slug: Scalars['String'];
+  title: Scalars['String'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type BlogPostEntity = {
+  __typename?: 'BlogPostEntity';
+  attributes?: Maybe<BlogPost>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type BlogPostEntityResponse = {
+  __typename?: 'BlogPostEntityResponse';
+  data?: Maybe<BlogPostEntity>;
+};
+
+export type BlogPostEntityResponseCollection = {
+  __typename?: 'BlogPostEntityResponseCollection';
+  data: Array<BlogPostEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type BlogPostFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<BlogPostFiltersInput>>>;
+  author?: InputMaybe<AuthorFiltersInput>;
+  content?: InputMaybe<StringFilterInput>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  description?: InputMaybe<StringFilterInput>;
+  id?: InputMaybe<IdFilterInput>;
+  not?: InputMaybe<BlogPostFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<BlogPostFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  slug?: InputMaybe<StringFilterInput>;
+  title?: InputMaybe<StringFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type BlogPostInput = {
+  author?: InputMaybe<Scalars['ID']>;
+  content?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  slug?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
 export type BooleanFilterInput = {
   and?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
   between?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
@@ -219,7 +316,7 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = About | Category | Contact | I18NLocale | Project | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = About | Author | BlogPost | Category | Contact | I18NLocale | Project | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -328,6 +425,8 @@ export type JsonFilterInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createAuthor?: Maybe<AuthorEntityResponse>;
+  createBlogPost?: Maybe<BlogPostEntityResponse>;
   createCategory?: Maybe<CategoryEntityResponse>;
   createProject?: Maybe<ProjectEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -336,6 +435,8 @@ export type Mutation = {
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteAbout?: Maybe<AboutEntityResponse>;
+  deleteAuthor?: Maybe<AuthorEntityResponse>;
+  deleteBlogPost?: Maybe<BlogPostEntityResponse>;
   deleteCategory?: Maybe<CategoryEntityResponse>;
   deleteContact?: Maybe<ContactEntityResponse>;
   deleteProject?: Maybe<ProjectEntityResponse>;
@@ -356,6 +457,8 @@ export type Mutation = {
   /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
   updateAbout?: Maybe<AboutEntityResponse>;
+  updateAuthor?: Maybe<AuthorEntityResponse>;
+  updateBlogPost?: Maybe<BlogPostEntityResponse>;
   updateCategory?: Maybe<CategoryEntityResponse>;
   updateContact?: Maybe<ContactEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
@@ -366,6 +469,16 @@ export type Mutation = {
   /** Update an existing user */
   updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   upload: UploadFileEntityResponse;
+};
+
+
+export type MutationCreateAuthorArgs = {
+  data: AuthorInput;
+};
+
+
+export type MutationCreateBlogPostArgs = {
+  data: BlogPostInput;
 };
 
 
@@ -391,6 +504,16 @@ export type MutationCreateUsersPermissionsRoleArgs = {
 
 export type MutationCreateUsersPermissionsUserArgs = {
   data: UsersPermissionsUserInput;
+};
+
+
+export type MutationDeleteAuthorArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteBlogPostArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -461,6 +584,18 @@ export type MutationResetPasswordArgs = {
 
 export type MutationUpdateAboutArgs = {
   data: AboutInput;
+};
+
+
+export type MutationUpdateAuthorArgs = {
+  data: AuthorInput;
+  id: Scalars['ID'];
+};
+
+
+export type MutationUpdateBlogPostArgs = {
+  data: BlogPostInput;
+  id: Scalars['ID'];
 };
 
 
@@ -536,6 +671,7 @@ export type Project = {
   endDate?: Maybe<Scalars['Date']>;
   images?: Maybe<UploadFileRelationResponseCollection>;
   publishedAt?: Maybe<Scalars['DateTime']>;
+  slug: Scalars['String'];
   startDate?: Maybe<Scalars['Date']>;
   subtitle?: Maybe<Scalars['String']>;
   thumbnail?: Maybe<UploadFileEntityResponse>;
@@ -585,6 +721,7 @@ export type ProjectFiltersInput = {
   not?: InputMaybe<ProjectFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<ProjectFiltersInput>>>;
   publishedAt?: InputMaybe<DateTimeFilterInput>;
+  slug?: InputMaybe<StringFilterInput>;
   startDate?: InputMaybe<DateFilterInput>;
   subtitle?: InputMaybe<StringFilterInput>;
   title?: InputMaybe<StringFilterInput>;
@@ -597,6 +734,7 @@ export type ProjectInput = {
   endDate?: InputMaybe<Scalars['Date']>;
   images?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
+  slug?: InputMaybe<Scalars['String']>;
   startDate?: InputMaybe<Scalars['Date']>;
   subtitle?: InputMaybe<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['ID']>;
@@ -611,6 +749,10 @@ export enum PublicationState {
 export type Query = {
   __typename?: 'Query';
   about?: Maybe<AboutEntityResponse>;
+  author?: Maybe<AuthorEntityResponse>;
+  authors?: Maybe<AuthorEntityResponseCollection>;
+  blogPost?: Maybe<BlogPostEntityResponse>;
+  blogPosts?: Maybe<BlogPostEntityResponseCollection>;
   categories?: Maybe<CategoryEntityResponseCollection>;
   category?: Maybe<CategoryEntityResponse>;
   contact?: Maybe<ContactEntityResponse>;
@@ -630,6 +772,32 @@ export type Query = {
 
 export type QueryAboutArgs = {
   publicationState?: InputMaybe<PublicationState>;
+};
+
+
+export type QueryAuthorArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryAuthorsArgs = {
+  filters?: InputMaybe<AuthorFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type QueryBlogPostArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryBlogPostsArgs = {
+  filters?: InputMaybe<BlogPostFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
@@ -1036,6 +1204,18 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
+export type BlogPostQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type BlogPostQuery = { __typename?: 'Query', blogPosts?: { __typename?: 'BlogPostEntityResponseCollection', data: Array<{ __typename?: 'BlogPostEntity', attributes?: { __typename?: 'BlogPost', title: string, description?: string | null | undefined, content?: string | null | undefined, author?: { __typename?: 'AuthorEntityResponse', data?: { __typename?: 'AuthorEntity', attributes?: { __typename?: 'Author', name: string, link?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined }> } | null | undefined };
+
+export type CompactBlogPostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CompactBlogPostsQuery = { __typename?: 'Query', blogPosts?: { __typename?: 'BlogPostEntityResponseCollection', data: Array<{ __typename?: 'BlogPostEntity', attributes?: { __typename?: 'BlogPost', title: string, description?: string | null | undefined, slug: string, updatedAt?: any | null | undefined } | null | undefined }> } | null | undefined };
+
 export type CompactProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1047,6 +1227,96 @@ export type ContactQueryVariables = Exact<{ [key: string]: never; }>;
 export type ContactQuery = { __typename?: 'Query', contact?: { __typename?: 'ContactEntityResponse', data?: { __typename?: 'ContactEntity', attributes?: { __typename?: 'Contact', email: string, github: string, linkedin: string } | null | undefined } | null | undefined } | null | undefined };
 
 
+export const BlogPostDocument = gql`
+    query BlogPost($slug: String!) {
+  blogPosts(filters: {slug: {eq: $slug}}) {
+    data {
+      attributes {
+        title
+        description
+        content
+        author {
+          data {
+            attributes {
+              name
+              link
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useBlogPostQuery__
+ *
+ * To run a query within a React component, call `useBlogPostQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBlogPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBlogPostQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useBlogPostQuery(baseOptions: Apollo.QueryHookOptions<BlogPostQuery, BlogPostQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BlogPostQuery, BlogPostQueryVariables>(BlogPostDocument, options);
+      }
+export function useBlogPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BlogPostQuery, BlogPostQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BlogPostQuery, BlogPostQueryVariables>(BlogPostDocument, options);
+        }
+export type BlogPostQueryHookResult = ReturnType<typeof useBlogPostQuery>;
+export type BlogPostLazyQueryHookResult = ReturnType<typeof useBlogPostLazyQuery>;
+export type BlogPostQueryResult = Apollo.QueryResult<BlogPostQuery, BlogPostQueryVariables>;
+export const CompactBlogPostsDocument = gql`
+    query CompactBlogPosts {
+  blogPosts {
+    data {
+      attributes {
+        title
+        description
+        slug
+        updatedAt
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useCompactBlogPostsQuery__
+ *
+ * To run a query within a React component, call `useCompactBlogPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompactBlogPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompactBlogPostsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCompactBlogPostsQuery(baseOptions?: Apollo.QueryHookOptions<CompactBlogPostsQuery, CompactBlogPostsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CompactBlogPostsQuery, CompactBlogPostsQueryVariables>(CompactBlogPostsDocument, options);
+      }
+export function useCompactBlogPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CompactBlogPostsQuery, CompactBlogPostsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CompactBlogPostsQuery, CompactBlogPostsQueryVariables>(CompactBlogPostsDocument, options);
+        }
+export type CompactBlogPostsQueryHookResult = ReturnType<typeof useCompactBlogPostsQuery>;
+export type CompactBlogPostsLazyQueryHookResult = ReturnType<typeof useCompactBlogPostsLazyQuery>;
+export type CompactBlogPostsQueryResult = Apollo.QueryResult<CompactBlogPostsQuery, CompactBlogPostsQueryVariables>;
 export const CompactProjectsDocument = gql`
     query CompactProjects {
   projects {
