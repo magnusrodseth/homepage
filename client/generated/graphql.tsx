@@ -1205,16 +1205,21 @@ export type UsersPermissionsUserRelationResponseCollection = {
 };
 
 export type BlogPostQueryVariables = Exact<{
-  slug: Scalars['String'];
+  id: Scalars['ID'];
 }>;
 
 
-export type BlogPostQuery = { __typename?: 'Query', blogPosts?: { __typename?: 'BlogPostEntityResponseCollection', data: Array<{ __typename?: 'BlogPostEntity', attributes?: { __typename?: 'BlogPost', title: string, description?: string | null | undefined, content?: string | null | undefined, author?: { __typename?: 'AuthorEntityResponse', data?: { __typename?: 'AuthorEntity', attributes?: { __typename?: 'Author', name: string, link?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined }> } | null | undefined };
+export type BlogPostQuery = { __typename?: 'Query', blogPost?: { __typename?: 'BlogPostEntityResponse', data?: { __typename?: 'BlogPostEntity', id?: string | null | undefined, attributes?: { __typename?: 'BlogPost', title: string, description?: string | null | undefined, content?: string | null | undefined, author?: { __typename?: 'AuthorEntityResponse', data?: { __typename?: 'AuthorEntity', attributes?: { __typename?: 'Author', name: string, link?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+
+export type BlogPostIDsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BlogPostIDsQuery = { __typename?: 'Query', blogPosts?: { __typename?: 'BlogPostEntityResponseCollection', data: Array<{ __typename?: 'BlogPostEntity', id?: string | null | undefined }> } | null | undefined };
 
 export type CompactBlogPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CompactBlogPostsQuery = { __typename?: 'Query', blogPosts?: { __typename?: 'BlogPostEntityResponseCollection', data: Array<{ __typename?: 'BlogPostEntity', attributes?: { __typename?: 'BlogPost', title: string, description?: string | null | undefined, slug: string, updatedAt?: any | null | undefined } | null | undefined }> } | null | undefined };
+export type CompactBlogPostsQuery = { __typename?: 'Query', blogPosts?: { __typename?: 'BlogPostEntityResponseCollection', data: Array<{ __typename?: 'BlogPostEntity', id?: string | null | undefined, attributes?: { __typename?: 'BlogPost', title: string, description?: string | null | undefined, updatedAt?: any | null | undefined } | null | undefined }> } | null | undefined };
 
 export type CompactProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1228,9 +1233,10 @@ export type ContactQuery = { __typename?: 'Query', contact?: { __typename?: 'Con
 
 
 export const BlogPostDocument = gql`
-    query BlogPost($slug: String!) {
-  blogPosts(filters: {slug: {eq: $slug}}) {
+    query BlogPost($id: ID!) {
+  blogPost(id: $id) {
     data {
+      id
       attributes {
         title
         description
@@ -1261,7 +1267,7 @@ export const BlogPostDocument = gql`
  * @example
  * const { data, loading, error } = useBlogPostQuery({
  *   variables: {
- *      slug: // value for 'slug'
+ *      id: // value for 'id'
  *   },
  * });
  */
@@ -1276,14 +1282,50 @@ export function useBlogPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<B
 export type BlogPostQueryHookResult = ReturnType<typeof useBlogPostQuery>;
 export type BlogPostLazyQueryHookResult = ReturnType<typeof useBlogPostLazyQuery>;
 export type BlogPostQueryResult = Apollo.QueryResult<BlogPostQuery, BlogPostQueryVariables>;
+export const BlogPostIDsDocument = gql`
+    query BlogPostIDs {
+  blogPosts {
+    data {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useBlogPostIDsQuery__
+ *
+ * To run a query within a React component, call `useBlogPostIDsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBlogPostIDsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBlogPostIDsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useBlogPostIDsQuery(baseOptions?: Apollo.QueryHookOptions<BlogPostIDsQuery, BlogPostIDsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BlogPostIDsQuery, BlogPostIDsQueryVariables>(BlogPostIDsDocument, options);
+      }
+export function useBlogPostIDsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BlogPostIDsQuery, BlogPostIDsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BlogPostIDsQuery, BlogPostIDsQueryVariables>(BlogPostIDsDocument, options);
+        }
+export type BlogPostIDsQueryHookResult = ReturnType<typeof useBlogPostIDsQuery>;
+export type BlogPostIDsLazyQueryHookResult = ReturnType<typeof useBlogPostIDsLazyQuery>;
+export type BlogPostIDsQueryResult = Apollo.QueryResult<BlogPostIDsQuery, BlogPostIDsQueryVariables>;
 export const CompactBlogPostsDocument = gql`
     query CompactBlogPosts {
   blogPosts {
     data {
+      id
       attributes {
         title
         description
-        slug
         updatedAt
       }
     }

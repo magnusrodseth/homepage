@@ -1,0 +1,7 @@
+query BlogPostIDs {
+  blogPosts {
+    data {
+      id
+    }
+  }
+}

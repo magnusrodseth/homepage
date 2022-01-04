@@ -1,10 +1,10 @@
 query CompactBlogPosts {
   blogPosts {
     data {
+      id
       attributes {
         title
         description
-        slug
         updatedAt
       }
     }

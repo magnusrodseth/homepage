@@ -1,6 +1,5 @@
 import Link from "next/link";
-import UnderDevelopment from "../../components/UnderDevelopment"
-import { useCompactBlogPostsQuery } from "../../generated/graphql"
+import { BlogPost, useCompactBlogPostsQuery } from "../../generated/graphql"
 
 const BlogIndex = () => {
     const { data, loading, error } = useCompactBlogPostsQuery();
@@ -13,29 +12,27 @@ const BlogIndex = () => {
         return <h1>error</h1>
     }
 
-    const compactBlogPosts = data?.blogPosts?.data
-        ? data?.blogPosts?.data
-        : undefined;
+    const compactBlogPosts = data?.blogPosts?.data;
 
     console.log(compactBlogPosts)
 
     return <div className="h-screen">{compactBlogPosts
         ? compactBlogPosts.map((post, index) => {
-            if (post.attributes) {
-                const { title, description, updatedAt, slug } = post.attributes;
+            const id = post.id;
+            const attributes = post.attributes as BlogPost;
+            const { title, description, updatedAt } = attributes
 
-                return (
-                    <Link href={`/blog/${slug}`} key={index} passHref>
-                        <div key={index}>
+            return (
+                <Link href={`/blog/${id}`} key={index} passHref>
+                    <div key={index}>
 
-                            <h1>{title}</h1>
-                            <h2>{description}</h2>
-                            <h3>Last updated: {updatedAt}</h3>
+                        <h1>{title}</h1>
+                        <h2>{description}</h2>
+                        <h3>Last updated: {updatedAt}</h3>
 
-                        </div>
-                    </Link>
-                )
-            }
+                    </div>
+                </Link>
+            )
         })
         : ""}</div>
 }
