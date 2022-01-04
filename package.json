@@ -10,7 +10,8 @@
   "scripts": {
     "client:dev": "npm run dev --workspace=client",
     "client:gen": "npm run gen --workspace=client",
-    "cms:dev": "npm run dev --workspace=cms"
+    "cms:dev": "npm run dev --workspace=cms",
+    "build": "npm run build --workspace=client && npm run build --workspace=cms"
   },
   "author": {
     "name": "magnusrodseth",

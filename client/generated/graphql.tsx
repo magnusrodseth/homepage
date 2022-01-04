@@ -23,6 +23,30 @@ export type Scalars = {
   Upload: any;
 };
 
+export type About = {
+  __typename?: 'About';
+  content: Scalars['String'];
+  createdAt?: Maybe<Scalars['DateTime']>;
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type AboutEntity = {
+  __typename?: 'AboutEntity';
+  attributes?: Maybe<About>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type AboutEntityResponse = {
+  __typename?: 'AboutEntityResponse';
+  data?: Maybe<AboutEntity>;
+};
+
+export type AboutInput = {
+  content?: InputMaybe<Scalars['String']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
 export type BooleanFilterInput = {
   and?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
   between?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
@@ -90,6 +114,34 @@ export type CategoryInput = {
 export type CategoryRelationResponseCollection = {
   __typename?: 'CategoryRelationResponseCollection';
   data: Array<CategoryEntity>;
+};
+
+export type Contact = {
+  __typename?: 'Contact';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  email: Scalars['String'];
+  github: Scalars['String'];
+  linkedin: Scalars['String'];
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ContactEntity = {
+  __typename?: 'ContactEntity';
+  attributes?: Maybe<Contact>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type ContactEntityResponse = {
+  __typename?: 'ContactEntityResponse';
+  data?: Maybe<ContactEntity>;
+};
+
+export type ContactInput = {
+  email?: InputMaybe<Scalars['String']>;
+  github?: InputMaybe<Scalars['String']>;
+  linkedin?: InputMaybe<Scalars['String']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type DateFilterInput = {
@@ -167,7 +219,7 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = Category | I18NLocale | Project | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = About | Category | Contact | I18NLocale | Project | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -283,7 +335,9 @@ export type Mutation = {
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
+  deleteAbout?: Maybe<AboutEntityResponse>;
   deleteCategory?: Maybe<CategoryEntityResponse>;
+  deleteContact?: Maybe<ContactEntityResponse>;
   deleteProject?: Maybe<ProjectEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
   /** Delete an existing role */
@@ -301,7 +355,9 @@ export type Mutation = {
   removeFile?: Maybe<UploadFileEntityResponse>;
   /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
+  updateAbout?: Maybe<AboutEntityResponse>;
   updateCategory?: Maybe<CategoryEntityResponse>;
+  updateContact?: Maybe<ContactEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
   updateProject?: Maybe<ProjectEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -403,9 +459,19 @@ export type MutationResetPasswordArgs = {
 };
 
 
+export type MutationUpdateAboutArgs = {
+  data: AboutInput;
+};
+
+
 export type MutationUpdateCategoryArgs = {
   data: CategoryInput;
   id: Scalars['ID'];
+};
+
+
+export type MutationUpdateContactArgs = {
+  data: ContactInput;
 };
 
 
@@ -544,8 +610,10 @@ export enum PublicationState {
 
 export type Query = {
   __typename?: 'Query';
+  about?: Maybe<AboutEntityResponse>;
   categories?: Maybe<CategoryEntityResponseCollection>;
   category?: Maybe<CategoryEntityResponse>;
+  contact?: Maybe<ContactEntityResponse>;
   i18NLocale?: Maybe<I18NLocaleEntityResponse>;
   i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
   me?: Maybe<UsersPermissionsMe>;
@@ -560,6 +628,11 @@ export type Query = {
 };
 
 
+export type QueryAboutArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+
 export type QueryCategoriesArgs = {
   filters?: InputMaybe<CategoryFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
@@ -570,6 +643,11 @@ export type QueryCategoriesArgs = {
 
 export type QueryCategoryArgs = {
   id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryContactArgs = {
+  publicationState?: InputMaybe<PublicationState>;
 };
 
 
@@ -963,6 +1041,11 @@ export type CompactProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CompactProjectsQuery = { __typename?: 'Query', projects?: { __typename?: 'ProjectEntityResponseCollection', data: Array<{ __typename?: 'ProjectEntity', id?: string | null | undefined, attributes?: { __typename?: 'Project', title: string, subtitle?: string | null | undefined, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null | undefined } | null | undefined } | null | undefined } | null | undefined }> } | null | undefined };
 
+export type ContactQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ContactQuery = { __typename?: 'Query', contact?: { __typename?: 'ContactEntityResponse', data?: { __typename?: 'ContactEntity', attributes?: { __typename?: 'Contact', email: string, github: string, linkedin: string } | null | undefined } | null | undefined } | null | undefined };
+
 
 export const CompactProjectsDocument = gql`
     query CompactProjects {
@@ -1011,3 +1094,43 @@ export function useCompactProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type CompactProjectsQueryHookResult = ReturnType<typeof useCompactProjectsQuery>;
 export type CompactProjectsLazyQueryHookResult = ReturnType<typeof useCompactProjectsLazyQuery>;
 export type CompactProjectsQueryResult = Apollo.QueryResult<CompactProjectsQuery, CompactProjectsQueryVariables>;
+export const ContactDocument = gql`
+    query Contact {
+  contact {
+    data {
+      attributes {
+        email
+        github
+        linkedin
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useContactQuery__
+ *
+ * To run a query within a React component, call `useContactQuery` and pass it any options that fit your needs.
+ * When your component renders, `useContactQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useContactQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useContactQuery(baseOptions?: Apollo.QueryHookOptions<ContactQuery, ContactQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ContactQuery, ContactQueryVariables>(ContactDocument, options);
+      }
+export function useContactLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ContactQuery, ContactQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ContactQuery, ContactQueryVariables>(ContactDocument, options);
+        }
+export type ContactQueryHookResult = ReturnType<typeof useContactQuery>;
+export type ContactLazyQueryHookResult = ReturnType<typeof useContactLazyQuery>;
+export type ContactQueryResult = Apollo.QueryResult<ContactQuery, ContactQueryVariables>;

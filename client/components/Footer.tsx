@@ -6,43 +6,54 @@ import GitHubIcon from "./icons/GitHubIcon";
 import Icon from "./icons/Icon";
 import MailIcon from "./icons/MailIcon";
 import LinkedInIcon from "./icons/LinkedInIcon";
+import { useContactQuery } from "../generated/graphql";
 
 
 const Footer = () => {
-    const email = "magnus.rodseth@gmail.com";
-    const linkedin = "https://www.linkedin.com/in/magnus-rodseth/";
-    const github = "https://github.com/magnusrodseth"
+    const { data, loading, error } = useContactQuery();
 
-    return (
-        <div className="smooth bg-gray-100 dark:bg-gray-800 dark:text-gray-100  shadow-lg font-mono text-center fixed bottom-0 w-screen z-50 py-3">
-            <div className="flex flex-row space-x-16 justify-center items-center">
-                <Link href={github as string} passHref
-                >
-                    <a target="_blank" rel="noreferrer">
-                        <Icon className={classNames("text-gray-800 dark:text-gray-300 rise-on-hover")}>
-                            <GitHubIcon />
-                        </Icon>
-                    </a>
-                </Link>
+    if (loading) {
+        return <h1>loading...</h1>
+    }
 
-                <Link href={`mailto:${email as string}`} passHref>
-                    <a target="_blank" rel="noreferrer">
-                        <Icon className={classNames("text-gray-800 dark:text-gray-300 rise-on-hover")}>
-                            < MailIcon />
-                        </Icon>
-                    </a>
-                </Link>
+    if (error) {
+        return <h1>error!</h1>
+    }
 
-                <Link href={linkedin as string} passHref>
-                    <a target="_blank" rel="noreferrer">
-                        <Icon className={classNames("text-gray-800 dark:text-gray-300 rise-on-hover")}>
-                            < LinkedInIcon />
-                        </Icon>
-                    </a>
-                </Link>
+    if (data?.contact?.data?.attributes) {
+        const { email, linkedin, github } = data?.contact?.data?.attributes
+
+        return (
+            <div className="smooth bg-gray-100 dark:bg-gray-800 dark:text-gray-100  shadow-lg font-mono text-center fixed bottom-0 w-screen z-50 py-3">
+                <div className="flex flex-row space-x-16 justify-center items-center">
+                    <Link href={github as string} passHref
+                    >
+                        <a target="_blank" rel="noreferrer">
+                            <Icon className={classNames("text-gray-800 dark:text-gray-300 rise-on-hover")}>
+                                <GitHubIcon />
+                            </Icon>
+                        </a>
+                    </Link>
+
+                    <Link href={`mailto:${email as string}`} passHref>
+                        <a target="_blank" rel="noreferrer">
+                            <Icon className={classNames("text-gray-800 dark:text-gray-300 rise-on-hover")}>
+                                < MailIcon />
+                            </Icon>
+                        </a>
+                    </Link>
+
+                    <Link href={linkedin as string} passHref>
+                        <a target="_blank" rel="noreferrer">
+                            <Icon className={classNames("text-gray-800 dark:text-gray-300 rise-on-hover")}>
+                                < LinkedInIcon />
+                            </Icon>
+                        </a>
+                    </Link>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 export default Footer;
