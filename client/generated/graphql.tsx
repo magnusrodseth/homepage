@@ -1229,7 +1229,19 @@ export type ContactQuery = { __typename?: 'Query', contact?: { __typename?: 'Con
 export type CompactProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CompactProjectsQuery = { __typename?: 'Query', projects?: { __typename?: 'ProjectEntityResponseCollection', data: Array<{ __typename?: 'ProjectEntity', id?: string | null | undefined, attributes?: { __typename?: 'Project', title: string, subtitle?: string | null | undefined, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null | undefined } | null | undefined } | null | undefined } | null | undefined }> } | null | undefined };
+export type CompactProjectsQuery = { __typename?: 'Query', projects?: { __typename?: 'ProjectEntityResponseCollection', data: Array<{ __typename?: 'ProjectEntity', id?: string | null | undefined, attributes?: { __typename?: 'Project', title: string, subtitle?: string | null | undefined, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, width?: number | null | undefined, height?: number | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined }> } | null | undefined };
+
+export type ProjectIDsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProjectIDsQuery = { __typename?: 'Query', projects?: { __typename?: 'ProjectEntityResponseCollection', data: Array<{ __typename?: 'ProjectEntity', id?: string | null | undefined }> } | null | undefined };
+
+export type ProjectByIdQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type ProjectByIdQuery = { __typename?: 'Query', project?: { __typename?: 'ProjectEntityResponse', data?: { __typename?: 'ProjectEntity', id?: string | null | undefined, attributes?: { __typename?: 'Project', title: string, subtitle?: string | null | undefined, startDate?: any | null | undefined, endDate?: any | null | undefined, description: string, updatedAt?: any | null | undefined, categories?: { __typename?: 'CategoryRelationResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string } | null | undefined }> } | null | undefined, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null | undefined, width?: number | null | undefined, height?: number | null | undefined } | null | undefined } | null | undefined } | null | undefined, images?: { __typename?: 'UploadFileRelationResponseCollection', data: Array<{ __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null | undefined, width?: number | null | undefined, height?: number | null | undefined } | null | undefined }> } | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
 
 export const BlogPostIDsDocument = gql`
@@ -1411,6 +1423,8 @@ export const CompactProjectsDocument = gql`
           data {
             attributes {
               url
+              width
+              height
             }
           }
         }
@@ -1446,3 +1460,111 @@ export function useCompactProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type CompactProjectsQueryHookResult = ReturnType<typeof useCompactProjectsQuery>;
 export type CompactProjectsLazyQueryHookResult = ReturnType<typeof useCompactProjectsLazyQuery>;
 export type CompactProjectsQueryResult = Apollo.QueryResult<CompactProjectsQuery, CompactProjectsQueryVariables>;
+export const ProjectIDsDocument = gql`
+    query ProjectIDs {
+  projects {
+    data {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useProjectIDsQuery__
+ *
+ * To run a query within a React component, call `useProjectIDsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectIDsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectIDsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProjectIDsQuery(baseOptions?: Apollo.QueryHookOptions<ProjectIDsQuery, ProjectIDsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectIDsQuery, ProjectIDsQueryVariables>(ProjectIDsDocument, options);
+      }
+export function useProjectIDsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectIDsQuery, ProjectIDsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectIDsQuery, ProjectIDsQueryVariables>(ProjectIDsDocument, options);
+        }
+export type ProjectIDsQueryHookResult = ReturnType<typeof useProjectIDsQuery>;
+export type ProjectIDsLazyQueryHookResult = ReturnType<typeof useProjectIDsLazyQuery>;
+export type ProjectIDsQueryResult = Apollo.QueryResult<ProjectIDsQuery, ProjectIDsQueryVariables>;
+export const ProjectByIdDocument = gql`
+    query ProjectByID($id: ID!) {
+  project(id: $id) {
+    data {
+      id
+      attributes {
+        title
+        subtitle
+        startDate
+        endDate
+        description
+        categories {
+          data {
+            attributes {
+              name
+            }
+          }
+        }
+        thumbnail {
+          data {
+            attributes {
+              url
+              caption
+              width
+              height
+            }
+          }
+        }
+        images {
+          data {
+            attributes {
+              url
+              caption
+              width
+              height
+            }
+          }
+        }
+        updatedAt
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useProjectByIdQuery__
+ *
+ * To run a query within a React component, call `useProjectByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProjectByIdQuery(baseOptions: Apollo.QueryHookOptions<ProjectByIdQuery, ProjectByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProjectByIdQuery, ProjectByIdQueryVariables>(ProjectByIdDocument, options);
+      }
+export function useProjectByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectByIdQuery, ProjectByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProjectByIdQuery, ProjectByIdQueryVariables>(ProjectByIdDocument, options);
+        }
+export type ProjectByIdQueryHookResult = ReturnType<typeof useProjectByIdQuery>;
+export type ProjectByIdLazyQueryHookResult = ReturnType<typeof useProjectByIdLazyQuery>;
+export type ProjectByIdQueryResult = Apollo.QueryResult<ProjectByIdQuery, ProjectByIdQueryVariables>;

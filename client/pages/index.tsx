@@ -57,7 +57,7 @@ const Index = () => {
                 <a
                   className={classNames(
                     "inline-flex items-center justify-center px-5 py-3 border border-transparent",
-                    "text-base font-medium rounded-md text-gray-900 bg-sky-100 hover:bg-gray-800 hover:text-gray-100",
+                    "text-base font-medium rounded-md text-gray-900 bg-sky-200 hover:bg-gray-800 hover:text-gray-100",
                     "smooth"
                   )}
                 >
@@ -70,7 +70,7 @@ const Index = () => {
                 <a
                   className={classNames(
                     "inline-flex items-center justify-center px-5 py-3 border border-transparent",
-                    "text-base font-medium rounded-md text-gray-900  bg-lime-50 hover:bg-gray-800 hover:text-gray-100",
+                    "text-base font-medium rounded-md text-gray-900  bg-lime-100 hover:bg-gray-800 hover:text-gray-100",
                     "transition transform duration-500 ease-in-out"
                   )}
                 >

@@ -12,6 +12,8 @@ query CompactProjects {
           data {
             attributes {
               url
+              width
+              height
             }
           }
         }
@@ -54,6 +56,8 @@ query ProjectByID($id: ID!) {
             attributes {
               url
               caption
+              width
+              height
             }
           }
         }
@@ -62,6 +66,8 @@ query ProjectByID($id: ID!) {
             attributes {
               url
               caption
+              width
+              height
             }
           }
         }
@@ -69,5 +75,4 @@ query ProjectByID($id: ID!) {
       }
     }
   }
-}
-`
+}`

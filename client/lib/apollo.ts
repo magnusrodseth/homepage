@@ -1,9 +1,6 @@
 import {
     ApolloClient,
-    InMemoryCache,
-    ApolloProvider,
-    useQuery,
-    gql
+    InMemoryCache
 } from "@apollo/client";
 
 const client = new ApolloClient({
