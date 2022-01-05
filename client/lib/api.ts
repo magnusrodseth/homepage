@@ -1,4 +1,5 @@
 import { BlogPostByID, BlogPostIDs } from "../graphql/blog"
+import { ProjectByID, ProjectIDs } from "../graphql/projects"
 import { gqlToString } from "../graphql/utils/gqlToString"
 
 const fetchAPI = async (query: string, variables = {}) => {
@@ -20,6 +21,12 @@ const fetchAPI = async (query: string, variables = {}) => {
     return json.data
 }
 
+// ----- Blog -----
 export const getBlogPostIDs = async () => fetchAPI(gqlToString(BlogPostIDs))
 
 export const getBlogPostByID = async (id: string) => fetchAPI(gqlToString(BlogPostByID), { id })
+
+// ----- Projects -----
+export const getProjectIDs = async () => fetchAPI(gqlToString(ProjectIDs))
+
+export const getProjectByID = async (id: string) => fetchAPI(gqlToString(ProjectByID), { id })
