@@ -1,3 +1,6 @@
+import { gql } from "@apollo/client";
+
+export const CompactProjects = gql`
 query CompactProjects {
   projects {
     data {
@@ -16,3 +19,4 @@ query CompactProjects {
     }
   }
 }
+`

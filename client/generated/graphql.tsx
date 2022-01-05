@@ -1204,6 +1204,11 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
+export type BlogPostIDsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BlogPostIDsQuery = { __typename?: 'Query', blogPosts?: { __typename?: 'BlogPostEntityResponseCollection', data: Array<{ __typename?: 'BlogPostEntity', id?: string | null | undefined }> } | null | undefined };
+
 export type BlogPostQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -1211,27 +1216,58 @@ export type BlogPostQueryVariables = Exact<{
 
 export type BlogPostQuery = { __typename?: 'Query', blogPost?: { __typename?: 'BlogPostEntityResponse', data?: { __typename?: 'BlogPostEntity', id?: string | null | undefined, attributes?: { __typename?: 'BlogPost', title: string, description?: string | null | undefined, content?: string | null | undefined, author?: { __typename?: 'AuthorEntityResponse', data?: { __typename?: 'AuthorEntity', attributes?: { __typename?: 'Author', name: string, link?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
-export type BlogPostIDsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type BlogPostIDsQuery = { __typename?: 'Query', blogPosts?: { __typename?: 'BlogPostEntityResponseCollection', data: Array<{ __typename?: 'BlogPostEntity', id?: string | null | undefined }> } | null | undefined };
-
 export type CompactBlogPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CompactBlogPostsQuery = { __typename?: 'Query', blogPosts?: { __typename?: 'BlogPostEntityResponseCollection', data: Array<{ __typename?: 'BlogPostEntity', id?: string | null | undefined, attributes?: { __typename?: 'BlogPost', title: string, description?: string | null | undefined, updatedAt?: any | null | undefined } | null | undefined }> } | null | undefined };
-
-export type CompactProjectsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CompactProjectsQuery = { __typename?: 'Query', projects?: { __typename?: 'ProjectEntityResponseCollection', data: Array<{ __typename?: 'ProjectEntity', id?: string | null | undefined, attributes?: { __typename?: 'Project', title: string, subtitle?: string | null | undefined, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null | undefined } | null | undefined } | null | undefined } | null | undefined }> } | null | undefined };
 
 export type ContactQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ContactQuery = { __typename?: 'Query', contact?: { __typename?: 'ContactEntityResponse', data?: { __typename?: 'ContactEntity', attributes?: { __typename?: 'Contact', email: string, github: string, linkedin: string } | null | undefined } | null | undefined } | null | undefined };
 
+export type CompactProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type CompactProjectsQuery = { __typename?: 'Query', projects?: { __typename?: 'ProjectEntityResponseCollection', data: Array<{ __typename?: 'ProjectEntity', id?: string | null | undefined, attributes?: { __typename?: 'Project', title: string, subtitle?: string | null | undefined, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null | undefined } | null | undefined } | null | undefined } | null | undefined }> } | null | undefined };
+
+
+export const BlogPostIDsDocument = gql`
+    query BlogPostIDs {
+  blogPosts {
+    data {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useBlogPostIDsQuery__
+ *
+ * To run a query within a React component, call `useBlogPostIDsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBlogPostIDsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBlogPostIDsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useBlogPostIDsQuery(baseOptions?: Apollo.QueryHookOptions<BlogPostIDsQuery, BlogPostIDsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BlogPostIDsQuery, BlogPostIDsQueryVariables>(BlogPostIDsDocument, options);
+      }
+export function useBlogPostIDsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BlogPostIDsQuery, BlogPostIDsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BlogPostIDsQuery, BlogPostIDsQueryVariables>(BlogPostIDsDocument, options);
+        }
+export type BlogPostIDsQueryHookResult = ReturnType<typeof useBlogPostIDsQuery>;
+export type BlogPostIDsLazyQueryHookResult = ReturnType<typeof useBlogPostIDsLazyQuery>;
+export type BlogPostIDsQueryResult = Apollo.QueryResult<BlogPostIDsQuery, BlogPostIDsQueryVariables>;
 export const BlogPostDocument = gql`
     query BlogPost($id: ID!) {
   blogPost(id: $id) {
@@ -1282,42 +1318,6 @@ export function useBlogPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<B
 export type BlogPostQueryHookResult = ReturnType<typeof useBlogPostQuery>;
 export type BlogPostLazyQueryHookResult = ReturnType<typeof useBlogPostLazyQuery>;
 export type BlogPostQueryResult = Apollo.QueryResult<BlogPostQuery, BlogPostQueryVariables>;
-export const BlogPostIDsDocument = gql`
-    query BlogPostIDs {
-  blogPosts {
-    data {
-      id
-    }
-  }
-}
-    `;
-
-/**
- * __useBlogPostIDsQuery__
- *
- * To run a query within a React component, call `useBlogPostIDsQuery` and pass it any options that fit your needs.
- * When your component renders, `useBlogPostIDsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useBlogPostIDsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useBlogPostIDsQuery(baseOptions?: Apollo.QueryHookOptions<BlogPostIDsQuery, BlogPostIDsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<BlogPostIDsQuery, BlogPostIDsQueryVariables>(BlogPostIDsDocument, options);
-      }
-export function useBlogPostIDsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BlogPostIDsQuery, BlogPostIDsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<BlogPostIDsQuery, BlogPostIDsQueryVariables>(BlogPostIDsDocument, options);
-        }
-export type BlogPostIDsQueryHookResult = ReturnType<typeof useBlogPostIDsQuery>;
-export type BlogPostIDsLazyQueryHookResult = ReturnType<typeof useBlogPostIDsLazyQuery>;
-export type BlogPostIDsQueryResult = Apollo.QueryResult<BlogPostIDsQuery, BlogPostIDsQueryVariables>;
 export const CompactBlogPostsDocument = gql`
     query CompactBlogPosts {
   blogPosts {
@@ -1359,6 +1359,46 @@ export function useCompactBlogPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type CompactBlogPostsQueryHookResult = ReturnType<typeof useCompactBlogPostsQuery>;
 export type CompactBlogPostsLazyQueryHookResult = ReturnType<typeof useCompactBlogPostsLazyQuery>;
 export type CompactBlogPostsQueryResult = Apollo.QueryResult<CompactBlogPostsQuery, CompactBlogPostsQueryVariables>;
+export const ContactDocument = gql`
+    query Contact {
+  contact {
+    data {
+      attributes {
+        email
+        github
+        linkedin
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useContactQuery__
+ *
+ * To run a query within a React component, call `useContactQuery` and pass it any options that fit your needs.
+ * When your component renders, `useContactQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useContactQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useContactQuery(baseOptions?: Apollo.QueryHookOptions<ContactQuery, ContactQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ContactQuery, ContactQueryVariables>(ContactDocument, options);
+      }
+export function useContactLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ContactQuery, ContactQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ContactQuery, ContactQueryVariables>(ContactDocument, options);
+        }
+export type ContactQueryHookResult = ReturnType<typeof useContactQuery>;
+export type ContactLazyQueryHookResult = ReturnType<typeof useContactLazyQuery>;
+export type ContactQueryResult = Apollo.QueryResult<ContactQuery, ContactQueryVariables>;
 export const CompactProjectsDocument = gql`
     query CompactProjects {
   projects {
@@ -1406,43 +1446,3 @@ export function useCompactProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type CompactProjectsQueryHookResult = ReturnType<typeof useCompactProjectsQuery>;
 export type CompactProjectsLazyQueryHookResult = ReturnType<typeof useCompactProjectsLazyQuery>;
 export type CompactProjectsQueryResult = Apollo.QueryResult<CompactProjectsQuery, CompactProjectsQueryVariables>;
-export const ContactDocument = gql`
-    query Contact {
-  contact {
-    data {
-      attributes {
-        email
-        github
-        linkedin
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useContactQuery__
- *
- * To run a query within a React component, call `useContactQuery` and pass it any options that fit your needs.
- * When your component renders, `useContactQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useContactQuery({
- *   variables: {
- *   },
- * });
- */
-export function useContactQuery(baseOptions?: Apollo.QueryHookOptions<ContactQuery, ContactQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ContactQuery, ContactQueryVariables>(ContactDocument, options);
-      }
-export function useContactLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ContactQuery, ContactQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ContactQuery, ContactQueryVariables>(ContactDocument, options);
-        }
-export type ContactQueryHookResult = ReturnType<typeof useContactQuery>;
-export type ContactLazyQueryHookResult = ReturnType<typeof useContactLazyQuery>;
-export type ContactQueryResult = Apollo.QueryResult<ContactQuery, ContactQueryVariables>;
