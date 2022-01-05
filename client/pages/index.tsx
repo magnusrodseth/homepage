@@ -8,8 +8,8 @@ const Index = () => {
 
   return (
     // Jumbotron
-    <div className="flex justify-center items-center h-full">
-      <div className="smooth bg-gradient-to-b from-indigo-400 to-sky-200 w-screen">
+    <div className="flex justify-center items-center">
+      <div className="smooth bg-gradient-to-b mt-16 from-sky-200 to-indigo-400 w-screen">
         <div className="max-w-8xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
 
           {/* Memoji Logo */}
@@ -57,7 +57,7 @@ const Index = () => {
                 <a
                   className={classNames(
                     "inline-flex items-center justify-center px-5 py-3 border border-transparent",
-                    "text-base font-medium rounded-md text-gray-900 bg-sky-200 hover:bg-gray-800 hover:text-gray-100",
+                    "text-base font-medium rounded-md text-gray-900 bg-lime-100 hover:bg-gray-800 hover:text-gray-100",
                     "smooth"
                   )}
                 >

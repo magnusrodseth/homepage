@@ -21,8 +21,12 @@ const BlogIndex = () => {
     return (
         <div className="h-full pb-16">
             <div className="text-center mx-4">
-                <h1 className="m-auto text-4xl md:text-6xl my-6 font-mono font-bold text-indigo-300">
-                    💭{" "}Blog</h1>
+                <h1 className={classNames(
+                    "smooth m-auto text-4xl md:text-6xl my-6 font-mono font-bold",
+                    "text-indigo-400 dark:text-indigo-300"
+                )}>
+                    💭{" "}Blog
+                </h1>
                 <p className="text-lg md:text-2xl my-6">
                     Below, you can find a collection of my personal blog posts.{" "}
                     <span className="font-bold tracking-wide">
@@ -41,30 +45,31 @@ const BlogIndex = () => {
 
                     return (
                         <Wrapper className={classNames(
-                            "dark:bg-gray-700 rise-on-hover p-2",
+                            "hover:cursor bg-sky-50 dark:bg-gray-700 rise-on-hover p-2",
                         )} key={id}>
                             {/* Title */}
                             <Link href={`blog/${id}`} passHref >
                                 <h1 className={classNames(
-                                    "text-xl md:text-3xl m-2",
-                                    "font-bold tracking-wide text-sky-200",
-                                    "hover:text-indigo-300 smooth hover:cursor-pointer"
+                                    "text-xl md:text-3xl m-2 smooth",
+                                    "font-bold tracking-wide smooth hover:cursor-pointer",
+                                    "text-gray-700 dark:text-sky-200",
+                                    "dark:hover:text-indigo-300 hover:text-black"
                                 )}>{title}
                                 </h1>
                             </Link>
 
                             {/* Description */}
                             <div className="flex flex-row space-x-3 p-2 md:p-4">
-                                <ChevronDoubleRightIcon className="h-6 text-lime-200" />
-                                <h2 className="text-lg md:text-xl">
+                                <ChevronDoubleRightIcon className="icon text-indigo-600 dark:text-lime-200" />
+                                <h2 className="text-lg md:text-xl mt-0.5">
                                     {description}
                                 </h2>
                             </div>
 
                             {/* Updated at */}
                             <div className="flex flex-row space-x-3 p-2 md:p-4">
-                                <CalendarIcon className="h-6 text-lime-200" />
-                                <h2 className="text-lg md:text-xl">
+                                <CalendarIcon className="icon text-indigo-700 dark:text-lime-200" />
+                                <h2 className="text-lg md:text-xl mt-0.5">
                                     {parseDate(updatedAt as string)}
                                 </h2>
                             </div>

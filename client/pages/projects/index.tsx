@@ -18,7 +18,10 @@ const ProjectIndex = () => {
     return (
         <div className="h-full pb-16">
             <div className="text-center mx-4">
-                <h1 className="m-auto text-4xl md:text-6xl my-6 font-mono font-bold text-indigo-300">
+                <h1 className={classNames(
+                    "smooth m-auto text-4xl md:text-6xl my-6 font-mono font-bold",
+                    "text-indigo-400 dark:text-indigo-300"
+                )}>
                     👨‍💻{" "}Projects
                 </h1>
                 <p className="text-lg md:text-2xl my-6">
@@ -46,27 +49,31 @@ const ProjectIndex = () => {
 
                     return (
                         <Wrapper className={classNames(
-                            "hover:cursor dark:bg-gray-700 rise-on-hover p-2",
+                            "hover:cursor bg-sky-50 dark:bg-gray-700 rise-on-hover p-2",
                         )} key={id}>
                             <div className="grid lg:grid-cols-4">
                                 <div className="lg:col-start-1 lg:col-span-2">
                                     {/* Title */}
-                                    <Link href={`blog/${id}`} passHref >
+                                    <Link href={`projects/${id}`} passHref >
                                         <h1 className={classNames(
-                                            "text-xl md:text-3xl m-2",
-                                            "font-bold tracking-wide text-sky-200",
-                                            "hover:text-indigo-300 smooth hover:cursor-pointer"
+                                            "text-xl md:text-3xl m-2 smooth",
+                                            "font-bold tracking-wide smooth hover:cursor-pointer",
+                                            "text-gray-700 dark:text-sky-200",
+                                            "dark:hover:text-indigo-300 hover:text-black"
                                         )}>{title}
                                         </h1>
                                     </Link>
-                                    <h2 className="text-lg md:text-xl m-4"><span className="text-lime-200 font-bold">@</span>{" "}{subtitle}</h2>
+                                    <h2 className="text-lg md:text-xl m-4"><span className={classNames(
+                                        "text-indigo-400 dark:text-lime-200 font-bold",
+                                        "smooth"
+                                    )}>@</span>{" "}{subtitle}</h2>
                                 </div>
 
                                 <div className="lg:col-start-3 lg:col-span-2">
                                     {/* Render thumbnail if it exists */}
                                     {thumbnail?.data?.attributes && url !== null
                                         ?
-                                        <Wrapper className="dark:bg-gray-900 rise-on-hover w-50 h-50 relative">
+                                        <Wrapper className="dark:bg-gray-900 bg-gray-100 rise-on-hover w-50 h-50 relative">
                                             <Image
                                                 src={url}
                                                 alt={title}

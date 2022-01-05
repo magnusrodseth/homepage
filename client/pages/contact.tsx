@@ -8,7 +8,7 @@ const Contact = () => {
             <p className="mx-6 my-8">I&apos;m looking forward to get in touch with you 👋🏼</p>
 
             <div className="w-screen">
-                <ChevronDoubleDownIcon className="icon drop-on-hover m-auto" />
+                <ChevronDoubleDownIcon className="smooth icon drop-on-hover m-auto text-indigo-600 dark:text-indigo-400" />
             </div>
 
         </div>

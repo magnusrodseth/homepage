@@ -22,15 +22,17 @@ const About = ({ attributes }: { attributes: About }) => {
     return (
         <div className="h-full pb-16">
             <div className="text-center mx-4">
-                <h1 className="m-auto text-4xl md:text-6xl my-6 font-mono font-bold text-indigo-300">
+                <h1 className={classNames(
+                    "smooth m-auto text-4xl md:text-6xl my-6 font-mono font-bold",
+                    "text-indigo-400 dark:text-indigo-300"
+                )}>
                     👋🏼{" "}About me
                 </h1>
             </div>
 
             <div className={classNames(
                 "smooth w-screen",
-                "bg-gradient-to-b from-indigo-400 to-sky-200",
-                "grid grid-rows-2 lg:grid-rows-none lg:grid-cols-3"
+                "grid grid-rows-2 lg:grid-rows-none lg:grid-cols-3 auto-rows-auto"
             )}>
 
                 {image?.data?.attributes && url != null
