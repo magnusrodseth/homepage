@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ReactElement } from 'react';
 import Wrapper from '../../components/Wrapper';
 import { Project, ProjectEntity, UploadFile, useCompactProjectsQuery } from '../../generated/graphql'
 import classNames from '../../utils/classNames';
@@ -19,7 +18,9 @@ const ProjectIndex = () => {
     return (
         <div className="h-full">
             <div className="text-center mx-4">
-                <h1 className="m-auto text-4xl md:text-6xl my-6 font-mono font-bold text-indigo-300">Projects</h1>
+                <h1 className="m-auto text-4xl md:text-6xl my-6 font-mono font-bold text-indigo-300">
+                    👨‍💻{" "}Projects
+                </h1>
                 <p className="text-lg md:text-2xl my-6">
                     Below, you can find a collection of the projects I am most proud of.{" "}
                     <span className="font-bold tracking-wide">Click on a project to read more about it.</span>
@@ -34,39 +35,40 @@ const ProjectIndex = () => {
                     const { title, subtitle, thumbnail } = project.attributes as Project;
 
                     return (
-                        <Link href={`projects/${id}`} passHref key={id}>
-                            <a>
-                                <Wrapper className={classNames(
-                                    "hover:cursor dark:bg-gray-700 rise-on-hover p-2",
-                                )}>
-                                    <div className="grid lg:grid-cols-4">
-                                        <div className="lg:col-start-1 lg:col-span-2">
-                                            <h1 className={classNames(
-                                                "text-xl md:text-3xl m-2",
-                                                "font-bold tracking-wide text-sky-200",
-                                            )}>{title}</h1>
-                                            <h2 className="text-lg md:text-xl m-4"><span className="text-lime-200 font-bold">@</span>{" "}{subtitle}</h2>
-                                        </div>
+                        <Wrapper className={classNames(
+                            "hover:cursor dark:bg-gray-700 rise-on-hover p-2",
+                        )} key={id}>
+                            <div className="grid lg:grid-cols-4">
+                                <div className="lg:col-start-1 lg:col-span-2">
+                                    {/* Title */}
+                                    <Link href={`blog/${id}`} passHref >
+                                        <h1 className={classNames(
+                                            "text-xl md:text-3xl m-2",
+                                            "font-bold tracking-wide text-sky-200",
+                                            "hover:text-indigo-300 smooth hover:cursor-pointer"
+                                        )}>{title}
+                                        </h1>
+                                    </Link>
+                                    <h2 className="text-lg md:text-xl m-4"><span className="text-lime-200 font-bold">@</span>{" "}{subtitle}</h2>
+                                </div>
 
-                                        <div className="lg:col-start-3 lg:col-span-2">
-                                            {/* Render thumbnail if it exists */}
-                                            {thumbnail?.data?.attributes
-                                                ?
-                                                <Wrapper className="dark:bg-gray-900 rise-on-hover w-50 h-50 relative">
-                                                    <Image
-                                                        src={`${process.env.NEXT_PUBLIC_API_URL}${thumbnail.data.attributes.url}`}
-                                                        alt={title}
-                                                        width={thumbnail.data.attributes.width as number}
-                                                        height={thumbnail.data.attributes.height as number}
-                                                    />
-                                                </Wrapper>
-                                                : ""}
-                                        </div>
-                                    </div>
+                                <div className="lg:col-start-3 lg:col-span-2">
+                                    {/* Render thumbnail if it exists */}
+                                    {thumbnail?.data?.attributes
+                                        ?
+                                        <Wrapper className="dark:bg-gray-900 rise-on-hover w-50 h-50 relative">
+                                            <Image
+                                                src={`${process.env.NEXT_PUBLIC_API_URL}${thumbnail.data.attributes.url}`}
+                                                alt={title}
+                                                width={thumbnail.data.attributes.width as number}
+                                                height={thumbnail.data.attributes.height as number}
+                                            />
+                                        </Wrapper>
+                                        : ""}
+                                </div>
+                            </div>
 
-                                </Wrapper>
-                            </a>
-                        </Link>
+                        </Wrapper>
                     )
                 })}
             </div>
