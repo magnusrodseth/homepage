@@ -25,12 +25,15 @@ const Layout: React.FC<LayoutProps> = ({ children, title }: LayoutProps) => {
         <link rel="icon" href="/img/logo.png" />
       </Head>
 
-      <div className="flex flex-col h-screen justify-between">
+      <div className="">
         <header >
           <Navbar />
         </header>
 
-        <main className={classNames("smooth dark:bg-gray-900 mt-16 md:h-screen h-full dark:text-white")}>{children}</main>
+        <main className={classNames(
+          "smooth dark:bg-gray-900 py-16 min-h-screen h-full dark:text-white")}>
+          {children}
+        </main>
 
         <footer >
           <Footer />

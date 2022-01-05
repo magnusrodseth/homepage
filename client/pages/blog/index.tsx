@@ -19,7 +19,7 @@ const BlogIndex = () => {
     const compactBlogPosts = data?.blogPosts?.data;
 
     return (
-        <div className="h-full">
+        <div className="h-full pb-16">
             <div className="text-center mx-4">
                 <h1 className="m-auto text-4xl md:text-6xl my-6 font-mono font-bold text-indigo-300">
                     💭{" "}Blog</h1>

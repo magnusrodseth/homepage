@@ -60,6 +60,10 @@
 }
 
 /* Regular styling */
+.markdown {
+  overflow-x: scroll;
+}
+
 .markdown pre,
 .markdown code {
   font-family: monaco, monospace;

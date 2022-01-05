@@ -20,7 +20,7 @@ const About = ({ attributes }: { attributes: About }) => {
     }
 
     return (
-        <div className="h-full">
+        <div className="h-full pb-16">
             <div className="text-center mx-4">
                 <h1 className="m-auto text-4xl md:text-6xl my-6 font-mono font-bold text-indigo-300">
                     👋🏼{" "}About me
@@ -28,7 +28,7 @@ const About = ({ attributes }: { attributes: About }) => {
             </div>
 
             <div className={classNames(
-                "smooth opacity-90 w-screen",
+                "smooth w-screen",
                 "bg-gradient-to-b from-indigo-400 to-sky-200",
                 "grid grid-rows-2 lg:grid-rows-none lg:grid-cols-3"
             )}>
@@ -43,8 +43,6 @@ const About = ({ attributes }: { attributes: About }) => {
                         <Image
                             src={url}
                             alt={"Profile picture"}
-                            // width={width as number}
-                            // height={height as number}
                             layout="fill"
                             objectFit="contain"
                             placeholder="blur"
