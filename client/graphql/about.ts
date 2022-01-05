@@ -7,8 +7,17 @@ query About {
       attributes {
         content
         updatedAt
+        image {
+          data {
+            attributes {
+              url
+              width
+              height
+            }
+          }
+        }
       }
     }
   }
 }
-`
+`;

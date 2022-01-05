@@ -27,6 +27,7 @@ export type About = {
   __typename?: 'About';
   content: Scalars['String'];
   createdAt?: Maybe<Scalars['DateTime']>;
+  image: UploadFileEntityResponse;
   publishedAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -44,6 +45,7 @@ export type AboutEntityResponse = {
 
 export type AboutInput = {
   content?: InputMaybe<Scalars['String']>;
+  image?: InputMaybe<Scalars['ID']>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -1207,7 +1209,7 @@ export type UsersPermissionsUserRelationResponseCollection = {
 export type AboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AboutQuery = { __typename?: 'Query', about?: { __typename?: 'AboutEntityResponse', data?: { __typename?: 'AboutEntity', attributes?: { __typename?: 'About', content: string, updatedAt?: any | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+export type AboutQuery = { __typename?: 'Query', about?: { __typename?: 'AboutEntityResponse', data?: { __typename?: 'AboutEntity', attributes?: { __typename?: 'About', content: string, updatedAt?: any | null | undefined, image: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, width?: number | null | undefined, height?: number | null | undefined } | null | undefined } | null | undefined } } | null | undefined } | null | undefined } | null | undefined };
 
 export type BlogPostIDsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1256,6 +1258,15 @@ export const AboutDocument = gql`
       attributes {
         content
         updatedAt
+        image {
+          data {
+            attributes {
+              url
+              width
+              height
+            }
+          }
+        }
       }
     }
   }

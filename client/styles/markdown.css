@@ -66,7 +66,8 @@
   margin: 0 auto;
 }
 
-.markdown pre {
+.markdown pre,
+.markdown code {
   padding: 0.5rem;
   line-height: 1.25;
   overflow-x: scroll;
@@ -74,13 +75,13 @@
 
 .markdown a,
 .markdown a:visited {
-  color: #3b82f6;
+  color: #818cf8;
 }
 
 .markdown a:hover,
 .markdown a:focus,
 .markdown a:active {
-  color: #3b82f6;
+  color: #818cf8;
 }
 
 .markdown .modest-no-decoration {
