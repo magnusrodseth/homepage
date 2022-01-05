@@ -8,7 +8,7 @@ const Index = () => {
 
   return (
     // Jumbotron
-    <div className="flex h-screen justify-center items-center">
+    <div className="flex justify-center items-center h-full">
       <div className="smooth dark:bg-indigo-300 bg-indigo-400 opacity-90 w-screen">
         <div className="max-w-8xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
 

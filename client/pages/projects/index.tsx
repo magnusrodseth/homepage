@@ -17,7 +17,7 @@ const ProjectIndex = () => {
     if (error) return <h1>error!</h1>
 
     return (
-        <div className="h-screen mb-10">
+        <div className="h-full">
             <div className="text-center mx-4">
                 <h1 className="m-auto text-4xl md:text-6xl my-6 font-mono font-bold text-indigo-300">Projects</h1>
                 <p className="text-lg md:text-2xl my-6">
@@ -39,27 +39,31 @@ const ProjectIndex = () => {
                                 <Wrapper className={classNames(
                                     "hover:cursor dark:bg-gray-700 rise-on-hover p-2",
                                 )}>
+                                    <div className="grid lg:grid-cols-4">
+                                        <div className="lg:col-start-1 lg:col-span-2">
+                                            <h1 className={classNames(
+                                                "text-xl md:text-3xl m-2",
+                                                "font-bold tracking-wide text-sky-200",
+                                            )}>{title}</h1>
+                                            <h2 className="text-lg md:text-xl m-4"><span className="text-lime-200 font-bold">@</span>{" "}{subtitle}</h2>
+                                        </div>
 
-                                    <h1 className={classNames(
-                                        "text-xl md:text-3xl m-2",
-                                        "font-bold tracking-wide text-sky-200",
-                                    )}>{title}</h1>
-                                    <h2 className="text-lg md:text-xl m-4"><span className="text-lime-200 font-bold">@</span>{" "}{subtitle}</h2>
+                                        <div className="lg:col-start-3 lg:col-span-2">
+                                            {/* Render thumbnail if it exists */}
+                                            {thumbnail?.data?.attributes
+                                                ?
+                                                <Wrapper className="dark:bg-gray-900 rise-on-hover w-50 h-50 relative">
+                                                    <Image
+                                                        src={`${process.env.NEXT_PUBLIC_API_URL}${thumbnail.data.attributes.url}`}
+                                                        alt={title}
+                                                        width={thumbnail.data.attributes.width as number}
+                                                        height={thumbnail.data.attributes.height as number}
+                                                    />
+                                                </Wrapper>
+                                                : ""}
+                                        </div>
+                                    </div>
 
-                                    {/* Render thumbnail if it exists */}
-                                    {thumbnail?.data?.attributes
-                                        ?
-                                        <Wrapper className="dark:bg-gray-900 rise-on-hover w-50 h-50 relative">
-                                            <Image
-                                                src={`${process.env.NEXT_PUBLIC_API_URL}${thumbnail.data.attributes.url}`}
-                                                alt={title}
-                                                width={thumbnail.data.attributes.width as number}
-                                                height={thumbnail.data.attributes.height as number}
-                                            // layout="fill"
-                                            // objectFit="cover"
-                                            />
-                                        </Wrapper>
-                                        : ""}
                                 </Wrapper>
                             </a>
                         </Link>
@@ -72,27 +76,3 @@ const ProjectIndex = () => {
 
 export default ProjectIndex
 
-// <div className={classNames("h-screen")}>
-//         {
-//             compactProjects.map((project, index) => {
-//                 let url: string | undefined = undefined;
-//                 const id = project.id as string;
-//                 const { title, subtitle, thumbnail } = project.attributes as Project
-
-
-//                 if (thumbnail?.data?.attributes) {
-//                     url = thumbnail.data.attributes.url
-//                 }
-
-//                 return (<Link key={index} href={`projects/${id}`} passHref>
-//                     <div>
-//                         <Wrapper className={classNames("smooth glass border-[1px] border-gray-200")}>
-//                             {/* Text content */}
-//                             <h1>{title}</h1>
-//                             <h2>{subtitle}</h2>
-//                         </Wrapper>
-//                     </div >
-//                 </Link>
-//                 )
-//             })}
-//     </div >
