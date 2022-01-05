@@ -24,7 +24,10 @@ const BlogIndex = () => {
                 <h1 className="m-auto text-4xl md:text-6xl my-6 font-mono font-bold text-indigo-300">
                     💭{" "}Blog</h1>
                 <p className="text-lg md:text-2xl my-6">
-                    Below, you can find a collection of my personal blog posts.
+                    Below, you can find a collection of my personal blog posts.{" "}
+                    <span className="font-bold tracking-wide">
+                        Click on a title to read the full blog post.
+                    </span>
                 </p>
             </div>
 

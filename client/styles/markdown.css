@@ -1,0 +1,244 @@
+/* Print styling */
+@media print {
+  .markdown *,
+  .markdown *:before,
+  .markdown *:after {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  .markdown a,
+  .markdown a:visited {
+    text-decoration: underline;
+  }
+
+  .markdown a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  .markdown abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  .markdown a[href^="#"]:after,
+  .markdown a[href^="javascript:"]:after {
+    content: "";
+  }
+
+  .markdown pre,
+  .markdown blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+
+  .markdown thead {
+    display: table-header-group;
+  }
+
+  .markdown tr,
+  .markdown img {
+    page-break-inside: avoid;
+  }
+
+  .markdown img {
+    max-width: 100% !important;
+  }
+
+  .markdown p,
+  .markdown h2,
+  .markdown h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .markdown h2,
+  .markdown h3 {
+    page-break-after: avoid;
+  }
+}
+
+/* Regular styling */
+.markdown pre,
+.markdown code {
+  font-family: monaco, monospace;
+  margin: 0 auto;
+}
+
+.markdown pre {
+  padding: 0.5rem;
+  line-height: 1.25;
+  overflow-x: scroll;
+}
+
+.markdown a,
+.markdown a:visited {
+  color: #3b82f6;
+}
+
+.markdown a:hover,
+.markdown a:focus,
+.markdown a:active {
+  color: #3b82f6;
+}
+
+.markdown .modest-no-decoration {
+  text-decoration: none;
+}
+
+.markdown html {
+  font-size: 12px;
+}
+
+@media screen and (min-width: 32rem) and (max-width: 48rem) {
+  .markdown html {
+    font-size: 15px;
+  }
+}
+
+@media screen and (min-width: 48rem) {
+  .markdown html {
+    font-size: 16px;
+  }
+}
+
+.markdown body {
+  line-height: 1.85;
+}
+
+.markdown p,
+.markdown .modest-p {
+  font-size: 1rem;
+  margin-bottom: 1.3rem;
+}
+
+.markdown h1,
+.markdown .modest-h1,
+.markdown h2,
+.markdown .modest-h2,
+.markdown h3,
+.markdown .modest-h3,
+.markdown h4,
+.markdown .modest-h4 {
+  margin: 1.414rem 0 0.5rem;
+  font-weight: inherit;
+  line-height: 1.42;
+  text-align: left;
+}
+
+.markdown h1,
+.markdown .modest-h1 {
+  margin-top: 0;
+  font-size: 2.5rem;
+}
+
+.markdown h2,
+.markdown .modest-h2 {
+  font-size: 1.75rem;
+}
+
+.markdown h3,
+.markdown .modest-h3 {
+  font-size: 1.5rem;
+}
+
+.markdown h4,
+.markdown .modest-h4 {
+  font-size: 1.25rem;
+}
+
+.markdown h5,
+.markdown .modest-h5 {
+  font-size: 1rem;
+}
+
+.markdown h6,
+.markdown .modest-h6 {
+  font-size: 0.75rem;
+}
+
+.markdown small,
+.markdown .modest-small {
+  font-size: 0.5em;
+}
+
+.markdown img,
+.markdown canvas,
+.markdown iframe,
+.markdown video,
+.markdown svg,
+.markdown select,
+.markdown textarea {
+  max-width: 100%;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700);
+
+@import url(https://fonts.googleapis.com/css?family=Arimo:700,700italic);
+
+.markdown html {
+  font-size: 18px;
+  max-width: 100%;
+}
+
+.markdown body {
+  font-family: "Open Sans Condensed", sans-serif;
+  font-weight: 300;
+  margin: 0 auto;
+  max-width: 48rem;
+  line-height: 1.45;
+  padding: 0.25rem;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  margin-bottom: 1.15rem;
+  padding-bottom: 0.5rem;
+}
+
+.markdown blockquote {
+  display: flex;
+  border-left: 4px solid #d1d5db;
+  padding: 1rem;
+}
+
+.markdown blockquote::before {
+  content: "💬";
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.markdown pre,
+.markdown code {
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1.5rem;
+}
+
+.markdown ul {
+  list-style-type: disc;
+}
+
+.markdown ol {
+  list-style-type: decimal;
+}
+
+.markdown ol,
+.markdown ul {
+  margin-left: 1.5rem;
+}
+
+.markdown u {
+  text-decoration: underline;
+}

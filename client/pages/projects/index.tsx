@@ -34,6 +34,16 @@ const ProjectIndex = () => {
                     const id = project.id as string;
                     const { title, subtitle, thumbnail } = project.attributes as Project;
 
+                    let url: string | null = null;
+                    let width = 0;
+                    let height = 0;
+
+                    if (thumbnail?.data?.attributes) {
+                        url = `${process.env.NEXT_PUBLIC_API_URL}${thumbnail.data.attributes.url}`
+                        width = thumbnail?.data?.attributes.width as number;
+                        height = thumbnail?.data?.attributes.height as number;
+                    }
+
                     return (
                         <Wrapper className={classNames(
                             "hover:cursor dark:bg-gray-700 rise-on-hover p-2",
@@ -54,14 +64,16 @@ const ProjectIndex = () => {
 
                                 <div className="lg:col-start-3 lg:col-span-2">
                                     {/* Render thumbnail if it exists */}
-                                    {thumbnail?.data?.attributes
+                                    {thumbnail?.data?.attributes && url !== null
                                         ?
                                         <Wrapper className="dark:bg-gray-900 rise-on-hover w-50 h-50 relative">
                                             <Image
-                                                src={`${process.env.NEXT_PUBLIC_API_URL}${thumbnail.data.attributes.url}`}
+                                                src={url}
                                                 alt={title}
-                                                width={thumbnail.data.attributes.width as number}
-                                                height={thumbnail.data.attributes.height as number}
+                                                width={width}
+                                                height={height}
+                                                placeholder="blur"
+                                                blurDataURL={url}
                                             />
                                         </Wrapper>
                                         : ""}
