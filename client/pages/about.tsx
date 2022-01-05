@@ -2,6 +2,7 @@ import { getAbout } from '../lib/api';
 import { About, UploadFile } from "../generated/graphql"
 import Markdown from '../components/Markdown';
 import Image from "next/image"
+import classNames from '../utils/classNames';
 
 const About = ({ attributes }: { attributes: About }) => {
     // Clean up data
@@ -26,26 +27,38 @@ const About = ({ attributes }: { attributes: About }) => {
                 </h1>
             </div>
 
-            <div className="smooth bg-gradient-to-b from-indigo-400 to-sky-200 opacity-90 w-screen">
-
-                <Markdown>{content}</Markdown>
-
+            <div className={classNames(
+                "smooth opacity-90 w-screen",
+                "bg-gradient-to-b from-indigo-400 to-sky-200",
+                "grid grid-rows-2 lg:grid-rows-none lg:grid-cols-3"
+            )}>
 
                 {image?.data?.attributes && url != null
-                    ? <div className="h-72 w-96 relative rise-on-hover">
+                    ? <div className={classNames(
+                        // 24.5rem matches the height of the Markdown content
+                        "h-[24.5rem] relative rise-on-hover",
+                        "m-auto mx-6 bg-markdown-bg rounded-md",
+                        "grayscale"
+                    )}>
                         <Image
                             src={url}
                             alt={"Profile picture"}
                             // width={width as number}
                             // height={height as number}
                             layout="fill"
-                            objectFit="cover"
+                            objectFit="contain"
                             placeholder="blur"
                             blurDataURL={url}
-                            className="rounded-lg"
                         />
                     </div>
-                    : ""}</div>
+                    : ""}
+
+                <Markdown className={classNames(
+                    "rounded-none lg:col-start-1 lg:col-span-2 lg:row-start-1 rise-on-hover",
+                )}>
+                    {content}
+                </Markdown>
+            </div>
         </div>
     )
 }
