@@ -1,6 +1,4 @@
-import { DocumentNode } from "@apollo/client"
-import { BlogPostEntityResponse, useBlogPostIDsQuery } from "../generated/graphql"
-import { BlogPostIDs } from "../graphql/blog"
+import { BlogPostByID, BlogPostIDs } from "../graphql/blog"
 import { gqlToString } from "../graphql/utils/gqlToString"
 
 const fetchAPI = async (query: string, variables = {}) => {
@@ -23,3 +21,5 @@ const fetchAPI = async (query: string, variables = {}) => {
 }
 
 export const getBlogPostIDs = async () => fetchAPI(gqlToString(BlogPostIDs))
+
+export const getBlogPostByID = async (id: string) => fetchAPI(gqlToString(BlogPostByID), { id })
