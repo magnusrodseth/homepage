@@ -1,7 +1,7 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { materialOceanic, duotoneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remark from "remark";
 import { default as stripMarkdown } from "strip-markdown";
 import classNames from "../utils/classNames";
@@ -33,7 +33,10 @@ const Markdown: React.FC<MarkdownProps> = ({
       const match = /language-(\w+)/.exec(className || "");
       return !inline && match ? (
         <SyntaxHighlighter
-          style={atomDark}
+          // TODO: Check for dark or light mode, and then set theme
+          // Light mode: duotoneLight
+          // Dark mode: materialOceanic
+          style={materialOceanic}
           customStyle={{ overflow: "hidden" }}
           language={match[1]}
           PreTag="div"
@@ -60,7 +63,16 @@ const Markdown: React.FC<MarkdownProps> = ({
   return (
     <ReactMarkdown
       components={components}
-      className={classNames("markdown", styles)}
+      className={classNames("max-w-full prose prose-md md:prose-lg dark:prose-invert smooth",
+        // headings
+        "prose-h1:text-gray-700 dark:prose-h1:text-indigo-200",
+        "prose-h2:text-gray-700 dark:prose-h2:text-indigo-200",
+        "prose-h3:text-gray-700 dark:prose-h3:text-indigo-200",
+        "prose-h4:text-gray-700 dark:prose-h4:text-indigo-200",
+        // <a>
+        "dark:prose-a:text-indigo-300 dark:hover:prose-a:text-indigo-400",
+        "prose-a:text-indigo-700 hover:prose-a:text-indigo-900",
+        styles)}
     >
       {text}
     </ReactMarkdown>
@@ -68,3 +80,4 @@ const Markdown: React.FC<MarkdownProps> = ({
 };
 
 export default Markdown;
+

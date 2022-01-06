@@ -54,7 +54,7 @@ const About = ({ attributes }: { attributes: About }) => {
                     : ""}
 
                 <Markdown className={classNames(
-                    "rounded-none lg:col-start-1 lg:col-span-2 lg:row-start-1 rise-on-hover",
+                    "max-w-screen lg:col-start-1 lg:col-span-2 lg:row-start-1 rise-on-hover",
                 )}>
                     {content}
                 </Markdown>

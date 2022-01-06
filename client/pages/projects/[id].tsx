@@ -29,7 +29,7 @@ const Project = ({ attributes }: { attributes: Project }) => {
 
             <Wrapper className="w-3/4 dark:bg-gray-700">
 
-                <div className="p-4">
+                <div className="p-4 w-full">
                     {/* Title and subtitle */}
                     <h1 className={classNames(
                         "text-2xl md:text-4xl m-2",
@@ -39,7 +39,7 @@ const Project = ({ attributes }: { attributes: Project }) => {
                     </h1>
                     <h2 className="text-xl md:text-2xl m-4">
                         <span className={classNames(
-                            "text-indigo-400 dark:text-lime-200 font-bold",
+                            "text-indigo-700 dark:text-lime-200 font-bold",
                             "smooth mr-2")}>@</span>{subtitle}</h2>
 
                     {/* Updated at */}
@@ -50,7 +50,7 @@ const Project = ({ attributes }: { attributes: Project }) => {
                         </h2>
                     </div>
 
-                    <Markdown className="p-2 leading-loose">
+                    <Markdown className="leading-loose dark:text-gray-100">
                         {description}
                     </Markdown>
                 </div>
