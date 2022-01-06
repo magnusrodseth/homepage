@@ -5,6 +5,7 @@ import { materialOceanic, duotoneLight } from "react-syntax-highlighter/dist/cjs
 import remark from "remark";
 import { default as stripMarkdown } from "strip-markdown";
 import classNames from "../utils/classNames";
+import LinkRenderer from "./markdown/LinkRenderer";
 
 interface MarkdownProps {
   className?: string;
@@ -50,6 +51,9 @@ const Markdown: React.FC<MarkdownProps> = ({
         </code>
       );
     },
+
+    // Custom renderer for anchor tags
+    a: LinkRenderer
   };
 
   // Slice away underlined text, as Strapi does not work properly
@@ -63,12 +67,13 @@ const Markdown: React.FC<MarkdownProps> = ({
   return (
     <ReactMarkdown
       components={components}
+
       className={classNames("max-w-full prose prose-md md:prose-lg dark:prose-invert smooth",
         // headings
-        "prose-h1:text-gray-700 dark:prose-h1:text-indigo-200",
-        "prose-h2:text-gray-700 dark:prose-h2:text-indigo-200",
-        "prose-h3:text-gray-700 dark:prose-h3:text-indigo-200",
-        "prose-h4:text-gray-700 dark:prose-h4:text-indigo-200",
+        "prose-h1:text-gray-700 dark:prose-h1:text-indigo-200 prose-h1:tracking-wide",
+        "prose-h2:text-gray-700 dark:prose-h2:text-indigo-200 prose-h2:tracking-wide",
+        "prose-h3:text-gray-700 dark:prose-h3:text-indigo-200 prose-h3:tracking-wide",
+        "prose-h4:text-gray-700 dark:prose-h4:text-indigo-200 prose-h4:tracking-wide",
         // <a>
         "dark:prose-a:text-indigo-300 dark:hover:prose-a:text-indigo-400",
         "prose-a:text-indigo-700 hover:prose-a:text-indigo-900",
