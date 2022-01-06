@@ -13,6 +13,22 @@
     @apply -translate-y-1;
   }
 
+  .left-on-hover {
+    @apply smooth;
+  }
+
+  .left-on-hover:hover {
+    @apply -translate-x-1;
+  }
+
+  .right-on-hover {
+    @apply smooth;
+  }
+
+  .right-on-hover:hover {
+    @apply translate-x-1;
+  }
+
   .drop-on-hover {
     @apply smooth;
   }

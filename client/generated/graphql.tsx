@@ -1234,7 +1234,7 @@ export type ProjectByIdQueryVariables = Exact<{
 }>;
 
 
-export type ProjectByIdQuery = { __typename?: 'Query', project?: { __typename?: 'ProjectEntityResponse', data?: { __typename?: 'ProjectEntity', id?: string | null | undefined, attributes?: { __typename?: 'Project', title: string, subtitle?: string | null | undefined, startDate?: any | null | undefined, endDate?: any | null | undefined, description: string, updatedAt?: any | null | undefined, categories?: { __typename?: 'CategoryRelationResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string } | null | undefined }> } | null | undefined, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null | undefined, width?: number | null | undefined, height?: number | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+export type ProjectByIdQuery = { __typename?: 'Query', project?: { __typename?: 'ProjectEntityResponse', data?: { __typename?: 'ProjectEntity', id?: string | null | undefined, attributes?: { __typename?: 'Project', title: string, subtitle?: string | null | undefined, startDate?: any | null | undefined, endDate?: any | null | undefined, description: string, updatedAt?: any | null | undefined, categories?: { __typename?: 'CategoryRelationResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string } | null | undefined }> } | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
 
 export const AboutDocument = gql`
@@ -1552,16 +1552,6 @@ export const ProjectByIdDocument = gql`
           data {
             attributes {
               name
-            }
-          }
-        }
-        thumbnail {
-          data {
-            attributes {
-              url
-              caption
-              width
-              height
             }
           }
         }

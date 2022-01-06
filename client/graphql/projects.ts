@@ -51,16 +51,6 @@ query ProjectByID($id: ID!) {
             }
           }
         }
-        thumbnail {
-          data {
-            attributes {
-              url
-              caption
-              width
-              height
-            }
-          }
-        }
         updatedAt
       }
     }

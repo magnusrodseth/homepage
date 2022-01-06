@@ -1,6 +1,7 @@
-import { CalendarIcon } from "@heroicons/react/outline";
+import { CalendarIcon, ChevronDoubleLeftIcon } from "@heroicons/react/outline";
 import { GetStaticProps } from "next"
 import Link from "next/link";
+import BackLink from "../../components/BackLink";
 import Markdown from "../../components/Markdown";
 import Wrapper from "../../components/Wrapper";
 import { Project, ProjectEntity } from "../../generated/graphql";
@@ -10,25 +11,11 @@ import { parseDate } from "../../utils/parseDate";
 import { Path } from "../../utils/types";
 
 const Project = ({ attributes }: { attributes: Project }) => {
-    const { title, subtitle, description, updatedAt, thumbnail } = attributes;
-
-    let url: string | null = null;
-    let width = 0;
-    let height = 0;
-
-    if (thumbnail?.data?.attributes) {
-        url = `${process.env.NEXT_PUBLIC_API_URL}${thumbnail.data.attributes.url}`
-        width = thumbnail?.data?.attributes.width as number;
-        height = thumbnail?.data?.attributes.height as number;
-    }
-
-    console.log(attributes)
+    const { title, subtitle, description, updatedAt } = attributes;
 
     return (
         <div className="h-full flex justify-center pb-16 m-4">
-
             <Wrapper className="w-3/4 dark:bg-gray-700">
-
                 <div className="p-4 w-full">
                     {/* Title and subtitle */}
                     <h1 className={classNames(
@@ -53,6 +40,8 @@ const Project = ({ attributes }: { attributes: Project }) => {
                     <Markdown className="leading-loose dark:text-gray-100">
                         {description}
                     </Markdown>
+
+                    <BackLink href="/projects" title={"projects"} />
                 </div>
             </Wrapper >
         </div >
