@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { materialOceanic, duotoneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { materialOceanic, materialLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remark from "remark";
 import { default as stripMarkdown } from "strip-markdown";
 import classNames from "../utils/classNames";
+import { ThemeContext } from "../utils/theme/ThemeContext";
 import LinkRenderer from "./markdown/LinkRenderer";
 
 interface MarkdownProps {
@@ -20,6 +21,9 @@ const Markdown: React.FC<MarkdownProps> = ({
 }: MarkdownProps) => {
   const styles = className ? className : "";
 
+  const { theme, setTheme } = useContext(ThemeContext)
+  const isDark = theme === 'dark';
+
   if (strip) {
     let result;
     remark()
@@ -34,10 +38,7 @@ const Markdown: React.FC<MarkdownProps> = ({
       const match = /language-(\w+)/.exec(className || "");
       return !inline && match ? (
         <SyntaxHighlighter
-          // TODO: Check for dark or light mode, and then set theme
-          // Light mode: duotoneLight
-          // Dark mode: materialOceanic
-          style={materialOceanic}
+          style={isDark ? materialOceanic : materialLight}
           customStyle={{ overflow: "hidden" }}
           language={match[1]}
           PreTag="div"
