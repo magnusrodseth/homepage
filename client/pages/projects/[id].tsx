@@ -1,4 +1,4 @@
-import { CalendarIcon, ChevronDoubleLeftIcon } from "@heroicons/react/outline";
+import { CalendarIcon, ChevronDoubleLeftIcon, DotsHorizontalIcon } from "@heroicons/react/outline";
 import { GetStaticProps } from "next"
 import Link from "next/link";
 import BackLink from "../../components/BackLink";
@@ -8,6 +8,7 @@ import { Project, ProjectEntity } from "../../generated/graphql";
 import { getProjectByID, getProjectIDs } from "../../lib/api";
 import classNames from "../../utils/classNames";
 import { parseDate } from "../../utils/parseDate";
+import { readingTime } from "../../utils/readingTime";
 import { Path } from "../../utils/types";
 
 const Project = ({ attributes }: { attributes: Project }) => {
@@ -15,8 +16,17 @@ const Project = ({ attributes }: { attributes: Project }) => {
 
     return (
         <div className="h-full flex justify-center pb-16 m-4">
-            <Wrapper className="w-3/4 dark:bg-gray-700">
-                <div className="p-4 w-full">
+            <Wrapper className="w-full md:w-5/6 lg:w-3/4 dark:bg-gray-700">
+                {/* Other information about the project */}
+                <div className="pl-6 py-2 flex flex-row space-x-2 text-sm">
+                    <span>
+                        <span className="italic">Last updated:{" "}</span>
+                        {parseDate(updatedAt as string)}
+                    </span>
+                    <DotsHorizontalIcon className="w-4" />
+                    <span>{readingTime(`${title}${subtitle}${description}`)} minute read</span>
+                </div>
+                <div className="px-4 w-full">
                     {/* Title and subtitle */}
                     <h1 className={classNames(
                         "text-2xl md:text-4xl m-2",
@@ -29,14 +39,6 @@ const Project = ({ attributes }: { attributes: Project }) => {
                             "text-indigo-700 dark:text-lime-200 font-bold",
                             "smooth mr-2")}>@</span>{subtitle}</h2>
 
-                    {/* Updated at */}
-                    <div className="flex flex-row space-x-1.5 m-4">
-                        <CalendarIcon className="w-5 md:w-6 text-indigo-700 dark:text-lime-200" />
-                        <h2 className="text-md md:text-lg mt-0.5 m-0">
-                            Last updated: <span className="font-bold">{parseDate(updatedAt as string)}</span>
-                        </h2>
-                    </div>
-
                     <Markdown className="leading-loose dark:text-gray-100">
                         {description}
                     </Markdown>
@@ -44,6 +46,7 @@ const Project = ({ attributes }: { attributes: Project }) => {
                     <BackLink href="/projects" title={"projects"} />
                 </div>
             </Wrapper >
+
         </div >
     )
 }
