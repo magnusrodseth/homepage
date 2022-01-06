@@ -1,6 +1,28 @@
 import { createContext, useState, useEffect } from 'react'
 import { COLOR_THEME, DARK, LIGHT } from './constants'
 
+const getInitialTheme = () => {
+    if (typeof window !== 'undefined' &&
+        window.localStorage) {
+
+        const storedPrefs =
+            window.localStorage.getItem('color-theme')
+        if (typeof storedPrefs === 'string') {
+            return storedPrefs
+        }
+
+        const userMedia =
+            window.matchMedia('(prefers-color-scheme: dark)')
+        if (userMedia.matches) {
+            return 'dark'
+        }
+    }
+
+    // If you want to use light theme as the default, 
+    // return "light" instead
+    return 'dark'
+}
+
 /**
  * A theme can either be light or dark.
  */
@@ -21,7 +43,7 @@ export const ThemeContext = createContext<ThemeContextType>({} as ThemeContextTy
  * @returns a wrapper component with the current theme.
  */
 export const ThemeProvider = ({ currentTheme, children }: any) => {
-    const [theme, setTheme] = useState(currentTheme)
+    const [theme, setTheme] = useState(getInitialTheme)
 
     // Update state of theme
     const rawSetTheme = (theme: ThemeName) => {

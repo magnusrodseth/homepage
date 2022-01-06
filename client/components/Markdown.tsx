@@ -4,6 +4,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialOceanic, materialLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remark from "remark";
 import { default as stripMarkdown } from "strip-markdown";
+import { useDarkMode } from "../hooks/useDarkMode";
 import classNames from "../utils/classNames";
 import { ThemeContext } from "../utils/theme/ThemeContext";
 import LinkRenderer from "./markdown/LinkRenderer";
@@ -21,8 +22,7 @@ const Markdown: React.FC<MarkdownProps> = ({
 }: MarkdownProps) => {
   const styles = className ? className : "";
 
-  const { theme, setTheme } = useContext(ThemeContext)
-  const isDark = theme === 'dark';
+  const [isDark, _] = useDarkMode();
 
   if (strip) {
     let result;

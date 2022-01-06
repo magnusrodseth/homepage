@@ -21,9 +21,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   if (is404Page) {
     return (
       <ApolloProvider client={client}>
-        <ThemeProvider>
-          <Component {...pageProps} />
-        </ThemeProvider>
+        <Component {...pageProps} />
       </ApolloProvider>
     );
   }
@@ -31,11 +29,9 @@ const App = ({ Component, pageProps }: AppProps) => {
   if (isHomePage) {
     return (
       <ApolloProvider client={client}>
-        <ThemeProvider>
-          <Layout title={"Home"}>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
+        <Layout title={"Home"}>
+          <Component {...pageProps} />
+        </Layout>
       </ApolloProvider>
     );
   }
@@ -49,21 +45,19 @@ const App = ({ Component, pageProps }: AppProps) => {
 
     return (
       <ApolloProvider client={client}>
-        <ThemeProvider>
-          <Layout title={capitalize(title)}>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider></ApolloProvider>
+        <Layout title={capitalize(title)}>
+          <Component {...pageProps} />
+        </Layout>
+      </ApolloProvider>
     );
   }
 
   return (
     <ApolloProvider client={client}>
-      <ThemeProvider>
-        <Layout title={capitalize(router.pathname.substring(1))}>
-          <Component {...pageProps} />
-        </Layout>
-      </ThemeProvider></ApolloProvider>
+      <Layout title={capitalize(router.pathname.substring(1))}>
+        <Component {...pageProps} />
+      </Layout>
+    </ApolloProvider>
   );
 };
 export default App;
