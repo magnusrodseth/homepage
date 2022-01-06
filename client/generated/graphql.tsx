@@ -671,7 +671,6 @@ export type Project = {
   createdAt?: Maybe<Scalars['DateTime']>;
   description: Scalars['String'];
   endDate?: Maybe<Scalars['Date']>;
-  images?: Maybe<UploadFileRelationResponseCollection>;
   publishedAt?: Maybe<Scalars['DateTime']>;
   slug: Scalars['String'];
   startDate?: Maybe<Scalars['Date']>;
@@ -686,13 +685,6 @@ export type ProjectCategoriesArgs = {
   filters?: InputMaybe<CategoryFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type ProjectImagesArgs = {
-  filters?: InputMaybe<UploadFileFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -734,7 +726,6 @@ export type ProjectInput = {
   categories?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   description?: InputMaybe<Scalars['String']>;
   endDate?: InputMaybe<Scalars['Date']>;
-  images?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   slug?: InputMaybe<Scalars['String']>;
   startDate?: InputMaybe<Scalars['Date']>;
@@ -987,11 +978,6 @@ export type UploadFileInput = {
   width?: InputMaybe<Scalars['Int']>;
 };
 
-export type UploadFileRelationResponseCollection = {
-  __typename?: 'UploadFileRelationResponseCollection';
-  data: Array<UploadFileEntity>;
-};
-
 export type UsersPermissionsCreateRolePayload = {
   __typename?: 'UsersPermissionsCreateRolePayload';
   ok: Scalars['Boolean'];
@@ -1216,12 +1202,12 @@ export type BlogPostIDsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type BlogPostIDsQuery = { __typename?: 'Query', blogPosts?: { __typename?: 'BlogPostEntityResponseCollection', data: Array<{ __typename?: 'BlogPostEntity', id?: string | null | undefined }> } | null | undefined };
 
-export type BlogPostQueryVariables = Exact<{
+export type BlogPostByIdQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type BlogPostQuery = { __typename?: 'Query', blogPost?: { __typename?: 'BlogPostEntityResponse', data?: { __typename?: 'BlogPostEntity', id?: string | null | undefined, attributes?: { __typename?: 'BlogPost', title: string, description?: string | null | undefined, content?: string | null | undefined, author?: { __typename?: 'AuthorEntityResponse', data?: { __typename?: 'AuthorEntity', attributes?: { __typename?: 'Author', name: string, link?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+export type BlogPostByIdQuery = { __typename?: 'Query', blogPost?: { __typename?: 'BlogPostEntityResponse', data?: { __typename?: 'BlogPostEntity', id?: string | null | undefined, attributes?: { __typename?: 'BlogPost', title: string, description?: string | null | undefined, content?: string | null | undefined, author?: { __typename?: 'AuthorEntityResponse', data?: { __typename?: 'AuthorEntity', attributes?: { __typename?: 'Author', name: string, link?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
 export type CompactBlogPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1248,7 +1234,7 @@ export type ProjectByIdQueryVariables = Exact<{
 }>;
 
 
-export type ProjectByIdQuery = { __typename?: 'Query', project?: { __typename?: 'ProjectEntityResponse', data?: { __typename?: 'ProjectEntity', id?: string | null | undefined, attributes?: { __typename?: 'Project', title: string, subtitle?: string | null | undefined, startDate?: any | null | undefined, endDate?: any | null | undefined, description: string, updatedAt?: any | null | undefined, categories?: { __typename?: 'CategoryRelationResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string } | null | undefined }> } | null | undefined, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null | undefined, width?: number | null | undefined, height?: number | null | undefined } | null | undefined } | null | undefined } | null | undefined, images?: { __typename?: 'UploadFileRelationResponseCollection', data: Array<{ __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null | undefined, width?: number | null | undefined, height?: number | null | undefined } | null | undefined }> } | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+export type ProjectByIdQuery = { __typename?: 'Query', project?: { __typename?: 'ProjectEntityResponse', data?: { __typename?: 'ProjectEntity', id?: string | null | undefined, attributes?: { __typename?: 'Project', title: string, subtitle?: string | null | undefined, startDate?: any | null | undefined, endDate?: any | null | undefined, description: string, updatedAt?: any | null | undefined, categories?: { __typename?: 'CategoryRelationResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string } | null | undefined }> } | null | undefined, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null | undefined, width?: number | null | undefined, height?: number | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
 
 export const AboutDocument = gql`
@@ -1335,8 +1321,8 @@ export function useBlogPostIDsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type BlogPostIDsQueryHookResult = ReturnType<typeof useBlogPostIDsQuery>;
 export type BlogPostIDsLazyQueryHookResult = ReturnType<typeof useBlogPostIDsLazyQuery>;
 export type BlogPostIDsQueryResult = Apollo.QueryResult<BlogPostIDsQuery, BlogPostIDsQueryVariables>;
-export const BlogPostDocument = gql`
-    query BlogPost($id: ID!) {
+export const BlogPostByIdDocument = gql`
+    query BlogPostByID($id: ID!) {
   blogPost(id: $id) {
     data {
       id
@@ -1359,32 +1345,32 @@ export const BlogPostDocument = gql`
     `;
 
 /**
- * __useBlogPostQuery__
+ * __useBlogPostByIdQuery__
  *
- * To run a query within a React component, call `useBlogPostQuery` and pass it any options that fit your needs.
- * When your component renders, `useBlogPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useBlogPostByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBlogPostByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useBlogPostQuery({
+ * const { data, loading, error } = useBlogPostByIdQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useBlogPostQuery(baseOptions: Apollo.QueryHookOptions<BlogPostQuery, BlogPostQueryVariables>) {
+export function useBlogPostByIdQuery(baseOptions: Apollo.QueryHookOptions<BlogPostByIdQuery, BlogPostByIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<BlogPostQuery, BlogPostQueryVariables>(BlogPostDocument, options);
+        return Apollo.useQuery<BlogPostByIdQuery, BlogPostByIdQueryVariables>(BlogPostByIdDocument, options);
       }
-export function useBlogPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BlogPostQuery, BlogPostQueryVariables>) {
+export function useBlogPostByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BlogPostByIdQuery, BlogPostByIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<BlogPostQuery, BlogPostQueryVariables>(BlogPostDocument, options);
+          return Apollo.useLazyQuery<BlogPostByIdQuery, BlogPostByIdQueryVariables>(BlogPostByIdDocument, options);
         }
-export type BlogPostQueryHookResult = ReturnType<typeof useBlogPostQuery>;
-export type BlogPostLazyQueryHookResult = ReturnType<typeof useBlogPostLazyQuery>;
-export type BlogPostQueryResult = Apollo.QueryResult<BlogPostQuery, BlogPostQueryVariables>;
+export type BlogPostByIdQueryHookResult = ReturnType<typeof useBlogPostByIdQuery>;
+export type BlogPostByIdLazyQueryHookResult = ReturnType<typeof useBlogPostByIdLazyQuery>;
+export type BlogPostByIdQueryResult = Apollo.QueryResult<BlogPostByIdQuery, BlogPostByIdQueryVariables>;
 export const CompactBlogPostsDocument = gql`
     query CompactBlogPosts {
   blogPosts {
@@ -1570,16 +1556,6 @@ export const ProjectByIdDocument = gql`
           }
         }
         thumbnail {
-          data {
-            attributes {
-              url
-              caption
-              width
-              height
-            }
-          }
-        }
-        images {
           data {
             attributes {
               url

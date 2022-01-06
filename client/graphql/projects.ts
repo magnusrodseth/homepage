@@ -61,18 +61,9 @@ query ProjectByID($id: ID!) {
             }
           }
         }
-        images {
-          data {
-            attributes {
-              url
-              caption
-              width
-              height
-            }
-          }
-        }
         updatedAt
       }
     }
   }
-}`
+}
+`

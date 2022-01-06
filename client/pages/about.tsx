@@ -32,7 +32,7 @@ const About = ({ attributes }: { attributes: About }) => {
 
             <div className={classNames(
                 "smooth w-screen",
-                "grid grid-rows-2 lg:grid-rows-none lg:grid-cols-3 auto-rows-auto"
+                "grid grid-rows-2 lg:grid-rows-none lg:grid-cols-3 auto-rows-fr"
             )}>
 
                 {image?.data?.attributes && url != null

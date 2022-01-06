@@ -10,7 +10,7 @@ import { parseDate } from "../../utils/parseDate";
 import { Path } from "../../utils/types";
 
 const Project = ({ attributes }: { attributes: Project }) => {
-    const { title, subtitle, description, updatedAt, thumbnail, images } = attributes;
+    const { title, subtitle, description, updatedAt, thumbnail } = attributes;
 
     let url: string | null = null;
     let width = 0;
@@ -30,6 +30,7 @@ const Project = ({ attributes }: { attributes: Project }) => {
             <Wrapper className="w-3/4 dark:bg-gray-700">
 
                 <div className="p-4">
+                    {/* Title and subtitle */}
                     <h1 className={classNames(
                         "text-2xl md:text-4xl m-2",
                         "font-bold tracking-wide smooth",

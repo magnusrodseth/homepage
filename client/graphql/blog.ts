@@ -11,7 +11,7 @@ query BlogPostIDs {
 `
 
 export const BlogPostByID = gql`
-query BlogPost($id: ID!) {
+query BlogPostByID($id: ID!) {
   blogPost(id: $id) {
     data {
       id
@@ -31,6 +31,7 @@ query BlogPost($id: ID!) {
     }
   }
 }
+
 `
 
 export const CompactBlogPosts = gql`

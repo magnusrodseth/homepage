@@ -1,0 +1,25 @@
+version: '3'
+services:
+  cms:
+    build: ./cms
+    volumes:
+      - .:/srv/app
+    networks:
+      - homepage_network
+    ports:
+      - '1337:1337'
+
+  client:
+    build: ./client
+    env_file:
+      - ./client/.env.local 
+    depends_on:
+      - cms 
+    networks:
+      - homepage_network
+    ports:
+      - '3000:3000'
+
+networks:
+  homepage_network:
+    driver: bridge
