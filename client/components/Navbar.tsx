@@ -20,7 +20,10 @@ const Navbar = () => {
   return (
     <Disclosure
       as="nav"
-      className="smooth bg-gray-100 dark:bg-gray-800 dark:text-gray-100 shadow-lg font-mono text-center fixed top-0 w-screen z-50"
+      className={classNames(
+        "smooth bg-gray-100 dark:bg-gray-800 dark:text-gray-100",
+        "shadow-lg font-mono text-center fixed top-0 w-screen z-50"
+      )}
     >
       {({ open }) => (
         <>
@@ -43,6 +46,8 @@ const Navbar = () => {
                 </Disclosure.Button>
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch">
+
+                {/* Logo */}
                 <div className="flex-shrink-0 flex items-center">
                   <Link href="/">
                     <a aria-label="Home">
@@ -50,6 +55,8 @@ const Navbar = () => {
                     </a>
                   </Link>
                 </div>
+
+                {/* Navigation */}
                 <div className="hidden sm:block sm:ml-6 z-50">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
@@ -75,6 +82,7 @@ const Navbar = () => {
             </div>
           </div>
 
+          {/* Navigation */}
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => (
