@@ -2,13 +2,14 @@ import Image from "next/image"
 import classNames from "../utils/classNames"
 import Typewriter from 'typewriter-effect';
 import LinkButton from "../components/LinkButton";
+import PageWrapper from "../components/PageWrapper";
 
 const Index = () => {
   const typewriterStrings = ['fundamentally curious.', 'an engineer at heart.', 'eager to challenge myself.'];
 
   return (
     // Jumbotron
-    <div className="pb-4">
+    <PageWrapper>
       <div className="smooth bg-gradient-to-b mt-16 from-sky-200 to-indigo-400 w-screen">
         <div className={classNames(
           "w-screen flex flex-col md:flex-row",
@@ -81,9 +82,7 @@ const Index = () => {
 
         </div>
       </div>
-    </div >
-
-
+    </PageWrapper>
   )
 }
 

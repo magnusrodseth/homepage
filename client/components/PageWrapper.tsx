@@ -9,7 +9,7 @@ const PageWrapper = ({ className, children }: PageWrapperProps) => {
     const styles = className ? className : "";
 
     return (
-        <div className={classNames("h-full pb-16", styles)}>
+        <div className={classNames("h-full pb-4", styles)}>
             {children}
         </div>
     )
