@@ -6,6 +6,7 @@ import PageWrapper from '../../components/PageWrapper';
 import Wrapper from '../../components/Wrapper';
 import { Project, ProjectEntity, useCompactProjectsQuery } from '../../generated/graphql'
 import classNames from '../../utils/classNames';
+import Heading from '../../components/Heading';
 
 
 const ProjectIndex = () => {
@@ -17,22 +18,21 @@ const ProjectIndex = () => {
         <PageWrapper>
             {loading ? <Loading /> : null}
             {error ? <Error /> : null}
+
             {!loading && !error
                 ? <div>
-                    <div className="text-center mx-4">
-                        <h1 className={classNames(
-                            "smooth m-auto text-4xl md:text-6xl my-6 font-mono tracking-tight font-bold",
-                            "text-indigo-400 dark:text-indigo-300"
-                        )}>
-                            👨‍💻{" "}Projects
-                        </h1>
-                        <p className="text-lg md:text-2xl my-6">
-                            Below, you can find a collection of the projects I am most proud of. Click on a project to read more about it.
-                        </p>
-                    </div><div className={classNames(
+                    <Heading
+                        header={`👨‍💻 Projects`}
+                        description={`
+                        Below, you can find a collection of the projects I am most proud of. 
+                        Click on a project to read more about it.
+                        `} />
+
+                    <div className={classNames(
                         "grid grid-cols-1 md:grid-cols-2"
                     )}>
                         {compactProjects.map((project, index) => {
+                            // Clean up data
                             const id = project.id as string;
                             const { title, subtitle, thumbnail } = project.attributes as Project;
 
@@ -62,6 +62,7 @@ const ProjectIndex = () => {
                                                 )}>{title}
                                                 </h1>
                                             </Link>
+                                            {/* Subtitle */}
                                             <h2 className="text-lg md:text-xl m-4"><span className={classNames(
                                                 "text-indigo-400 dark:text-lime-200 font-bold",
                                                 "smooth"
@@ -81,7 +82,7 @@ const ProjectIndex = () => {
                                                         placeholder="blur"
                                                         blurDataURL={url} />
                                                 </Wrapper>
-                                                : ""}
+                                                : null}
                                         </div>
                                     </div>
 

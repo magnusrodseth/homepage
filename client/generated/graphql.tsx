@@ -49,58 +49,12 @@ export type AboutInput = {
   publishedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
-export type Author = {
-  __typename?: 'Author';
-  createdAt?: Maybe<Scalars['DateTime']>;
-  link?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  publishedAt?: Maybe<Scalars['DateTime']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-};
-
-export type AuthorEntity = {
-  __typename?: 'AuthorEntity';
-  attributes?: Maybe<Author>;
-  id?: Maybe<Scalars['ID']>;
-};
-
-export type AuthorEntityResponse = {
-  __typename?: 'AuthorEntityResponse';
-  data?: Maybe<AuthorEntity>;
-};
-
-export type AuthorEntityResponseCollection = {
-  __typename?: 'AuthorEntityResponseCollection';
-  data: Array<AuthorEntity>;
-  meta: ResponseCollectionMeta;
-};
-
-export type AuthorFiltersInput = {
-  and?: InputMaybe<Array<InputMaybe<AuthorFiltersInput>>>;
-  createdAt?: InputMaybe<DateTimeFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
-  link?: InputMaybe<StringFilterInput>;
-  name?: InputMaybe<StringFilterInput>;
-  not?: InputMaybe<AuthorFiltersInput>;
-  or?: InputMaybe<Array<InputMaybe<AuthorFiltersInput>>>;
-  publishedAt?: InputMaybe<DateTimeFilterInput>;
-  updatedAt?: InputMaybe<DateTimeFilterInput>;
-};
-
-export type AuthorInput = {
-  link?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
-};
-
 export type BlogPost = {
   __typename?: 'BlogPost';
-  author?: Maybe<AuthorEntityResponse>;
   content?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   description?: Maybe<Scalars['String']>;
   publishedAt?: Maybe<Scalars['DateTime']>;
-  slug: Scalars['String'];
   title: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -124,7 +78,6 @@ export type BlogPostEntityResponseCollection = {
 
 export type BlogPostFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<BlogPostFiltersInput>>>;
-  author?: InputMaybe<AuthorFiltersInput>;
   content?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   description?: InputMaybe<StringFilterInput>;
@@ -132,17 +85,14 @@ export type BlogPostFiltersInput = {
   not?: InputMaybe<BlogPostFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<BlogPostFiltersInput>>>;
   publishedAt?: InputMaybe<DateTimeFilterInput>;
-  slug?: InputMaybe<StringFilterInput>;
   title?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
 export type BlogPostInput = {
-  author?: InputMaybe<Scalars['ID']>;
   content?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
-  slug?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
 };
 
@@ -318,7 +268,7 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = About | Author | BlogPost | Category | Contact | I18NLocale | Project | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = About | BlogPost | Category | Contact | I18NLocale | Project | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -427,7 +377,6 @@ export type JsonFilterInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createAuthor?: Maybe<AuthorEntityResponse>;
   createBlogPost?: Maybe<BlogPostEntityResponse>;
   createCategory?: Maybe<CategoryEntityResponse>;
   createProject?: Maybe<ProjectEntityResponse>;
@@ -437,7 +386,6 @@ export type Mutation = {
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteAbout?: Maybe<AboutEntityResponse>;
-  deleteAuthor?: Maybe<AuthorEntityResponse>;
   deleteBlogPost?: Maybe<BlogPostEntityResponse>;
   deleteCategory?: Maybe<CategoryEntityResponse>;
   deleteContact?: Maybe<ContactEntityResponse>;
@@ -459,7 +407,6 @@ export type Mutation = {
   /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
   updateAbout?: Maybe<AboutEntityResponse>;
-  updateAuthor?: Maybe<AuthorEntityResponse>;
   updateBlogPost?: Maybe<BlogPostEntityResponse>;
   updateCategory?: Maybe<CategoryEntityResponse>;
   updateContact?: Maybe<ContactEntityResponse>;
@@ -471,11 +418,6 @@ export type Mutation = {
   /** Update an existing user */
   updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   upload: UploadFileEntityResponse;
-};
-
-
-export type MutationCreateAuthorArgs = {
-  data: AuthorInput;
 };
 
 
@@ -506,11 +448,6 @@ export type MutationCreateUsersPermissionsRoleArgs = {
 
 export type MutationCreateUsersPermissionsUserArgs = {
   data: UsersPermissionsUserInput;
-};
-
-
-export type MutationDeleteAuthorArgs = {
-  id: Scalars['ID'];
 };
 
 
@@ -586,12 +523,6 @@ export type MutationResetPasswordArgs = {
 
 export type MutationUpdateAboutArgs = {
   data: AboutInput;
-};
-
-
-export type MutationUpdateAuthorArgs = {
-  data: AuthorInput;
-  id: Scalars['ID'];
 };
 
 
@@ -672,7 +603,6 @@ export type Project = {
   description: Scalars['String'];
   endDate?: Maybe<Scalars['Date']>;
   publishedAt?: Maybe<Scalars['DateTime']>;
-  slug: Scalars['String'];
   startDate?: Maybe<Scalars['Date']>;
   subtitle?: Maybe<Scalars['String']>;
   thumbnail?: Maybe<UploadFileEntityResponse>;
@@ -715,7 +645,6 @@ export type ProjectFiltersInput = {
   not?: InputMaybe<ProjectFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<ProjectFiltersInput>>>;
   publishedAt?: InputMaybe<DateTimeFilterInput>;
-  slug?: InputMaybe<StringFilterInput>;
   startDate?: InputMaybe<DateFilterInput>;
   subtitle?: InputMaybe<StringFilterInput>;
   title?: InputMaybe<StringFilterInput>;
@@ -727,7 +656,6 @@ export type ProjectInput = {
   description?: InputMaybe<Scalars['String']>;
   endDate?: InputMaybe<Scalars['Date']>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
-  slug?: InputMaybe<Scalars['String']>;
   startDate?: InputMaybe<Scalars['Date']>;
   subtitle?: InputMaybe<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['ID']>;
@@ -742,8 +670,6 @@ export enum PublicationState {
 export type Query = {
   __typename?: 'Query';
   about?: Maybe<AboutEntityResponse>;
-  author?: Maybe<AuthorEntityResponse>;
-  authors?: Maybe<AuthorEntityResponseCollection>;
   blogPost?: Maybe<BlogPostEntityResponse>;
   blogPosts?: Maybe<BlogPostEntityResponseCollection>;
   categories?: Maybe<CategoryEntityResponseCollection>;
@@ -765,19 +691,6 @@ export type Query = {
 
 export type QueryAboutArgs = {
   publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type QueryAuthorArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type QueryAuthorsArgs = {
-  filters?: InputMaybe<AuthorFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
@@ -1207,7 +1120,7 @@ export type BlogPostByIdQueryVariables = Exact<{
 }>;
 
 
-export type BlogPostByIdQuery = { __typename?: 'Query', blogPost?: { __typename?: 'BlogPostEntityResponse', data?: { __typename?: 'BlogPostEntity', id?: string | null | undefined, attributes?: { __typename?: 'BlogPost', title: string, description?: string | null | undefined, content?: string | null | undefined, author?: { __typename?: 'AuthorEntityResponse', data?: { __typename?: 'AuthorEntity', attributes?: { __typename?: 'Author', name: string, link?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+export type BlogPostByIdQuery = { __typename?: 'Query', blogPost?: { __typename?: 'BlogPostEntityResponse', data?: { __typename?: 'BlogPostEntity', id?: string | null | undefined, attributes?: { __typename?: 'BlogPost', title: string, description?: string | null | undefined, content?: string | null | undefined, updatedAt?: any | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
 export type CompactBlogPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1330,14 +1243,7 @@ export const BlogPostByIdDocument = gql`
         title
         description
         content
-        author {
-          data {
-            attributes {
-              name
-              link
-            }
-          }
-        }
+        updatedAt
       }
     }
   }

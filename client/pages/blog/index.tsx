@@ -7,6 +7,7 @@ import Wrapper from "../../components/Wrapper";
 import { BlogPost, useCompactBlogPostsQuery } from "../../generated/graphql"
 import classNames from "../../utils/classNames";
 import { parseDate } from "../../utils/parseDate";
+import Heading from "../../components/Heading";
 
 const BlogIndex = () => {
     const { data, loading, error } = useCompactBlogPostsQuery();
@@ -17,21 +18,15 @@ const BlogIndex = () => {
         <PageWrapper>
             {loading ? <Loading /> : null}
             {error ? <Error /> : null}
-            {!loading && !error ? <>
-                <div className="text-center mx-4">
-                    <h1 className={classNames(
-                        "smooth m-auto text-4xl md:text-6xl my-6 font-mono font-bold",
-                        "text-indigo-400 dark:text-indigo-300 tracking-tight"
-                    )}>
-                        💭{" "}Blog
-                    </h1>
-                    <p className="text-lg md:text-2xl my-6">
-                        Below, you can find a collection of my personal blog posts.{" "}
-                        <span className="font-bold tracking-wide">
-                            Click on a title to read the full blog post.
-                        </span>
-                    </p>
-                </div><div className={classNames(
+            {!loading && !error ? <div>
+                <Heading
+                    header={`💭 Blog`}
+                    description={`
+                    Below, you can find a collection of my personal blog posts. 
+                    Click on a title to read the full blog post.
+                    `} />
+
+                <div className={classNames(
                     "grid grid-cols-1 md:grid-cols-2"
                 )}>
                     {compactBlogPosts ? compactBlogPosts.map((post) => {
@@ -73,7 +68,7 @@ const BlogIndex = () => {
                         );
                     }) : ""}
                 </div>
-            </> : null}
+            </div> : null}
         </PageWrapper>
     )
 }

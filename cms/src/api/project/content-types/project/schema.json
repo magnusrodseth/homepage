@@ -41,11 +41,6 @@
       "allowedTypes": [
         "images"
       ]
-    },
-    "slug": {
-      "type": "uid",
-      "targetField": "title",
-      "required": true
     }
   }
 }

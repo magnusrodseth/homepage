@@ -21,16 +21,6 @@
     },
     "description": {
       "type": "string"
-    },
-    "author": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::author.author"
-    },
-    "slug": {
-      "type": "uid",
-      "targetField": "title",
-      "required": true
     }
   }
 }

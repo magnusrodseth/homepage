@@ -19,19 +19,11 @@ query BlogPostByID($id: ID!) {
         title
         description
         content
-        author {
-          data {
-            attributes {
-              name
-              link
-            }
-          }
-        }
+        updatedAt
       }
     }
   }
 }
-
 `
 
 export const CompactBlogPosts = gql`

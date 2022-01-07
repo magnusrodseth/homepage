@@ -1,5 +1,7 @@
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import { GetStaticProps } from "next"
+import ArticleWrapper from "../../components/article/ArticleWrapper";
+import Byline from "../../components/article/Byline";
 import BackLink from "../../components/BackLink";
 import Markdown from "../../components/markdown/Markdown";
 import Wrapper from "../../components/Wrapper";
@@ -14,46 +16,39 @@ const Project = ({ attributes }: { attributes: Project }) => {
     const { title, subtitle, description, updatedAt } = attributes;
 
     return (
-        <div className="h-full flex justify-center pb-16 m-4">
-            <Wrapper className="w-full md:w-5/6 lg:w-3/4 dark:bg-gray-700">
-                <div className="flex flex-col">
-                    {/* Other information about the project */}
-                    <div className="pl-6 py-2 flex flex-row space-x-2 text-sm">
+        <ArticleWrapper>
+            <Byline
+                lastUpdated={updatedAt as string}
+                readingTimeInMinutes={readingTime(`${title}${subtitle}${description}`)}
+            />
 
-                        <span>
-                            <span className="italic">Last updated:{" "}</span>
-                            {parseDate(updatedAt as string)}
-                        </span>
-                        <DotsHorizontalIcon className="w-4" />
-                        <span>{readingTime(`${title}${subtitle}${description}`)} minute read</span>
-                    </div>
-                    <div className="mx-4 my-2 smooth h-0.5 rounded-lg bg-indigo-400 dark:bg-lime-200" />
+            <div className="px-4 w-full">
+                {/* Title and subtitle */}
+                <h1 className={classNames(
+                    "text-2xl md:text-4xl m-2",
+                    "font-bold tracking-wide smooth",
+                    "text-gray-700 dark:text-sky-200",
+                )}>{title}
+                </h1>
+                <h2 className="text-xl md:text-2xl m-4">
+                    <span className={classNames(
+                        "text-indigo-700 dark:text-lime-200 font-bold",
+                        "smooth mr-2")}>
+                        @
+                    </span>
+                    {subtitle}
+                </h2>
+
+                <Markdown className="max-w-full dark:text-gray-100">
+                    {description}
+                </Markdown>
+
+                <div className="max-w-max m-auto">
+                    <BackLink href="/projects" title={"projects"} />
                 </div>
+            </div>
+        </ArticleWrapper >
 
-                <div className="px-4 w-full">
-                    {/* Title and subtitle */}
-                    <h1 className={classNames(
-                        "text-2xl md:text-4xl m-2",
-                        "font-bold tracking-wide smooth",
-                        "text-gray-700 dark:text-sky-200",
-                    )}>{title}
-                    </h1>
-                    <h2 className="text-xl md:text-2xl m-4">
-                        <span className={classNames(
-                            "text-indigo-700 dark:text-lime-200 font-bold",
-                            "smooth mr-2")}>@</span>{subtitle}</h2>
-
-                    <Markdown className="max-w-full dark:text-gray-100">
-                        {description}
-                    </Markdown>
-
-                    <div className="max-w-max m-auto">
-                        <BackLink href="/projects" title={"projects"} />
-                    </div>
-                </div>
-            </Wrapper >
-
-        </div >
     )
 }
 
