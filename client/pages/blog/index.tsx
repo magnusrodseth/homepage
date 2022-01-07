@@ -35,36 +35,40 @@ const BlogIndex = () => {
                         const { title, description, updatedAt } = attributes;
 
                         return (
-                            <Wrapper className={classNames(
-                                "hover:cursor bg-sky-50 dark:bg-gray-700 rise-on-hover p-2"
-                            )} key={id}>
-                                {/* Title */}
-                                <Link href={`blog/${id}`} passHref>
-                                    <h1 className={classNames(
-                                        "text-xl md:text-3xl m-2 smooth",
-                                        "font-bold tracking-wide smooth hover:cursor-pointer",
-                                        "text-gray-700 dark:text-sky-200",
-                                        "dark:hover:text-indigo-300 hover:text-black"
-                                    )}>{title}
-                                    </h1>
-                                </Link>
+                            <Link href={`blog/${id}`} passHref key={id}>
+                                <a>
+                                    <Wrapper className={classNames(
+                                        "hover:cursor bg-sky-50 dark:bg-gray-700 rise-on-hover p-2"
+                                    )} key={id}>
+                                        {/* Title */}
+                                        <Link href={`blog/${id}`} passHref>
+                                            <h1 className={classNames(
+                                                "text-xl md:text-3xl m-2 smooth",
+                                                "font-bold tracking-wide smooth hover:cursor-pointer",
+                                                "text-gray-700 dark:text-sky-200",
+                                                "dark:hover:text-indigo-300 hover:text-black"
+                                            )}>{title}
+                                            </h1>
+                                        </Link>
 
-                                {/* Description */}
-                                <div className="flex flex-row space-x-3 p-2 md:p-4">
-                                    <ChevronDoubleRightIcon className="icon text-indigo-600 dark:text-lime-200" />
-                                    <h2 className="text-lg md:text-xl mt-0.5">
-                                        {description}
-                                    </h2>
-                                </div>
+                                        {/* Description */}
+                                        <div className="flex flex-row space-x-3 p-2 md:p-4">
+                                            <ChevronDoubleRightIcon className="icon text-indigo-600 dark:text-lime-200" />
+                                            <h2 className="text-lg md:text-xl mt-0.5">
+                                                {description}
+                                            </h2>
+                                        </div>
 
-                                {/* Updated at */}
-                                <div className="flex flex-row space-x-3 p-2 md:p-4">
-                                    <CalendarIcon className="icon text-indigo-700 dark:text-lime-200" />
-                                    <h2 className="text-lg md:text-xl mt-0.5">
-                                        {parseDate(updatedAt as string)}
-                                    </h2>
-                                </div>
-                            </Wrapper>
+                                        {/* Updated at */}
+                                        <div className="flex flex-row space-x-3 p-2 md:p-4">
+                                            <CalendarIcon className="icon text-indigo-700 dark:text-lime-200" />
+                                            <h2 className="text-lg md:text-xl mt-0.5">
+                                                {parseDate(updatedAt as string)}
+                                            </h2>
+                                        </div>
+                                    </Wrapper>
+                                </a>
+                            </Link>
                         );
                     }) : ""}
                 </div>
