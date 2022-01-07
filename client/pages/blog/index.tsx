@@ -1,7 +1,7 @@
-import { CalendarIcon, ChatIcon, ChevronDoubleRightIcon } from "@heroicons/react/outline";
+import { CalendarIcon, ChevronDoubleRightIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import Wrapper from "../../components/Wrapper";
-import { BlogPost, Project, useCompactBlogPostsQuery } from "../../generated/graphql"
+import { BlogPost, useCompactBlogPostsQuery } from "../../generated/graphql"
 import classNames from "../../utils/classNames";
 import { parseDate } from "../../utils/parseDate";
 
@@ -23,7 +23,7 @@ const BlogIndex = () => {
             <div className="text-center mx-4">
                 <h1 className={classNames(
                     "smooth m-auto text-4xl md:text-6xl my-6 font-mono font-bold",
-                    "text-indigo-400 dark:text-indigo-300"
+                    "text-indigo-400 dark:text-indigo-300 tracking-tight"
                 )}>
                     💭{" "}Blog
                 </h1>

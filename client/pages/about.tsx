@@ -24,7 +24,7 @@ const About = ({ attributes }: { attributes: About }) => {
             <div className="text-center mx-4">
                 <h1 className={classNames(
                     "smooth m-auto text-4xl md:text-6xl my-6 font-mono font-bold",
-                    "text-indigo-400 dark:text-indigo-300"
+                    "text-indigo-400 dark:text-indigo-300 tracking-tight"
                 )}>
                     👋🏼{" "}About me
                 </h1>
@@ -39,7 +39,7 @@ const About = ({ attributes }: { attributes: About }) => {
                     ? <div className={classNames(
                         // 24.5rem matches the height of the Markdown content
                         "h-[24.5rem] relative rise-on-hover",
-                        "m-auto mx-6 bg-markdown-bg rounded-md",
+                        "m-auto mx-6 rounded-md",
                         "grayscale"
                     )}>
                         <Image
