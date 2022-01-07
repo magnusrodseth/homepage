@@ -13,8 +13,7 @@
     "client:start": "npm run start --workspace=client",
     "client:build": "npm run build --workspace=client",
     "cms:build": "npm run build --workspace=cms",
-    "cms:dev": "npm run dev --workspace=cms",
-    "build": "npm run build --workspace=client && npm run build --workspace=cms"
+    "cms:dev": "npm run dev --workspace=cms"
   },
   "author": {
     "name": "magnusrodseth",
