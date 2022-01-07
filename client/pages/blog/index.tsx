@@ -35,40 +35,42 @@ const BlogIndex = () => {
                         const { title, description, updatedAt } = attributes;
 
                         return (
-                            <Link href={`blog/${id}`} passHref key={id}>
-                                <a>
-                                    <Wrapper className={classNames(
-                                        "hover:cursor bg-sky-50 dark:bg-gray-700 rise-on-hover p-2"
-                                    )} key={id}>
-                                        {/* Title */}
-                                        <Link href={`blog/${id}`} passHref>
-                                            <h1 className={classNames(
-                                                "text-xl md:text-3xl m-2 smooth",
-                                                "font-bold tracking-wide smooth hover:cursor-pointer",
-                                                "text-gray-700 dark:text-sky-200",
-                                                "dark:hover:text-indigo-300 hover:text-black"
-                                            )}>{title}
-                                            </h1>
-                                        </Link>
+                            <Wrapper className={classNames(
+                                "hover:cursor bg-sky-50 dark:bg-gray-700 rise-on-hover p-2"
+                            )} key={id}>
+                                {/* Title */}
+                                <Link href={`blog/${id}`} passHref>
+                                    <a>
+                                        <h1 className={classNames(
+                                            "text-xl md:text-3xl m-2 smooth",
+                                            "font-bold tracking-wide smooth",
+                                            "text-gray-700 dark:text-sky-200",
+                                            "dark:hover:text-indigo-300 hover:text-black"
+                                        )}>{title}
+                                        </h1>
+                                    </a>
+                                </Link>
 
-                                        {/* Description */}
-                                        <div className="flex flex-row space-x-3 p-2 md:p-4">
-                                            <ChevronDoubleRightIcon className="icon text-indigo-600 dark:text-lime-200" />
-                                            <h2 className="text-lg md:text-xl mt-0.5">
-                                                {description}
-                                            </h2>
-                                        </div>
+                                {/* Description */}
+                                <Link href={`blog/${id}`} passHref>
+                                    <a className="flex flex-row space-x-3 p-2 md:p-4">
+                                        <ChevronDoubleRightIcon className="icon text-indigo-600 dark:text-lime-200" />
+                                        <h2 className="text-lg md:text-xl mt-0.5">
+                                            {description}
+                                        </h2>
+                                    </a>
+                                </Link>
 
-                                        {/* Updated at */}
-                                        <div className="flex flex-row space-x-3 p-2 md:p-4">
-                                            <CalendarIcon className="icon text-indigo-700 dark:text-lime-200" />
-                                            <h2 className="text-lg md:text-xl mt-0.5">
-                                                {parseDate(updatedAt as string)}
-                                            </h2>
-                                        </div>
-                                    </Wrapper>
-                                </a>
-                            </Link>
+                                {/* Updated at */}
+                                <Link href={`blog/${id}`} passHref>
+                                    <a className="flex flex-row space-x-3 p-2 md:p-4">
+                                        <CalendarIcon className="icon text-indigo-700 dark:text-lime-200" />
+                                        <h2 className="text-lg md:text-xl mt-0.5">
+                                            {parseDate(updatedAt as string)}
+                                        </h2>
+                                    </a>
+                                </Link>
+                            </Wrapper>
                         );
                     }) : ""}
                 </div>
@@ -79,20 +81,3 @@ const BlogIndex = () => {
 
 export default BlogIndex
 
-{/* {compactBlogPosts
-        ? compactBlogPosts.map((post, index) => {
-            
-
-            return (
-                <Link href={`/blog/${id}`} key={index} passHref>
-                    <div key={index}>
-
-                        <h1>{title}</h1>
-                        <h2>{description}</h2>
-                        <h3>Last updated: {updatedAt}</h3>
-
-                    </div>
-                </Link>
-            )
-        })
-        : ""}</div> */}
