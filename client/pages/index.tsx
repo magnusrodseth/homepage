@@ -1,7 +1,7 @@
 import Image from "next/image"
-import Link from "next/link"
 import classNames from "../utils/classNames"
 import Typewriter from 'typewriter-effect';
+import LinkButton from "../components/LinkButton";
 
 const Index = () => {
   const typewriterStrings = ['fundamentally curious.', 'an engineer at heart.', 'eager to challenge myself.'];
@@ -13,7 +13,7 @@ const Index = () => {
         <div className="max-w-8xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
 
           {/* Memoji Logo */}
-          <div className="bottom-0">
+          <div>
             <Image src="/img/logo.png" alt="Momoji Logo" width="400" height="400" />
           </div>
 
@@ -52,32 +52,21 @@ const Index = () => {
 
           {/* Buttons for call of action */}
           <div className="m-4 space-x-10 flex lg:mt-0 lg:flex-shrink-0">
-            <div className="inline-flex rounded-md shadow">
-              <Link href="/projects">
-                <a
-                  className={classNames(
-                    "inline-flex items-center justify-center px-5 py-3 border border-transparent",
-                    "text-base font-medium rounded-md text-gray-900 bg-lime-100 hover:bg-gray-800 hover:text-gray-100",
-                    "smooth"
-                  )}
-                >
-                  Projects
-                </a>
-              </Link>
-            </div>
-            <div className="ml-3 inline-flex rounded-md shadow">
-              <Link href="/blog">
-                <a
-                  className={classNames(
-                    "inline-flex items-center justify-center px-5 py-3 border border-transparent",
-                    "text-base font-medium rounded-md text-gray-900  bg-lime-100 hover:bg-gray-800 hover:text-gray-100",
-                    "transition transform duration-500 ease-in-out"
-                  )}
-                >
-                  Blog
-                </a>
-              </Link>
-            </div>
+            <LinkButton
+              className={classNames(
+                "inline-flex items-center justify-center px-5 py-3 border border-transparent",
+                "text-base font-medium rounded-md text-gray-900 ",
+                "bg-lime-100 hover:bg-gray-800 hover:text-gray-100 smooth")}
+              href="/projects"
+              label="Projects" />
+
+            <LinkButton
+              className={classNames(
+                "inline-flex items-center justify-center px-5 py-3 border border-transparent",
+                "text-base font-medium rounded-md text-gray-900 ",
+                "bg-lime-100 hover:bg-gray-800 hover:text-gray-100 smooth")}
+              href="/blog"
+              label="Blog" />
           </div>
         </div>
       </div>

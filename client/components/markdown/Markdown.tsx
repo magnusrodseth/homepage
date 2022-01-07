@@ -4,10 +4,10 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialOceanic, materialLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remark from "remark";
 import { default as stripMarkdown } from "strip-markdown";
-import { useDarkMode } from "../hooks/useDarkMode";
-import classNames from "../utils/classNames";
-import { ThemeContext } from "../utils/theme/ThemeContext";
-import LinkRenderer from "./markdown/LinkRenderer";
+import { useDarkMode } from "../../hooks/useDarkMode";
+import classNames from "../../utils/classNames";
+import { ThemeContext } from "../../utils/theme/ThemeContext";
+import LinkRenderer from "./LinkRenderer";
 
 interface MarkdownProps {
   className?: string;

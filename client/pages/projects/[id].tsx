@@ -1,7 +1,7 @@
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import { GetStaticProps } from "next"
 import BackLink from "../../components/BackLink";
-import Markdown from "../../components/Markdown";
+import Markdown from "../../components/markdown/Markdown";
 import Wrapper from "../../components/Wrapper";
 import { Project, ProjectEntity } from "../../generated/graphql";
 import { getProjectByID, getProjectIDs } from "../../lib/api";

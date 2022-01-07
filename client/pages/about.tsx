@@ -1,6 +1,6 @@
 import { getAbout } from '../lib/api';
 import { About, UploadFile } from "../generated/graphql"
-import Markdown from '../components/Markdown';
+import Markdown from '../components/markdown/Markdown';
 import Image from "next/image"
 import classNames from '../utils/classNames';
 
