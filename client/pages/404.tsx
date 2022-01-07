@@ -16,7 +16,7 @@ const Custom404 = () => {
       <div
         className={classNames(
           "flex justify-center items-center flex-col h-screen",
-          "bg-404 bg-cover bg-center "
+          "bg-404 bg-cover bg-center"
         )}
       >
         <div className="flex flex-row mb-5">
