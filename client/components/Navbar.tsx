@@ -28,7 +28,7 @@ const Navbar = () => {
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-            <div className="relative flex items-center justify-between h-16">
+            <div className="relative flex items-center justify-center h-16">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button
@@ -73,12 +73,11 @@ const Navbar = () => {
                         {item.name}
                       </a>
                     ))}
+
+                    <ToggleDarkMode />
                   </div>
                 </div>
               </div>
-
-              {/* Dark mode toggle is always to the right in the navbar */}
-              <ToggleDarkMode />
             </div>
           </div>
 
@@ -99,6 +98,8 @@ const Navbar = () => {
                   {item.name}
                 </a>
               ))}
+
+              <ToggleDarkMode />
             </div>
           </Disclosure.Panel>
         </>
