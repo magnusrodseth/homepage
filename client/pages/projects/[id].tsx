@@ -1,6 +1,5 @@
-import { CalendarIcon, ChevronDoubleLeftIcon, DotsHorizontalIcon } from "@heroicons/react/outline";
+import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import { GetStaticProps } from "next"
-import Link from "next/link";
 import BackLink from "../../components/BackLink";
 import Markdown from "../../components/Markdown";
 import Wrapper from "../../components/Wrapper";
@@ -17,15 +16,20 @@ const Project = ({ attributes }: { attributes: Project }) => {
     return (
         <div className="h-full flex justify-center pb-16 m-4">
             <Wrapper className="w-full md:w-5/6 lg:w-3/4 dark:bg-gray-700">
-                {/* Other information about the project */}
-                <div className="pl-6 py-2 flex flex-row space-x-2 text-sm">
-                    <span>
-                        <span className="italic">Last updated:{" "}</span>
-                        {parseDate(updatedAt as string)}
-                    </span>
-                    <DotsHorizontalIcon className="w-4" />
-                    <span>{readingTime(`${title}${subtitle}${description}`)} minute read</span>
+                <div className="flex flex-col">
+                    {/* Other information about the project */}
+                    <div className="pl-6 py-2 flex flex-row space-x-2 text-sm">
+
+                        <span>
+                            <span className="italic">Last updated:{" "}</span>
+                            {parseDate(updatedAt as string)}
+                        </span>
+                        <DotsHorizontalIcon className="w-4" />
+                        <span>{readingTime(`${title}${subtitle}${description}`)} minute read</span>
+                    </div>
+                    <div className="mx-4 my-2 smooth h-0.5 rounded-lg bg-indigo-400 dark:bg-lime-200" />
                 </div>
+
                 <div className="px-4 w-full">
                     {/* Title and subtitle */}
                     <h1 className={classNames(
@@ -39,11 +43,13 @@ const Project = ({ attributes }: { attributes: Project }) => {
                             "text-indigo-700 dark:text-lime-200 font-bold",
                             "smooth mr-2")}>@</span>{subtitle}</h2>
 
-                    <Markdown className="leading-loose dark:text-gray-100">
+                    <Markdown className="max-w-full dark:text-gray-100">
                         {description}
                     </Markdown>
 
-                    <BackLink href="/projects" title={"projects"} />
+                    <div className="max-w-max m-auto">
+                        <BackLink href="/projects" title={"projects"} />
+                    </div>
                 </div>
             </Wrapper >
 

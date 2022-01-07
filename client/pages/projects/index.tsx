@@ -25,8 +25,7 @@ const ProjectIndex = () => {
                     👨‍💻{" "}Projects
                 </h1>
                 <p className="text-lg md:text-2xl my-6">
-                    Below, you can find a collection of the projects I am most proud of.{" "}
-                    <span className="font-bold tracking-wide">Click on a project to read more about it.</span>
+                    Below, you can find a collection of the projects I am most proud of. Click on a project to read more about it.
                 </p>
             </div>
 

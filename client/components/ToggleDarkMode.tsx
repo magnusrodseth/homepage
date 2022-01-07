@@ -19,7 +19,7 @@ const ToggleDarkMode = memo(() => {
                 className={`${isDark ? 'translate-x-9' : 'translate-x-1'
                     } inline-block w-6 h-6 transform rounded-full  smooth`}
             >{isDark
-                ? <MoonIcon className="w-6 -scale-x-100 text-gray-900" />
+                ? <MoonIcon className="w-6 text-gray-900" />
                 : <SunIcon className="w-6 text-white" />}
             </span>
         </Switch>
