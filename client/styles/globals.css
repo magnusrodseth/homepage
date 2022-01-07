@@ -40,14 +40,6 @@
   .icon {
     @apply block h-8 w-8;
   }
-
-  .glass {
-    @apply bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 smooth;
-  }
-
-  .glass:hover {
-    @apply backdrop-blur-md smooth;
-  }
 }
 
 @tailwind utilities;

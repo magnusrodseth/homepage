@@ -6,15 +6,17 @@ import Link from "next/link";
 import Logo from "./Logo";
 import ToggleDarkMode from "./ToggleDarkMode";
 
-const navigation = [
-  { name: "Projects", href: "/projects" },
-  { name: "Blog", href: "/blog" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
-];
+
 
 
 const Navbar = () => {
+  const navigation = [
+    { name: "Projects", href: "/projects" },
+    { name: "Blog", href: "/blog" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
+  ];
+
   return (
     <Disclosure
       as="nav"

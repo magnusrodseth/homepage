@@ -69,7 +69,7 @@ const Markdown: React.FC<MarkdownProps> = ({
     <ReactMarkdown
       components={components}
 
-      className={classNames("max-w-full prose prose-md md:prose-lg dark:prose-invert smooth",
+      className={classNames("prose prose-md md:prose-lg dark:prose-invert smooth",
         // headings
         "prose-h1:text-gray-700 dark:prose-h1:text-indigo-200 prose-h1:tracking-wide",
         "prose-h2:text-gray-700 dark:prose-h2:text-indigo-200 prose-h2:tracking-wide",
