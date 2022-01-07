@@ -1,21 +1,29 @@
 import { DotsHorizontalIcon } from "@heroicons/react/outline"
+import { format } from "date-fns"
 import { parseDate } from "../../utils/parseDate"
 
 interface BylineProps {
-    lastUpdated: string;
+    publishedAt: Date;
+    updatedAt?: Date;
     readingTimeInMinutes: number;
 }
 
-const Byline = ({ lastUpdated, readingTimeInMinutes }: BylineProps) => {
+const Byline = ({ publishedAt, updatedAt, readingTimeInMinutes }: BylineProps) => {
     return (
         <div className="flex flex-col">
             <div className="px-6 pt-4 flex flex-row space-x-2 text-sm">
                 <span>
-                    <span className="italic">Last updated:{" "}</span>
-                    {parseDate(lastUpdated)}
+                    <span className="italic">Published:{" "}</span>
+                    {format(publishedAt, "MMMM dd yyyy")}
                 </span>
                 <DotsHorizontalIcon className="w-4" />
-                <span>{readingTimeInMinutes} minute read</span>
+                {updatedAt ? <>
+                    <span>
+                        <span className="italic">Last updated:{" "}</span>
+                        {format(updatedAt, "MMMM dd yyyy")}
+                    </span><DotsHorizontalIcon className="w-4" />
+                </> : null}
+                <span>{Math.max(1, readingTimeInMinutes)} minute read</span>
             </div>
 
             {/* Custom bottom border */}

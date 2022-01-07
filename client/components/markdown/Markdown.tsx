@@ -1,36 +1,24 @@
-import React, { useContext } from "react";
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialOceanic, materialLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import remark from "remark";
-import { default as stripMarkdown } from "strip-markdown";
 import { useDarkMode } from "../../hooks/useDarkMode";
 import classNames from "../../utils/classNames";
-import { ThemeContext } from "../../utils/theme/ThemeContext";
 import LinkRenderer from "./LinkRenderer";
 
 interface MarkdownProps {
   className?: string;
   children: any;
-  strip?: boolean;
 }
 
 const Markdown: React.FC<MarkdownProps> = ({
   className,
   children,
-  strip,
+
 }: MarkdownProps) => {
   const styles = className ? className : "";
 
   const [isDark, _] = useDarkMode();
-
-  if (strip) {
-    let result;
-    remark()
-      .use(stripMarkdown)
-      .process(children, (_, file) => (result = file.contents));
-    return <p className={className}>{result}</p>;
-  }
 
   // Use react-syntax-highlighter for code blocks
   const components = {

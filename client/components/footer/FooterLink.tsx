@@ -1,7 +1,5 @@
 import Link from "next/link"
-import { github } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import classNames from "../../utils/classNames"
-import GitHubIcon from "../icons/GitHubIcon"
 import Icon from "../icons/Icon"
 
 interface FooterLink {

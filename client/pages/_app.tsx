@@ -7,7 +7,6 @@ import { useRouter } from "next/dist/client/router";
 import capitalize from "../utils/capitalize";
 import { ThemeProvider } from "../utils/theme/ThemeContext";
 import { ApolloProvider } from "@apollo/client";
-import client from "../lib/apollo";
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -20,19 +19,15 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   if (is404Page) {
     return (
-      <ApolloProvider client={client}>
-        <Component {...pageProps} />
-      </ApolloProvider>
+      <Component {...pageProps} />
     );
   }
 
   if (isHomePage) {
     return (
-      <ApolloProvider client={client}>
-        <Layout title={"Home"}>
-          <Component {...pageProps} />
-        </Layout>
-      </ApolloProvider>
+      <Layout title={"Home"}>
+        <Component {...pageProps} />
+      </Layout>
     );
   }
 
@@ -44,20 +39,16 @@ const App = ({ Component, pageProps }: AppProps) => {
     const title = split[1];
 
     return (
-      <ApolloProvider client={client}>
-        <Layout title={capitalize(title)}>
-          <Component {...pageProps} />
-        </Layout>
-      </ApolloProvider>
+      <Layout title={capitalize(title)}>
+        <Component {...pageProps} />
+      </Layout>
     );
   }
 
   return (
-    <ApolloProvider client={client}>
-      <Layout title={capitalize(router.pathname.substring(1))}>
-        <Component {...pageProps} />
-      </Layout>
-    </ApolloProvider>
+    <Layout title={capitalize(router.pathname.substring(1))}>
+      <Component {...pageProps} />
+    </Layout>
   );
 };
 export default App;
