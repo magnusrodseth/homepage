@@ -8,23 +8,13 @@ const Index = () => {
 
   return (
     // Jumbotron
-    <div className="flex justify-center items-center">
+    <div className="pb-4">
       <div className="smooth bg-gradient-to-b mt-16 from-sky-200 to-indigo-400 w-screen">
-        <div className="max-w-8xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-center">
+        <div className={classNames(
+          "w-screen flex flex-col md:flex-row",
+          "md:items-end justify-center")}>
 
-          {/* Memoji Logo */}
-          <div className="mr-16 flex flex-col">
-            {/* The image should scale dynamically. Additionally, this image is static; it is not served through the API. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/img/logo.png"
-              alt="Momoji Logo"
-              className="w-1/4 lg:w-3/4"
-            />
-            <div className=" w-1/4 lg:w-3/4 -my-0.5 md:-my-1 lg:-my-1.5 smooth h-0.5 rounded-lg bg-gray-900" />
-          </div>
-
-          <div className="flex flex-col">
+          <div className="flex flex-col mx-8 my-6">
             {/* Middle part of Jumbotron with description */}
             <h2 className="text-3xl tracking-wide text-gray-900 sm:text-4xl">
               <span className="block text-md my-4 font-bold tracking-wide">
@@ -77,6 +67,18 @@ const Index = () => {
                 label="Blog" />
             </div>
           </div>
+
+          {/* Memoji Logo */}
+          <div className="flex content-end h-full">
+            {/* The image should scale dynamically. Additionally, this image is static; it is not served through the API. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/img/logo.png"
+              alt="Momoji Logo"
+              className="w-1/2 md:w-3/4 lg:w-full -my-1.5 md:-my-1 lg:-my-2 m-auto"
+            />
+          </div>
+
         </div>
       </div>
     </div >
