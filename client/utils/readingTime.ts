@@ -1,4 +1,4 @@
-const RATIO = 200;
+const WORDS_PER_MINUTE = 200;
 
 /**
  * Calculates the reading time of a provided string.
@@ -7,4 +7,4 @@ const RATIO = 200;
  * @param text is the string to calculate reading time
  * @returns the reading time, in number of minutes 
  */
-export const readingTime = (text: string): number => Math.max(1, Math.floor(text.split(" ").length / RATIO))
+export const readingTime = (text: string): number => Math.max(1, Math.floor(text.split(" ").length / WORDS_PER_MINUTE))
