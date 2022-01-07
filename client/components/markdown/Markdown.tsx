@@ -83,7 +83,7 @@ const Markdown: React.FC<MarkdownProps> = ({
         // <code>
         "prose-code:before:content-[''] prose-code:after:content-[''] prose-code:p-1 prose-code:dark:bg-gray-600",
         "prose-code:dark:text-lime-200 prose-code:font-mono prose-code:font-normal prose-code:rounded-lg",
-        "prose-code:bg-gray-100 prose-code:text-gray-800",
+        "prose-code:bg-gray-200 prose-code:text-gray-800",
         styles)}
     >
       {text}

@@ -9,7 +9,7 @@ interface BylineProps {
 const Byline = ({ lastUpdated, readingTimeInMinutes }: BylineProps) => {
     return (
         <div className="flex flex-col">
-            <div className="pl-6 py-2 flex flex-row space-x-2 text-sm">
+            <div className="px-6 pt-4 flex flex-row space-x-2 text-sm">
                 <span>
                     <span className="italic">Last updated:{" "}</span>
                     {parseDate(lastUpdated)}

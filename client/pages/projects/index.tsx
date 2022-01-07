@@ -29,7 +29,7 @@ const ProjectIndex = () => {
                         `} />
 
                     <div className={classNames(
-                        "grid grid-cols-1 md:grid-cols-2"
+                        "grid grid-cols-1 md:grid-cols-2 mx-2"
                     )}>
                         {compactProjects.map((project, index) => {
                             // Clean up data
@@ -48,7 +48,7 @@ const ProjectIndex = () => {
 
                             return (
                                 <Wrapper className={classNames(
-                                    "hover:cursor bg-sky-50 dark:bg-gray-700 rise-on-hover p-2"
+                                    "hover:cursor bg-indigo-100 dark:bg-gray-700 rise-on-hover p-2"
                                 )} key={id}>
                                     <div className="grid lg:grid-cols-4">
                                         <div className="lg:col-start-1 lg:col-span-2">
@@ -64,7 +64,7 @@ const ProjectIndex = () => {
                                             </Link>
                                             {/* Subtitle */}
                                             <h2 className="text-lg md:text-xl m-4"><span className={classNames(
-                                                "text-indigo-400 dark:text-lime-200 font-bold",
+                                                "text-indigo-700 dark:text-lime-200 font-bold",
                                                 "smooth"
                                             )}>@</span>{" "}{subtitle}</h2>
                                         </div>
