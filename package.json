@@ -1,7 +1,7 @@
 {
-  "name": "client",
+  "name": "homepage",
   "private": true,
-  "description": "🌐 The frontend of the website.",
+  "description": "👋🏼 My personal website.",
   "author": {
     "name": "magnusrodseth",
     "email": "magnus.rodseth@gmail.com",
