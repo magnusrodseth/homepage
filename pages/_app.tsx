@@ -5,8 +5,6 @@ import React from "react";
 import Layout from "../components/Layout";
 import { useRouter } from "next/dist/client/router";
 import capitalize from "../utils/capitalize";
-import { ThemeProvider } from "../utils/theme/ThemeContext";
-import { ApolloProvider } from "@apollo/client";
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();

@@ -13,6 +13,26 @@ This is my first blog post.
 
 Some content. Here's some **bold text**. Here's _some italic text_.
 
+Below is a test using line number and filename for a code block:
+
+```js showLineNumbers fileName=tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      backgroundColor: {
+        primary: "var(--color-bg-primary)",
+        secondary: "var(--color-bg-secondary)",
+      },
+      textColor: {
+        accent: "var(--color-text-accent)",
+        primary: "var(--color-text-primary)",
+        secondary: "var(--color-text-secondary)",
+      },
+    },
+  },
+};
+```
+
 ### Level 3 heading
 
 Here comes a [link to somewhere](https://www.google.com/).

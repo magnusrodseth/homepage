@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { parseISO } from "date-fns";
 import { getMDXComponent } from "mdx-bundler/client";
-import { Component, useMemo } from "react";
+import { useMemo } from "react";
 import { Article } from "../../types/article";
 import capitalize from "../../utils/capitalize";
 import BackLink from "../BackLink";
@@ -15,6 +15,7 @@ const ArticleComponent = ({ article, backTo }: ArticleComponentProps) => {
     const { code, frontmatter } = article
 
     const Component: any = useMemo(() => getMDXComponent(code), [code])
+
 
     const publishedAt = parseISO(frontmatter.publishedAt)
     const updatedAt = frontmatter.updatedAt

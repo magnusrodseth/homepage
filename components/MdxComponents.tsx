@@ -3,6 +3,16 @@ import Link from 'next/link'
 import Image from 'next/image'
 import classNames from 'classnames'
 import { LinkIcon } from '@heroicons/react/outline'
+import SyntaxHighlighter from 'react-syntax-highlighter'
+import { materialOceanic, materialLight } from 'react-syntax-highlighter/dist/cjs/styles/prism'
+import { useDarkMode } from '../hooks/useDarkMode'
+
+type CodeProps = {
+  children: any,
+  showLineNumbers: string,
+  fileName: string,
+  id: string
+}
 
 export const components = {
   Image,
@@ -65,21 +75,33 @@ export const components = {
   p: ({ ...props }) => {
     return <p {...props} className="my-4" />
   },
-  code: ({ children, showLineNumbers, fileName, id }: any) => {
+
+  // Code block
+  code: ({ children, node, showLineNumbers, fileName, className, inline, id, ...props }: any) => {
+    const [isDark, _] = useDarkMode();
+    const match = /language-(\w+)/.exec(className || "");
+
     return (
-      <React.Fragment>
+      <div>
         {fileName && <div className="w-full code-filename">{fileName}</div>}
-        <code
-          className={classNames('', {
-            'line-numbers': showLineNumbers !== undefined,
-          })}
-          id={id}
-        >
-          {children}
-        </code>
-      </React.Fragment>
+        {!inline && match ? (
+          <SyntaxHighlighter
+            style={isDark ? materialOceanic : materialLight}
+            customStyle={{ overflow: "hidden" }}
+            language={match[1]}
+            PreTag="div"
+            {...props}
+          >
+            {String(children).replace(/\n$/, "")}
+          </SyntaxHighlighter>
+        ) : (
+          <code className={className} {...props}>
+            {children}
+          </code>)}
+      </div>
     )
   },
+
   em: ({ ...props }) => {
     return <em {...props} className="italic" />
   },
