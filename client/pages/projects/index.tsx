@@ -10,8 +10,6 @@ import { getFrontMatters, MDX_PROJECTS_PATH } from '../../lib/mdx';
 
 
 const ProjectIndex = ({ projects }: { projects: FrontMatter[] }) => {
-    console.log(projects)
-
     return (
         <PageWrapper>
             <div>
@@ -56,7 +54,7 @@ const ProjectIndex = ({ projects }: { projects: FrontMatter[] }) => {
                                     </div>
 
                                     <div className="lg:col-start-3 lg:col-span-2">
-                                        {/* Render thumbnail if it exists */}
+                                        {/* Render thumbnail if it exists
                                         <Wrapper className="dark:bg-gray-900 bg-gray-100 rise-on-hover w-50 h-50 relative">
                                             <Link href={`projects/${project.slug}`} passHref>
                                                 <a>
@@ -69,7 +67,7 @@ const ProjectIndex = ({ projects }: { projects: FrontMatter[] }) => {
                                                         blurDataURL={"url"} />
                                                 </a>
                                             </Link>
-                                        </Wrapper>
+                                        </Wrapper> */}
                                     </div>
                                 </div>
                             </Wrapper>

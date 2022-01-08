@@ -1,18 +1,14 @@
-import { CalendarIcon, ChevronDoubleRightIcon } from "@heroicons/react/outline";
+import { ChevronDoubleRightIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import PageWrapper from "../../components/PageWrapper";
 import Wrapper from "../../components/Wrapper";
 import classNames from "../../utils/classNames";
-import { parseDate } from "../../utils/parseDate";
 import Heading from "../../components/Heading";
 import { GetStaticProps } from "next";
-import { getFrontMatters, MDX_BLOG_PATH } from "../../lib/mdx";
 import { FrontMatter } from "../../types/frontmatter";
+import { getFrontMatters, MDX_BLOG_PATH } from "../../lib/mdx";
 
 const BlogIndex = ({ posts }: { posts: FrontMatter[] }) => {
-
-    console.log(posts)
-
     return (
         <PageWrapper>
             <Heading
@@ -49,16 +45,6 @@ const BlogIndex = ({ posts }: { posts: FrontMatter[] }) => {
                                     <ChevronDoubleRightIcon className="icon text-indigo-600 dark:text-lime-200" />
                                     <h2 className="text-lg md:text-xl mt-0.5">
                                         {post.description}
-                                    </h2>
-                                </a>
-                            </Link>
-
-                            {/* Updated at */}
-                            <Link href={`blog/${post.slug}`} passHref>
-                                <a className="flex flex-row space-x-3 p-2 md:p-4">
-                                    <CalendarIcon className="icon text-indigo-700 dark:text-lime-200" />
-                                    <h2 className="text-lg md:text-xl mt-0.5">
-                                        {parseDate(post.updatedAt as string)}
                                     </h2>
                                 </a>
                             </Link>

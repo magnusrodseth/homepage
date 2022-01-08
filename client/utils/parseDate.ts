@@ -1,3 +1,5 @@
+import { format, parseISO } from "date-fns";
+
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 /**
@@ -23,8 +25,4 @@ const suffix = (date: number): string => {
  * @param date is the DateTime object as a string.
  * @returns a readable string representation of the DateTime.
  */
-export const parseDate = (date: string): string => {
-    const parsed = new Date(Date.parse(date));
-
-    return `${months[parsed.getMonth()]} ${parsed.getDate()}${suffix(parsed.getDate())} ${parsed.getFullYear()}`
-}
+export const parseDate = (date: string): string => format(parseISO(date), "MMMM dd yyyy") 
