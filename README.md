@@ -73,3 +73,7 @@ const hello = () => "Hello, world!";
 ````
 
 As with rendering images, this works because of the custom MDX components defined in [`components/MdxComponents.tsx`](components/MdxComponents.tsx).
+
+---
+
+> 🎉 A **huge** shoutout to [Jeff Jadulco](https://github.com/jeffjadulco/jeffjadulco.com) for implementing the .mdx solution. It helped me a great deal when creating the website.
