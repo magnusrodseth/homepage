@@ -3,12 +3,15 @@ import { parseISO } from "date-fns";
 import { getMDXComponent } from "mdx-bundler/client";
 import { Component, useMemo } from "react";
 import { Article } from "../../types/article";
+import capitalize from "../../utils/capitalize";
 import BackLink from "../BackLink";
 import { components } from "../MdxComponents";
 import ArticleWrapper from "./ArticleWrapper";
 import Byline from "./Byline";
 
-const ArticleComponent = ({ article }: { article: Article }) => {
+interface ArticleComponentProps { article: Article, backTo: string }
+
+const ArticleComponent = ({ article, backTo }: ArticleComponentProps) => {
     const { code, frontmatter } = article
 
     const Component: any = useMemo(() => getMDXComponent(code), [code])
@@ -40,7 +43,7 @@ const ArticleComponent = ({ article }: { article: Article }) => {
                 <Component components={components} />
 
                 <div className="max-w-max m-auto">
-                    <BackLink href="/blog" title={"Blog"} />
+                    <BackLink href={`/${backTo.toLowerCase()}`} title={`${capitalize(backTo)}`} />
                 </div>
             </div>
         </ArticleWrapper>

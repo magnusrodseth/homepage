@@ -4,7 +4,7 @@ import { getFrontMatters, getMdxBySlug, MDX_PROJECTS_PATH } from "../../lib/mdx"
 import { Article } from "../../types/article";
 
 const Project = ({ project }: { project: Article }) => {
-    return <ArticleComponent article={project} />
+    return <ArticleComponent article={project} backTo="projects" />
 }
 
 

@@ -4,7 +4,7 @@ import ArticleComponent from "../../components/article/ArticleComponent"
 import { getFrontMatters, getMdxBySlug, MDX_BLOG_PATH } from "../../lib/mdx"
 
 const BlogPost = ({ post }: { post: Article }) => {
-    return <ArticleComponent article={post} />
+    return <ArticleComponent article={post} backTo="blog" />
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
