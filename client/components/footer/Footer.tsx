@@ -8,22 +8,26 @@ import FooterLink from "./FooterLink";
 
 
 const Footer = () => {
+    const github = "https://github.com/magnusrodseth";
+    const email = "magnus.rodseth@gmail.com";
+    const linkedin = "https://www.linkedin.com/in/magnus-rodseth/";
+
     return (
         <FooterWrapper>
             <FooterLink
-                href={"github" as string}
+                href={github}
                 label="GitHub"
                 icon={<GitHubIcon />}
             />
 
             <FooterLink
-                href={`mailto:${"email" as string}`}
+                href={`mailto:${email}`}
                 label="E-mail"
                 icon={<MailIcon />}
             />
 
             <FooterLink
-                href={"linkedin" as string}
+                href={linkedin}
                 label="LinkedIn"
                 icon={<LinkedInIcon />}
             />
