@@ -2,10 +2,9 @@ import classNames from "../utils/classNames"
 
 interface HeadingProps {
     header: string;
-    description?: string;
 }
 
-const Heading = ({ header, description }: HeadingProps) => {
+const Heading = ({ header }: HeadingProps) => {
     return (
         <div className="text-center mx-4">
             <h1 className={classNames(
@@ -14,13 +13,6 @@ const Heading = ({ header, description }: HeadingProps) => {
             )}>
                 {header}
             </h1>
-            {description
-                ?
-                <p className="text-lg md:text-2xl my-6">
-                    {description}
-                </p>
-                : null
-            }
         </div>
     )
 }
