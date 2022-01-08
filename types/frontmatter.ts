@@ -7,6 +7,7 @@ export type FrontMatter = {
   toc?: boolean
   isPublished: boolean
   seoImage?: string
+  thumbnail?: string
   slug: string
   readingTime?: { text: string; minutes: number; time: number; words: number }
 }

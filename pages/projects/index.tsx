@@ -38,7 +38,7 @@ const ProjectIndex = ({ projects }: { projects: FrontMatter[] }) => {
                                                     "font-bold tracking-wide smooth",
                                                     "text-gray-700 dark:text-sky-200",
                                                     "dark:hover:text-indigo-300 hover:text-black"
-                                                )}>{"title"}
+                                                )}>{project.title}
                                                 </h1>
                                             </a>
                                         </Link>
@@ -48,26 +48,29 @@ const ProjectIndex = ({ projects }: { projects: FrontMatter[] }) => {
                                                 <h2 className="text-lg md:text-xl m-4"><span className={classNames(
                                                     "text-indigo-700 dark:text-lime-200 font-bold",
                                                     "smooth"
-                                                )}>@</span>{" "}{"subtitle"}</h2>
+                                                )}>@</span>{" "}{project.description}</h2>
                                             </a>
                                         </Link>
                                     </div>
 
-                                    <div className="lg:col-start-3 lg:col-span-2">
-                                        {/* Render thumbnail if it exists
-                                        <Wrapper className="dark:bg-gray-900 bg-gray-100 rise-on-hover w-50 h-50 relative">
-                                            <Link href={`projects/${project.slug}`} passHref>
-                                                <a>
-                                                    <Image
-                                                        src={"url"}
-                                                        alt={"title"}
-                                                        width={200}
-                                                        height={200}
-                                                        placeholder="blur"
-                                                        blurDataURL={"url"} />
-                                                </a>
-                                            </Link>
-                                        </Wrapper> */}
+                                    <div className="lg:col-start-3 lg:col-span-2 m-auto">
+                                        {/* Render thumbnail if it exists */}
+                                        {project.thumbnail
+                                            ? <Wrapper className="dark:bg-gray-900 bg-gray-100 rise-on-hover w-11/12 h-11/12 relative">
+                                                <Link href={`projects/${project.slug}`} passHref>
+                                                    <a className=" relative">
+                                                        <Image
+                                                            src={project.thumbnail}
+                                                            alt={project.title}
+                                                            layout="fill"
+                                                            objectFit='cover'
+                                                            placeholder="blur"
+                                                            blurDataURL={project.thumbnail} />
+                                                    </a>
+                                                </Link>
+                                            </Wrapper>
+                                            : null}
+
                                     </div>
                                 </div>
                             </Wrapper>

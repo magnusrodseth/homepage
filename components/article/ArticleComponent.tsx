@@ -34,7 +34,7 @@ const ArticleComponent = ({ article, backTo }: ArticleComponentProps) => {
             <div className="px-4 w-full">
                 {/* Title and subtitle */}
                 <h1 className={classNames(
-                    "text-2xl md:text-4xl m-2",
+                    "text-2xl md:text-4xl my-2",
                     "font-bold tracking-wide smooth",
                     "text-gray-700 dark:text-sky-200",
                 )}>{frontmatter.title}

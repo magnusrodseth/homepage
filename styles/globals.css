@@ -40,6 +40,14 @@
   .icon {
     @apply block h-8 w-8;
   }
+
+  .md-link {
+    @apply dark:text-indigo-300 dark:hover:text-indigo-400 text-indigo-700 hover:text-indigo-900;
+  }
+
+  .md-heading {
+    @apply flex items-baseline mt-6 mb-2 font-bold leading-loose;
+  }
 }
 
 @tailwind utilities;
