@@ -16,11 +16,11 @@ export const MDX_PROJECTS_PATH = 'content/projects'
 
 export type MDXDirectory = 'content/blog' | 'content/projects'
 
-export async function getMdxBySlug(slug: string, directory: MDXDirectory) {
+export const getMdxBySlug = async (slug: string, directory: MDXDirectory) => {
     return getMdxByPath(path.join(directory, `${slug}.mdx`))
 }
 
-export async function getMdxByPath(mdxPath: string) {
+export const getMdxByPath = async (mdxPath: string) => {
     const slug = path.basename(mdxPath).replace(path.extname(mdxPath), '')
     const source = fs.readFileSync(path.join(process.cwd(), mdxPath), 'utf8')
     const { code, frontmatter } = await bundleMDX(source, {
@@ -46,7 +46,7 @@ export async function getMdxByPath(mdxPath: string) {
     }
 }
 
-export async function getFrontMatters(directory: MDXDirectory): Promise<FrontMatter[]> {
+export const getFrontMatters = async (directory: MDXDirectory): Promise<FrontMatter[]> => {
     const paths = await globby([`${directory}/**/*.mdx`])
     const matters = await Promise.all(
         paths.map(async filePath => {

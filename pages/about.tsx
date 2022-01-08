@@ -1,4 +1,3 @@
-import Markdown from '../components/markdown/Markdown';
 import Image from "next/image"
 import classNames from '../utils/classNames';
 import PageWrapper from '../components/PageWrapper';
@@ -35,13 +34,6 @@ const About = () => {
                         blurDataURL={"url"}
                     />
                 </div>
-
-
-                <Markdown className={classNames(
-                    "m-auto w-screen lg:max-w-full lg:col-start-1 lg:col-span-2 lg:row-start-1 rise-on-hover",
-                )}>
-                    {"content"}
-                </Markdown>
             </div>
         </PageWrapper>
     )
