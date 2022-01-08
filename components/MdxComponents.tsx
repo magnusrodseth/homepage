@@ -81,7 +81,7 @@ export const components = {
       <>
         {filename && <div className="w-full code-filename">{filename}</div>}
         <code
-          className={classNames('', {
+          className={classNames('smooth', {
             'line-numbers': lineNumbers !== undefined,
           })}
           id={id}

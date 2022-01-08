@@ -1,8 +1,18 @@
 import Image from "next/image"
 import classNames from '../utils/classNames';
 import PageWrapper from '../components/PageWrapper';
+import { GetStaticProps } from "next";
+import { getMdxBySlug, MDX_ABOUT_PATH } from "../lib/mdx";
+import { Article } from "../types/article";
+import { getMDXComponent } from "mdx-bundler/client";
+import { useMemo } from "react";
+import { components } from "../components/MdxComponents";
 
-const About = () => {
+const About = ({ about }: { about: Article }) => {
+    const { code, frontmatter } = about;
+
+    const Component: any = useMemo(() => getMDXComponent(code), [code])
+
     return (
         <PageWrapper>
             <div className="text-center mx-4">
@@ -23,10 +33,10 @@ const About = () => {
                     // 24.5rem matches the height of the Markdown content
                     "h-[24.5rem] relative rise-on-hover",
                     "m-auto mx-6 rounded-md",
-                    "grayscale"
+                    "grayscale rounded-lg"
                 )}>
                     <Image
-                        src={"url"}
+                        src={"/img/profile-picture.jpg"}
                         alt={"Profile picture"}
                         layout="fill"
                         objectFit="contain"
@@ -34,16 +44,28 @@ const About = () => {
                         blurDataURL={"url"}
                     />
                 </div>
+                <div className={classNames(
+                    "m-auto max-w-full min-w-0 text-base lg:text-lg text-fore-subtle",
+                    "mx-8 px-2 rise-on-hover lg:col-start-1 lg:col-span-2 lg:row-start-1")}>
+                    <Component components={components} />
+                </div>
+
             </div>
         </PageWrapper>
     )
 }
 
-// export const getStaticProps = async () => {
-//     // const response = await getAbout();
-//     // const { about: { data: { attributes } } } = response;
+export const getStaticProps: GetStaticProps = async () => {
+    const { code, frontmatter } = await getMdxBySlug("about", MDX_ABOUT_PATH)
 
-//     // return { props: { attributes } }
-// }
+    return {
+        props: {
+            about: {
+                code,
+                frontmatter: frontmatter,
+            } as Article,
+        },
+    }
+}
 
 export default About

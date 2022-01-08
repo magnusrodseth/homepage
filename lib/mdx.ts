@@ -13,8 +13,9 @@ import { FrontMatter } from '../types/frontmatter'
 
 export const MDX_BLOG_PATH = 'content/blog'
 export const MDX_PROJECTS_PATH = 'content/projects'
+export const MDX_ABOUT_PATH = 'content/about'
 
-export type MDXDirectory = 'content/blog' | 'content/projects'
+export type MDXDirectory = 'content/blog' | 'content/projects' | 'content/about'
 
 export const getMdxBySlug = async (slug: string, directory: MDXDirectory) => {
     return getMdxByPath(path.join(directory, `${slug}.mdx`))
