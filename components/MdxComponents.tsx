@@ -2,7 +2,6 @@
 
 import React from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import classNames from 'classnames'
 import { LinkIcon } from '@heroicons/react/outline'
 import HorizontalDivider from './HorizontalDivider'
@@ -14,8 +13,23 @@ type CodeProps = {
   id: string
 }
 
+type ImageProps = {
+  src: string;
+  caption?: string;
+}
+
 export const components = {
-  Image,
+  Image: ({ src, caption, ...props }: ImageProps) => {
+    return (
+      <div className="w-full mt-2 mb-4">
+        <img {...props} className="my-4 m-auto max-h-[75vh]" src={src} />
+        {caption ? <span className="italic block text-center">{caption}</span> : null}
+      </div>
+    )
+  },
+  img: ({ ...props }) => {
+    return <img {...props} className="my-4 max-h-[75vh]" />
+  },
   a: ({ href = '', ...props }) => {
     if (href.startsWith('http')) {
       return (
@@ -58,7 +72,7 @@ export const components = {
       <h2
         {...props}
         data-heading
-        className="md-heading text-3xl lg:text-4xl group"
+        className="md-heading text-xl lg:text-2xl group"
       />
     )
   },
@@ -67,13 +81,13 @@ export const components = {
       <h3
         {...props}
         data-heading
-        className="md-heading text-2xl lg:text-3xl group"
+        className="md-heading text-lg lg:text-xl group"
       />
     )
 
   },
   p: ({ ...props }) => {
-    return <p {...props} className="my-4" />
+    return <p {...props} className="mb-4" />
   },
 
   code: ({ children, lineNumbers, filename, id }: CodeProps) => {
@@ -102,7 +116,7 @@ export const components = {
     return (
       <blockquote
         {...props}
-        className="border-l-2 border-gray-700 pl-2 italic dark:border-lime-200"
+        className="border-l-2 border-indigo-400 my-4 pl-2 italic dark:border-lime-200"
       />
     )
   },
