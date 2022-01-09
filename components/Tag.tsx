@@ -10,7 +10,7 @@ const Tag = ({ tag, className }: TagProps) => {
     return (
         <span className={classNames(
             "smooth rounded-full",
-            "py-2 px-3 m-1",
+            "py-2 text-sm md:text-md px-3 m-1",
             styles)
         }>
             {tag}
