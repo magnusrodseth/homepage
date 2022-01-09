@@ -6,7 +6,7 @@ This website has two main purposes:
 
 1. **A platform where I can share my projects**. A resume can only fit so much content. Wouldn't it be nice with a repository of in-depth explanations and thoughts related to previous projects?
 
-2. **A platform where I can share my thoughts, primarily related to tech**. I often find myself wanting to write down experiences, tips and tricks, and shortcuts related to software development. This website allows for sharing that knowledge.
+2. **A platform where I can share my thoughts, primarily related to tech**. I often find myself wanting to write down experiences, shortcuts, tips and tricks related to software development. This website allows for sharing that knowledge.
 
 ## Developer Information 🙋🏼‍♂️
 
