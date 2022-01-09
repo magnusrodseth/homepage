@@ -1,0 +1,77 @@
+---
+title: SystemSoft AS
+description:
+  A full-stack web application, allowing employees of SystemSoft AS to manage
+  the company's portfolio.
+publishedAt: "2022-01-09"
+updatedAt?: "2022-01-09"
+isPublished: true
+tags: ["nextjs", "strapi", "typescript", "tailwind", "graphql"]
+---
+
+## Purpose
+
+The website allows employees of SystemSoft AS to access a content management
+system (CMS) in order to easily, independently, and continuously update the
+company's portfolio.
+
+[Click here to visit the website](https://www.systemsoft.no/).
+
+## Tech Stack
+
+The website was developed from scratch, using the following technologies:
+
+- [Next.js](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [React](https://reactjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [URQL (GraphQL client)](https://formidable.com/open-source/urql/)
+- [GraphQL](https://graphql.org/)
+- [Strapi](https://strapi.io/)
+- [DigitalOcean managed PostgreSQL database](https://www.digitalocean.com/products/managed-databases/)
+- [Sentry (Error Handling / Tracking)](https://sentry.io/welcome/)
+- [SendGrid (automated mail dispatching)](https://sendgrid.com/)
+
+Using Sentry for error tracking, our client can report potential bugs to us, and
+we can easily squash them.
+
+SendGrid was used to automatically send e-mails based on input in the website's
+contact form.
+
+## Technical Details
+
+### Strapi
+
+Let's say you are a SystemSoft employee looking to update some content on their
+website. You simply login to the Strapi admin panel using your credentials,
+navigate to the correct entity (e.g `Client`, `Resume`), update the content and
+hit save. It's really that easy.
+
+### Next.js
+
+The frontend was built using Next.js with search engine optimization (SEO) in
+mind. In short, Next.js allows for server-side rendered static sites, even
+though you use dynamic routing in your web application. Read more about it using
+[this link](https://nextjs.org/docs/basic-features/data-fetching).
+
+### Tailwind CSS
+
+Tailwind CSS was chosen as the styling framework of choice because of its ease
+of use, natural syntax and performance. Note that the inline styling did get a
+bit cluttered. This can easily be solved by creating
+[utility classes](https://tailwindcss.com/docs/adding-custom-styles) with
+common and custom styling.
+
+## Cooperation and Git workflow
+
+During the project, I worked with one co-developer
+([@juliangra](https://github.com/juliangra)). We practiced a good Git workflow,
+including issue tracking, continuous integration with automated testing, pull
+requests and corresponding pull request reviews.
+
+## The result
+
+[Click here to visit the website](https://www.systemsoft.no/).
+
+<Image src="/img/projects/systemsoft.png" caption="The SystemSoft AS landing page"/>
+
