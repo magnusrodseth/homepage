@@ -9,7 +9,7 @@ interface TagsProps {
 const Tags = ({ tags, className }: TagsProps) => {
     const styles = className ? className : "";
 
-    return <div className="mb-3">
+    return <div className="mb-3 flex flex-row flex-wrap">
         {tags
             ? tags.map((tag, index) => {
                 return <Tag tag={tag} key={index}
