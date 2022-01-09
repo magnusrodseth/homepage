@@ -3,7 +3,12 @@ import { FrontMatter } from "../../types/frontmatter";
 import NoContent from "../NoContent";
 import ArticleCard from "./ArticleCard";
 
-const ArticleCards = ({ articles }: { articles: FrontMatter[] }) => {
+interface ArticleCardsProps {
+    articles: FrontMatter[];
+    backTo: string;
+}
+
+const ArticleCards = ({ articles, backTo }: ArticleCardsProps) => {
     return !articles || articles.length == 0
         ? <NoContent />
         : <div className={classNames(
@@ -11,7 +16,7 @@ const ArticleCards = ({ articles }: { articles: FrontMatter[] }) => {
         )}>
             {articles.map((article, index) => {
                 return (
-                    <ArticleCard article={article} key={index} />
+                    <ArticleCard article={article} key={index} backTo={backTo.toLowerCase()} />
                 );
             })}
         </div>

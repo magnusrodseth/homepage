@@ -6,7 +6,12 @@ import Tag from "../Tag"
 import Tags from "../Tags"
 import Wrapper from "../Wrapper"
 
-const ArticleCard = ({ article }: { article: FrontMatter }) => {
+interface ArticleCardProps {
+    article: FrontMatter;
+    backTo: string;
+}
+
+const ArticleCard = ({ article, backTo }: ArticleCardProps) => {
     return (
         <Wrapper className={classNames(
             "bg-indigo-100 dark:bg-gray-700 rise-on-hover p-2"
@@ -14,7 +19,7 @@ const ArticleCard = ({ article }: { article: FrontMatter }) => {
             <div className="">
                 <div className="">
                     {/* Title */}
-                    <Link href={`projects/${article.slug}`} passHref>
+                    <Link href={`${backTo.toLowerCase()}/${article.slug}`} passHref>
                         <a>
                             <h1 className={classNames(
                                 "text-xl md:text-3xl m-2 smooth",
@@ -26,7 +31,7 @@ const ArticleCard = ({ article }: { article: FrontMatter }) => {
                         </a>
                     </Link>
                     {/* Description */}
-                    <Link href={`projects/${article.slug}`} passHref>
+                    <Link href={`${backTo.toLowerCase()}/${article.slug}`} passHref>
                         <a className="flex flex-row space-x-3 p-2 md:p-4">
                             <ChevronDoubleRightIcon className="icon text-indigo-600 dark:text-lime-200" />
                             <h2 className="text-md md:text-xl mt-0.5">

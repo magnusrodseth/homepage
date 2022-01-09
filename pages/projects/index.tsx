@@ -18,7 +18,7 @@ const ProjectIndex = ({ projects }: { projects: FrontMatter[] }) => {
                         👨‍💻{" "}Projects
                     </h1>
                 </div>
-                <ArticleCards articles={projects} />
+                <ArticleCards articles={projects} backTo="projects" />
             </div>
         </PageWrapper>
     )

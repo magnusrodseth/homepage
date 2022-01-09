@@ -17,7 +17,7 @@ const BlogIndex = ({ posts }: { posts: FrontMatter[] }) => {
                 </h1>
             </div>
 
-            <ArticleCards articles={posts} />
+            <ArticleCards articles={posts} backTo="blog" />
         </PageWrapper >
     )
 }
