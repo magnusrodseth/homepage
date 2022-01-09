@@ -1,0 +1,54 @@
+---
+title: Været på Søbekkseter
+description:
+  A website for displaying real-time weather data from Søbekkseter, Norway.
+publishedAt: "2022-01-09"
+updatedAt?: "2022-01-09"
+isPublished: true
+tags: ["react", "nextjs", "typescript", "tailwindcss", "api"]
+---
+
+## What is it?
+
+Været på Søbekkseter is a single-page static website displaying real-time
+weather data from Søbekkseter, Norway.
+
+[Click here to visit the website](https://www.systemsoft.no/sobekkseter).
+
+<Image
+    src="/img/projects/sobekkseter/landing-page.png"
+    caption="The landing page of the Været på Søbekkseter website."
+    />
+
+## Technical details
+
+The website is developed using Next.js with React, Tailwind CSS and TypeScript.
+
+This was my first encounter with Tailwind, and is what made me fall in love with
+its ease of use, and recognize it as the productivity booster it is.
+
+## Data flow
+
+The data flow for this website is actually quite impressive. See the image below
+for reference.
+
+1. An exterior weather station sends data to an interior weather station.
+2. The data is further transmitted to a PC using a data logger between the
+   interior weather station and the data logger.
+3. **For the numeric data** seen on the website, the PC continuously uploads
+   data to [www.weatherlink.com](https://www.weatherlink.com/). **For the
+   image** seen on the website, see step 4.
+4. A cron job on the PC restarts a Docker container. This Docker container
+   executes a Python script which uploads the most recent webcamera image to a
+   destination host on DigitalOcean using the SFTP protocol.
+5. All of this results in the Været på Søbekkseter website being able to fetch
+   API data from Weatherlink and the most recent image.
+
+<Image
+    src="/img/projects/sobekkseter/data-flow.png"
+    caption="The data flow for the Været på Søbekkseter website."
+    />
+
+For more information on step 4, i.e. the step of uploading the most recent image
+to DigitalOcean, please read about the [SFTP Upload](/projects/sftp-upload)
+project.

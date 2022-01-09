@@ -12,7 +12,7 @@ const ArticleCards = ({ articles, backTo }: ArticleCardsProps) => {
     return !articles || articles.length == 0
         ? <NoContent />
         : <div className={classNames(
-            "flex flex-col justify-center align-center w-8/12 m-auto"
+            "flex flex-col justify-center align-center w-11/12 md:w-8/12 m-auto"
         )}>
             {articles.map((article, index) => {
                 return (

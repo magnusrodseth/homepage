@@ -89,7 +89,7 @@
   }
 
   .md-link {
-    @apply dark:text-indigo-200 dark:hover:text-indigo-400 text-indigo-700 hover:text-indigo-900;
+    @apply dark:text-indigo-200 dark:hover:text-indigo-400 text-indigo-700 hover:text-indigo-900 smooth;
   }
 
   .md-heading {
