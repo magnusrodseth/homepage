@@ -69,6 +69,16 @@ export const components = {
       />
     )
   },
+  h4: ({ ...props }) => {
+    return (
+      <h4
+        {...props}
+        data-heading
+        className="md-heading text-md lg:text-lg group"
+      />
+    )
+
+  },
   p: ({ ...props }) => {
     return <p {...props} className="my-6 leading-7 lg:leading-8" />
   },

@@ -1,0 +1,183 @@
+---
+title: Clean Code by Robert Martin - Summary and reflections
+description: My personal summary, reflections and key takeaways after reading this popular book about software craftsmanship.
+publishedAt: "2022-01-13"
+updatedAt?: "2022-01-13"
+isPublished: true
+tags: ["clean-code"]
+---
+
+> Writing clean code is what you must do in order to call yourself a
+> professional. **There is no reasonable excuse for doing anything less than
+> your best.**
+
+## Foreword
+
+_Clean Code: A Handbook of Agile Software Craftsmanship_, written by Robert C.
+Martin, opens up with a foreword by the Danish scientist Jim Coplien. There are
+a lot of pretentious lines about clean code being thrown around here, like "God
+is in the details" and "We become more fully human, more worthy of the divine
+[...]". However, Coplien mentions the **5S philosophy**, and that caught my
+attention.
+
+The 5S philosophy is comprised of the following concepts:
+
+- **_Seiri_, or organization (think "sort" in English)**. Know where a piece of
+  code is located, and why it is located there.
+- **_Seiton_, or tidiness (think "systematize" in English)**. A piece of code
+  should be where you expect to find it. If not, it should be refactored.
+- **_Seiso_, or cleaning (think "shine" in English)**. Keep the workplace free
+  of handing wires, grease, scraps and waste. Try to get rid of comments in your
+  code, and rather write self-documenting code.
+- **_Seiketsu_, or standardization**. The team agrees on how to keep the
+  workplace tidy and clean.
+- **_Shutsuke_, or discipline (self-discipline)**. Having the discipline to
+  follow that agreed practices, and to frequently reflect on one's work.
+
+With that, "the best pragmatic application of Lean principles to software I have
+ever seen in print" begins, according to Coplien.
+
+## Introduction
+
+<Image
+  src="/img/blog/clean-code/wtfs-per-minute.png"
+  caption="The image that greets you when you start reading this book."
+/>
+
+The introduction is spent explaining the structure of the book, and stressing
+that **this is hard work**. Through description of principles, patterns and
+practices for writing clean code, in addition to multiple case studies, this
+book promises than clean code will be part of you "the same way that a bicycle
+becomes an extension of your will when you have mastered how to ride it".
+
+Hmmm, can't wait. 🤔
+
+## 1 - Clean Code
+
+### There Will Be Code
+
+Chapter 1 begins by convincing you that **there will always be code**. Even
+though machine learning is accelerating rapidly, with developer tools such as
+[GitHub Copilot](https://copilot.github.com/), there will always be code. Us
+developers are the ones that need to specify requirements in such detail that a
+machine can execute our instructions. Such a specification is **code**.
+
+### Bad Code
+
+That requires some notion of what is good code and what is bad code. Before
+detailing what good code is (which is the major focus of this book), Martin
+focuses for some time on bad code, or rather how you're affected by bad code.
+
+Of course you've been impeded by your own bad code before - every developer has.
+So why did you write it? Were you in a hurry? Perhaps you felt pressure to
+finish the task at hand quickly, and didn't prioritize refactoring and cleaning
+up your working, yet messy, code. Maybe you very tired and bored with the task
+at hand. Perhaps the backlog was ever growing, and you saw other more important
+tasks that needed to be done. This sort of postponing leads us to _LeBlanc's
+law_:
+
+**Later equals never**.
+
+### Your Attitude towards Code
+
+Wading through a rotting code base, us developers tend to find every excuse for
+why it is not our fault. Martin highlights the common excuses as (1) the
+requirements changed in ways that hindered achieving the original design, (2)
+the schedules being too tight to do things the right way, and (3) managers,
+customers and marketing getting in the way of quality code. However, Martin
+claims that it is generally never anything like this: The problem is us.
+
+**We, the developers, are unprofessional**.
+
+The managers look to _us_ for the information they need to make promises and
+commitments. Even if they do not, we should not be shy to share our thoughts.
+Customers look to _us_ for validating the system requirements. Project managers
+look to _us_ when working out the schedule. In summary, **we share the
+responsibility**, especially if that responsibility has to do with bad code.
+Most managers want the truth. It's your job to defend the code with equal
+passion as the managers trying to push out the product as fast as possible.
+
+#### A Great Analogy
+
+Martin hits the nail on the head with the following example: What if you were a
+doctor and had a patient who demanded that you stop washing your hands in
+preparation for the surgery due to it taking too much time? The doctor should
+absolutely refuse to comply, because **the doctor knows more than the patient
+about the risks. It would be unprofessional for the doctor to comply**.
+
+### What is Clean Code?
+
+Now, Martin shifts gears and focuses on explaining what clean code is in order
+to prevent bad code. I really like his approach, it being simply highlighting
+excerpts from such as
+[Bjarne Stroustrup](https://no.wikipedia.org/wiki/Bjarne_Stroustrup),
+[Dave Thomas](<https://en.wikipedia.org/wiki/David_A._Thomas_(software_developer)>)
+and [Ron Jeffries](https://en.wikipedia.org/wiki/Ron_Jeffries).
+
+#### Bjarne Stroustrup
+
+> I like my code to be elegant and efficient. The logic should be (1)
+> straightforward to make it hard for bugs to hide, (2) the dependencies minimal
+> in order to ease maintenance, (3) error handling complete according to an
+> articulated strategy, and (4) performance close to optimal so as not to tempt
+> people to make the code messy with unprincipled optimizations. **Clean code
+> does one thing well**.
+
+#### Dave Thomas
+
+> Clean code can be read, and enhanced by a developer other than its original
+> author. It has unit and acceptance tests. It has meaningful names. It provides
+> one way rather than many ways for doing one thing. It has minimal
+> dependencies, which are explicitly defined, and provides a clear and minimal
+> API. Code should be literate since depending on the language, not all
+> necessary information can be expressed clearly in code alone.
+
+There is a lot to unpack in this quote, but I want to focus on the fact that
+Dave Thomas ties clean code to writing tests. Having some experience working in
+medium-sized development teams, a code base can become cluttered extremely fast
+with only a few people working on a project. Practicing
+[Test-driven development (TDD)](https://en.wikipedia.org/wiki/Test-driven_development),
+or at least
+[Test-last development (TLD)](https://bitfieldconsulting.com/golang/test-last-development),
+is very helpful for a rapidly growing code base in respect to maintainability.
+**Code without tests is not clean**.
+
+#### Ron Jeffries
+
+Martin dedicates basically a full page to Ron Jeffries thoughts about clean
+code. I'm not going to include all of that, but I'll jot down the bullet points
+Jeffries highlights:
+
+> In priority order, simple code:
+>
+> - Runs all the tests
+> - Contains no duplication
+> - Expresses all the design ideas that are in the system
+> - Minimizes the number of entities such as classes, methods, functions, and
+>   the like
+
+Note that passing all tests is highest in the priority order for clean code.
+_Interesting_. Furthermore, Jeffries goes on to talk about his refactoring
+habits with extensive IDE use. I want to include that fact, as I have recently
+started using Vim more, trying not to rely on an IDE for development. Jeffries
+stresses that **refactoring using an IDE is a great contributor to clean code**.
+
+### Schools of Thought
+
+Up until now, I was a bit unpleased with the way Martin chose his words. They
+are very absolute, and leaves little room for other interpretations of a
+concept. However, ending chapter 1, Martin informs the reader about the nature
+of this book.
+
+He says that the opinions in the book are presented as absolutes, and "we will
+not apologize for our stridence". He goes on to say that no school of thought is
+absolutely correct, but the rightness within this school does invalidate other
+schools of thought. He recognizes that many suggestions in this book may appear
+controversial, and that you will probably not agree with all of them. However,
+these definition, tips and case studies were carefully thought out by experts
+highly experienced in the field of computer science. Thus, it would be a shame
+of the reader did not see, and respect, the writer's point of view.
+
+With that, chapter 2 begins, focusing on meaningful names in code.
+
+## 2 - Meaningful Names
