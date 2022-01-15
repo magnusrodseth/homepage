@@ -310,3 +310,172 @@ something else?
 
 The bottom line here is: **Pick one word for one abstract concept and stick with
 it**. It helps you and other co-developers down the line.
+
+## 3 - Functions
+
+I felt like this chapter was a bit all over the place. Thus, I will not
+structure it as subheadings, but rather a number of bullet points with my key
+takeaways.
+
+### Key Takeaways
+
+**A rule of thumb is to keep functions less than approximately 20 lines long**.
+Of course, this does not always apply.
+
+**Functions should not be large enough to hold nested structures**. This is
+quite inline with the next bullet point.
+
+**Functions should do one thing**. They should do it well. They should do _it_
+only, nothing more. However, it is hard to know what that "one thing" really is.
+
+**Mixing levels of abstraction within a function is confusing**. A reader may
+not be able to know whether a block of code within a given function is essential
+or a little detail.
+
+**We want code to read like a top-down narrative**. In other words, we want
+every function to be followed by those at the next level of abstraction. This is
+difficult in practice.
+
+Recall Ward's principle: **"You know you are working on clean code when each
+routine turns out to be pretty much what you expect"**.
+
+**Don't be afraid to make a name long**. A long descriptive name is better than
+a short enigmatic name. A long descriptive name is also better than a long
+descriptive comment.
+
+**Hunting for a good name results in favorable restructuring of the code**. You
+may see room for refactoring small or larger amounts of code when hunting for a
+good name.
+
+**Boolean flag function arguments are ugly**. It complicates the signature of
+the function, and causes the function to do more than 1 thing. Put the boolean
+logic outside the function, and write custom logic for the two conditional
+cases. There are cases where this does not always apply. Use with common sense.
+
+**In order to prevent multiple function parameters, abstract the parameters into
+its own class**. Do you agree that `makeCircle(Point point, float radius)` reads
+better than `makeCircle(int x, int y, float radius)`? Sometimes, multiple
+function arguments highlights a potential level of abstraction.
+
+**Anything that forces you to check the function signature is equivalent to a
+double-take**. It's a cognitive break and should be avoided.
+
+**Function should either do something or answer something, but not both**.
+Either your function should change the state of an object, or it should return
+some information about the object.
+
+**When you use exceptions rather than error codes, the new exception are
+_extensions_ of the `Exception` class**. They can be added without forcing any
+recompilation or redeployment.
+
+### From a Testing Point of View
+
+Although I did not split this chapter into multiple subheadings, I want to
+highlight how function naming and structure affect testing your code.
+
+Function arguments are difficult from a testing point of view. Testing a
+function without argument is generally quite trivial. One function argument is
+also okay. If we have two or more function arguments, it start getting difficult
+to cover all test cases.
+
+Related to this is also function arguments within testing library methods, e.g.
+[JUnit](https://junit.org/junit5/). How many times have you written a test and
+gotten the order of `expected` and `actual` wrong? Perhaps someone else got it
+wrong, and this confused you. Of course, you could check the parameter list of
+the method using a modern IDE tool, but why should that really be necessary in
+this case? Functions with two or more arguments are problematic, for instance
+`assertEquals(expected, actual)`. There is no natural order to argument should
+be the first argument in this case.
+
+If we really need multiple arguments in a function, a solution proposed in the
+book is to name the function above
+`assertExpectedEqualsActual(expected, actual)`. This largely removes the
+problem, but I personally think it is a bit messy.
+
+### How Do You Write Functions Like This?
+
+Martin closes this chapter with some great final words after having gone on with
+a number of "absolute" truths about what a good function is.
+
+Writing software is like any other kind of writing. You start with a first
+draft, and then revisit that content multiple times and improve it. The first
+draft is often messy and a bit all over the place, but it is your job to
+continuously improve upon it.
+
+Martin tells us about when he writes functions, and I couldn't agree more:
+First, they're long and complicated, with different levels of abstraction split
+into sections. They may have a long list of arguments. However, **unit tests are
+written for the functions such that we validate correct behavior**. After that,
+the function is revisited and refactored. Functions are extracted, variables are
+rename, and duplication is eliminated. All of this is done whilst the tests
+pass.
+
+The end result is a function that follows the rules presented in this chapter.
+
+> I don't write the functions that way to start. I don't think anyone could.
+
+## 4 - Comments
+
+> "Don't comment bad code - rewrite it." -
+> [Brian W. Kernighan](https://en.wikipedia.org/wiki/Brian_Kernighan) and
+> [P.J. Plaugher](https://en.wikipedia.org/wiki/P._J._Plauger)
+
+### Introduction
+
+Personally, I think this chapter was quite redundant. To me, Martin sheds light
+on the most obvious aspects about comments in this chapter. Hence, I will - like
+I did with the previous chapter - boil it down to a few key takeaways.
+
+**Comments are at best a necessary evil**. If the programming language is
+expressive enough, and you as a programmer has the ability to communicate intent
+precisely, there should in theory be no need for comments in your code base.
+
+**Comments lie**. Because developers are lazy and comments are difficult to
+maintain, comments lie about the structure of our code. An old comment is often
+misplaced.
+
+As an extension of this, **truth can only be found in the code**. I agree with
+Martin here.
+
+**Comments are always failures**. Martin thinks that we have them in our code
+because we, as developers, cannot figure out how to express ourselves without
+them. Personally, I disagree. Comments do have their justified place in a code
+base. This will become very apparent in the next key points.
+
+**A comment may provide the intent behind a decision**. We can justify a piece
+of code by preceding it with a comment explaining why we did what we did.
+Related to this, comments may also **amplify the importance of something**.
+
+### TODO Comments
+
+**`TODO` comments are sometimes reasonable**. Hold on, Martin. I would argue
+that **`TODO` comments are very useful to keep around in a code base**. Of
+course, when you address the issue at hand, you remove the `TODO`. However,
+`TODO`s can be great for remote contribution. For instance, if I'm struggling
+with a problem, I can mark it with a descriptive `TODO` and let some other
+developer have at it. Additionally, modern IDEs usually provide a feature for
+viewing all `TODO`s in a code base. This boost productivity and collaboration.
+
+### API Documentation
+
+If you're writing API documentation, make sure a comment is justified to
+include. You do not want something like this:
+
+```java lineNumbers
+/**
+ * Default constructor.
+**/
+public Item() {
+}
+
+/**
+ * The day of the month.
+**/
+private int dayOfMonth;
+```
+
+However, I would argue that adding too much documentation to an API is better
+than adding too little. In my experience, this lowers the threshold for daring
+to use a part of an API; **a well-documented API makes it easy for the user to
+play try out all parts of the API**.
+
