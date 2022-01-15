@@ -1,5 +1,5 @@
 ---
-title: Clean Code by Robert Martin - Summary and reflections
+title: Clean Code by Robert Martin
 description:
   My personal summary, reflections and key takeaways after reading this popular
   book about software craftsmanship.
@@ -522,3 +522,90 @@ cleaner version control timeline. Let's say I changed 1 line in a file, then
 formatted my file according to my personal formatting rules, but not the team's
 formatting rules. The Git commit would be extremely cluttered and difficult to
 review.
+
+## 6 - Objects and Data Structures
+
+### Introduction
+
+First, a bit of background about me. At the time of writing, I have been
+programming for about 3 years, with 2 years of object-oriented experience using
+(amongst several languages) Java. This is important to note because this whole
+chapter is about objects and data structures, their differences, and when to use
+what.
+
+Martin starts off with very basic OOP principles, but quickly moves to more
+profound lessons. He says that **hiding implementation is not just a matter of
+putting a layer of methods between your class fields**. Hiding implementation is
+about abstraction! A class should expose abstract interfaces that allow its
+users to manipulate the **essence** of the data, without having to know the
+implementation.
+
+### Object and Data Structure Anti-Symmetry
+
+Martin goes on to highlight what he calls the **Object and Data Structure
+Anti-Symmetry**. It reads as follows:
+
+> Objects hide their data behind abstractions and expose functions that operate
+> on that data. Data structures expose their data and have no meaningful
+> functions They are virtual opposites. This difference may seem trivial, but it
+> has far-reaching implications.
+
+Furthermore, Martin states:
+
+> Procedural code (code using data structures) makes it easy to add new function
+> without changing the existing data structures. OOP code, on the other hand,
+> makes it easy to add new classes without changing existing functions.
+
+The complement is also true:
+
+> Procedural code makes it hard to add new data structures because all the
+> functions must change. OOP code makes it hard to add new function because all
+> the classes must change.
+
+In summary, **the things that are easy for OOP is hard for procedural, and vice
+versa**.
+
+I'm sure you've been developing an object-oriented application, and met a
+barrier because class `A extends B` no longer holds due to new functionality.
+The same goes for procedural code. Martin even states that **mature programmers
+know that the idea that everything is an object is a myth**.
+
+This makes me think of the difference between Kotlin and Java, and the benefits
+Kotlin provides by **not being a strict object-oriented language**. For more
+information on this subject, I recommend watching this video:
+[Object-Oriented Programming is Bad](https://www.youtube.com/watch?v=QM1iUe6IofM).
+
+### Train Wrecks
+
+Now that we have a clear sense of the responsibility of an object and a data
+structures, Martin presents an example to drive this point home. Inspect the two
+lines of code below:
+
+```java lineNumbers
+// Alternative 1
+String outputDirectory = ctx.getOptions().getScratchDir().getAbsolutePath();
+
+// Alternative 2
+Options options = ctx.getOptions();
+File scratchDir = options.getScratchDir();
+String outputDirectory = scratchDir.getAbsolutePath();
+```
+
+Which alternative preserves the goal of a module not knowing the implementation
+details of an object that it manipulates
+([The Law of Demeter](https://en.wikipedia.org/wiki/Law_of_Demeter))? This
+depends on whether `ctx`, `options` and `scratchDir` is an objects or a data
+structures, according to the definition above.
+
+Because we cannot be certain, Martin present a nice solution that bypassed all
+these problems and still manages to upholds tHe Law of Demeter. Take a look at
+the code block below.
+
+```java lineNumbers
+// Alternative 3
+BufferedOutputStream output = ctx.createScratchFileStream(classFileName);
+```
+
+Never mind the details of how this implementation really works. The point is
+this: **We have abstracted away necessary details while upholding The Law of
+Demeter, clearly maintaining the intent**.
