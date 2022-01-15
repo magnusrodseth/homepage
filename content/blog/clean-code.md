@@ -479,3 +479,46 @@ than adding too little. In my experience, this lowers the threshold for daring
 to use a part of an API; **a well-documented API makes it easy for the user to
 play try out all parts of the API**.
 
+## 5 - Formatting
+
+Before I started reading this book, I had heard from a fellow computer science
+student that this book was beginning to lose a bit of relevancy. In other words,
+some parts were quite outdated. This chapter is prime example of that.
+Nevertheless, I found some useful tips worth jotting down.
+
+### Vertical Formatting
+
+Personally, I have a habit of leaving quite a lot of whitespace around in my
+code base. I'm not talking about several lines of whitespace, but perhaps a line
+of whitespace separating variables within a method. Martin sheds light on
+**vertical openness between concepts**. In other words, similar concepts should
+be grouped together _without whitespace_, and different concepts should be
+separated _with whitespace_. This may seem obvious, but it is something I'll
+have to be working on personally.
+
+As an extension of this, **adding redundant documentation to fields and methods
+clutters the vertical readability of your code**. It may be more readable to not
+add 15 lines of documentation in total, but rather use descriptive names and
+vertically separate different concepts.
+
+### Horizontal Formatting
+
+This includes formatting such as whitespace between operators, line length,
+whitespace between keywords, etc... Personally, I feel like this is quite
+outdated due to modern IDEs settings for automatically formatting your code with
+a keystroke.
+
+However, this leads me into the single thing I really resonated with in this
+chapter.
+
+### Team Rules
+
+**Every programmer has his own favorite formatting rules, but if he is in a
+team, then the team rules**. A team should sit down and agree on all formatting
+rules. This should not be a very long and emotional debate; 5-10 minutes tops.
+When the team agrees n formatting rules, configuration files are put into place
+to streamline formatting throughout development. An added benefit of this is a
+cleaner version control timeline. Let's say I changed 1 line in a file, then
+formatted my file according to my personal formatting rules, but not the team's
+formatting rules. The Git commit would be extremely cluttered and difficult to
+review.
