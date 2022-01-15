@@ -1,10 +1,11 @@
 import { GetStaticPaths, GetStaticProps } from "next"
 import ArticleComponent from "../../components/article/ArticleComponent";
+import NoContent from "../../components/NoContent";
 import { getFrontMatters, getMdxBySlug, MDX_PROJECTS_PATH } from "../../lib/mdx";
 import { Article } from "../../types/article";
 
 const Project = ({ project }: { project: Article }) => {
-    return <ArticleComponent article={project} backTo="projects" />
+    return project ? <ArticleComponent article={project} backTo="projects" /> : <NoContent />
 }
 
 
@@ -28,7 +29,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         props: {
             project: {
                 code,
-                frontmatter: frontmatter,
+                frontmatter,
             } as Article,
         },
     }

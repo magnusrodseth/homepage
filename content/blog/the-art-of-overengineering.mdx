@@ -1,0 +1,94 @@
+---
+title: The Art of Overengineering
+description: Lessons learnt while developing this website.
+publishedAt: "2022-01-09"
+updatedAt: "2022-01-09"
+isPublished: true
+tags: ['nextjs', 'tailwind', 'typesript', 'react', 'mdx','markdown']
+---
+
+## The motivation for developing this website
+
+This website has two main purposes:
+
+1. **A platform where I can share my projects**. A resume can only fit so much
+   content. Wouldn't it be nice with a repository of in-depth explanations and
+   thoughts related to previous projects?
+
+2. **A platform where I can share my thoughts, primarily related to tech**. I
+   often find myself wanting to write down experiences, shortcuts, tips and tricks related to software development. This website allows for sharing
+   that knowledge.
+
+## The first draft
+
+So I set out to achieve the above-mentioned purposes. I knew I was going to
+develop the frontend using [Next.js with React](https://nextjs.org/), styled
+using [Tailwind CSS](https://tailwindcss.com/). Okay, so the frontend is good.
+What about the dynamic content, the one you're reading right now? I have some
+prior experience using the content management system (CMS)
+[Strapi](https://strapi.io/), so I knew that this would be a viable option.
+
+### My main mistake
+
+Now, here's where I did my main mistake: **I did not stop and think about all
+other options to achieve the end product**. I jumped the gun and set up Strapi
+and all entities (e.g. `BlogPost`, `Project`). Being the TypeScript fan I am, I
+also knew I needed type safety when fetching the data in the frontend. Thus, the only natural
+thing to do next was to implement fetching of data using
+[GraphQL](https://docs.strapi.io/developer-docs/latest/plugins/graphql.html)
+with corresponding
+[type generation using `graphql-codegen`](https://www.graphql-code-generator.com/).
+
+## Messing with Docker
+
+I also needed a way for the frontend to interact with the CMS in production. I
+wanted to orchestrate everything using [Docker](https://www.docker.com/) such
+that I could simply write `docker-compose up` in the project directory, and - _✨ voila ✨_ - the frontend,
+CMS and a database were up and running.
+
+Can you see where this is going? We're talking about creating a personal website
+here. This was becoming way too complex compared to what it should have been.
+
+## Finding Jeff Jadulco's website
+
+Enter [Jeff Jadulco](https://jeffjadulco.com/). This brilliant web and game
+developer had the same use case and tech stack as me, so naturally I was greatly inspired by his work.
+
+So let me walk you through the changes Jeff inspired me to do.
+
+## Refactoring the entire project
+
+First off, I scrapped the entire CMS part of the application. No more Strapi. In
+its replacement, the dynamic content is served through the `content` directory
+in the [project repository](https://github.com/magnusrodseth/homepage). The
+**huge** benefit of this is that all dynamic content can essentially be hosted
+in GitHub, thereby allowing me to **not** pay to host the dynamic content.
+
+Furthermore, now that Strapi was nuked, I realized that - because my frontend is
+a Next.js application - I could use Vercel's hosting service. This is free for
+so-called "Hobby" projects. This hosting service integrates with the GitHub
+repository, such that every time I push to `main`, a new production version of
+the website is deployed on Vercel. Vercel even offers free analytics for hobby
+projects!
+
+<Image
+  src="/img/blog/vercel-analytics.png"
+  caption="A screenshot of the Vercel Analytics page on Vercel's hosting service."
+/>
+
+Other changes include rendering Markdown content using `.mdx` and applying
+custom styling. However, that is enough content for a separate blog post.
+
+## In conclusion
+
+In short, this shows the importance of taking a step back and evaluating several
+possible solutions before starting to work on "the first and the best" solution.
+
+I hope this can be an eye-opener for future projects.
+
+---
+
+> 🎉 A **huge** shoutout to
+> [Jeff Jadulco](https://github.com/jeffjadulco/jeffjadulco.com) for
+> implementing the `.mdx` solution. It helped me a great deal when creating the
+> website.

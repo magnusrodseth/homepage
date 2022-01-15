@@ -1,0 +1,36 @@
+---
+title: SFTP Upload
+description:
+  A Docker container executing a shell script that allows you to securely
+  transmit a file from your local computer to a destination host using the SFTP
+  protocol.
+publishedAt: "2022-01-09"
+updatedAt?: "2022-01-09"
+isPublished: true
+tags: ["docker", "python", "ssh", "sftp"]
+---
+
+## What is it?
+
+It may help to inspect the
+[source code](https://github.com/magnusrodseth/webcamera-upload) when reading
+about this repository.
+
+This project allows you to securely transmit a file from your local computer to
+a destination host using the SFTP protocol.
+
+The user preferably sets up a cronjob to run `docker restart container-name`.
+The Docker container then runs the Bash script `upload.sh` by giving it
+parameters (more on that below). The Bash script sets up a Python virtual
+environment, and executes the Python script `upload.py` with parameters provided
+to the Bash script.
+
+The purpose of this particular repository is to transmit web camera images from
+a client computer to a remote server, but the repository can transmit any file
+using SFTP. For more information on my personal usage of this functionality, see
+the [Været på Søbekkseter](/projects/sobekkseter) project.
+
+<Image 
+    src="/img/projects/sobekkseter/landing-page.png"
+    caption="The webcamera image above is a result of the SFTP Upload repository."
+    />

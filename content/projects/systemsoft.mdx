@@ -1,70 +1,77 @@
 ---
-title: Hello
-description: world
-publishedAt: "2021-06-01"
-updatedAt: "2022-07-08"
+title: SystemSoft AS
+description:
+  A full-stack web application, allowing employees of SystemSoft AS to manage
+  the company's portfolio.
+publishedAt: "2022-01-09"
+updatedAt?: "2022-01-09"
 isPublished: true
-tags: ["freelance", "web"]
-toc: true
-seoImage:
+tags: ["nextjs", "strapi", "typescript", "tailwind", "graphql"]
 ---
 
-## Introduction
+## Purpose
 
-Developed the official SystemSoft AS website from scratch, using **React**, **TypeScript**, **Next.js**, **Strapi**, **Urql (GraphQL client)**, **PostgreSQL**, **Tailwind CSS**, and hosted on **DigitalOcean**. Worked with 1 other developer.
+The website allows employees of SystemSoft AS to access a content management
+system (CMS) in order to easily, independently, and continuously update the
+company's portfolio.
 
-Here's some inline code: `tsconfig.json`, `const hello = () => "World!"`.
+[Click here to visit the website](https://www.systemsoft.no/).
 
-## Subheading
+## Tech Stack
 
-The website allows employees of SystemSoft AS to access a Strapi backend in order to **easily, independently,
-and continuously** update the company's portfolio served on the Next.js frontend. [Click here to visit the
-website](https://www.systemsoft.no/).
+The website was developed from scratch, using the following technologies:
 
-### Third heading
+- [Next.js](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [React](https://reactjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [URQL (GraphQL client)](https://formidable.com/open-source/urql/)
+- [GraphQL](https://graphql.org/)
+- [Strapi](https://strapi.io/)
+- [DigitalOcean managed PostgreSQL database](https://www.digitalocean.com/products/managed-databases/)
+- [Sentry (Error Handling / Tracking)](https://sentry.io/welcome/)
+- [SendGrid (automated mail dispatching)](https://sendgrid.com/)
 
-<Image
-  src={"/img/projects/aws-course.png"}
-  alt="Final dark mode output"
-  width={512}
-  height={314}
-  quality={100}
-/>
+Using Sentry for error tracking, our client can report potential bugs to us, and
+we can easily squash them.
 
-_This is an image caption._
+SendGrid was used to automatically send e-mails based on input in the website's
+contact form.
 
-Content continues down here. Lorem ipsum dolor sit amet.
+## Technical Details
 
-- First
-- Second
-- Third
+### Strapi
 
-1. First
-2. Second
-3. Third
+Let's say you are a SystemSoft employee looking to update some content on their
+website. You simply login to the Strapi admin panel using your credentials,
+navigate to the correct entity (e.g `Client`, `Resume`), update the content and
+hit save. It's really that easy.
 
-Some end quote:
+### Next.js
 
-> "Lolium" - Some guy
+The frontend was built using Next.js with search engine optimization (SEO) in
+mind. In short, Next.js allows for server-side rendered static sites, even
+though you use dynamic routing in your web application. Read more about it using
+[this link](https://nextjs.org/docs/basic-features/data-fetching).
 
-Hic vitae et harum est ut. Voluptatibus id iste omnis perspiciatis animi sint deleniti maxime a. Non architecto quos ut vitae et quas iure occaecati.
+### Tailwind CSS
 
-Atque veritatis nesciunt. Consequatur qui vitae autem. Sit inventore placeat pariatur.
+Tailwind CSS was chosen as the styling framework of choice because of its ease
+of use, natural syntax and performance. Note that the inline styling did get a
+bit cluttered. This can easily be solved by creating
+[utility classes](https://tailwindcss.com/docs/adding-custom-styles) with
+common and custom styling.
 
-Odio non provident et cumque. Nisi totam sapiente magnam molestiae. Id harum similique. Iusto debitis adipisci rerum pariatur est beatae. Molestiae est occaecati deserunt recusandae.Hic vitae et harum est ut. Voluptatibus id iste omnis perspiciatis animi sint deleniti maxime a. Non architecto quos ut vitae et quas iure occaecati.
+## Cooperation and Git workflow
 
-Atque veritatis nesciunt. Consequatur qui vitae autem. Sit inventore placeat pariatur.
+During the project, I worked with one co-developer
+([@juliangra](https://github.com/juliangra)). We practiced a good Git workflow,
+including issue tracking, continuous integration with automated testing, pull
+requests and corresponding pull request reviews.
 
-Odio non provident et cumque. Nisi totam sapiente magnam molestiae. Id harum similique. Iusto debitis adipisci rerum pariatur est beatae. Molestiae est occaecati deserunt recusandae.Hic vitae et harum est ut. Voluptatibus id iste omnis perspiciatis animi sint deleniti maxime a. Non architecto quos ut vitae et quas iure occaecati.
+## The result
 
-Atque veritatis nesciunt. Consequatur qui vitae autem. Sit inventore placeat pariatur.
+[Click here to visit the website](https://www.systemsoft.no/).
 
-Odio non provident et cumque. Nisi totam sapiente magnam molestiae. Id harum similique. Iusto debitis adipisci rerum pariatur est beatae. Molestiae est occaecati deserunt recusandae.Hic vitae et harum est ut. Voluptatibus id iste omnis perspiciatis animi sint deleniti maxime a. Non architecto quos ut vitae et quas iure occaecati.
+<Image src="/img/projects/systemsoft.png" caption="The SystemSoft AS landing page"/>
 
-Atque veritatis nesciunt. Consequatur qui vitae autem. Sit inventore placeat pariatur.
-
-Odio non provident et cumque. Nisi totam sapiente magnam molestiae. Id harum similique. Iusto debitis adipisci rerum pariatur est beatae. Molestiae est occaecati deserunt recusandae.Hic vitae et harum est ut. Voluptatibus id iste omnis perspiciatis animi sint deleniti maxime a. Non architecto quos ut vitae et quas iure occaecati.
-
-Atque veritatis nesciunt. Consequatur qui vitae autem. Sit inventore placeat pariatur.
-
-Odio non provident et cumque. Nisi totam sapiente magnam molestiae. Id harum similique. Iusto debitis adipisci rerum pariatur est beatae. Molestiae est occaecati deserunt recusandae.Hic vitae et harum est ut. Voluptatibus id iste omnis perspiciatis animi sint deleniti maxime a. Non architecto quos ut vitae et quas iure occaecati.

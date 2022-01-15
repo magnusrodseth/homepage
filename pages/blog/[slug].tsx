@@ -2,9 +2,10 @@ import { GetStaticPaths, GetStaticProps } from "next/types"
 import { Article } from "../../types/article"
 import ArticleComponent from "../../components/article/ArticleComponent"
 import { getFrontMatters, getMdxBySlug, MDX_BLOG_PATH } from "../../lib/mdx"
+import NoContent from "../../components/NoContent"
 
 const BlogPost = ({ post }: { post: Article }) => {
-    return <ArticleComponent article={post} backTo="blog" />
+    return post ? <ArticleComponent article={post} backTo="blog" /> : <NoContent />
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

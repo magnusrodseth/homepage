@@ -1,0 +1,148 @@
+---
+title: Cognition
+description: A full-stack Java application for practicing flashcards.
+publishedAt: "2022-01-09"
+updatedAt?: "2022-01-09"
+isPublished: true
+tags:
+  [
+    "java",
+    "maven",
+    "javafx",
+    "api",
+    "spring",
+    "restapi",
+    "gitpod",
+    "asciidoc",
+    "testing",
+    "mvc",
+    "make",
+  ]
+---
+
+## Introduction
+
+This project was the group project for the subject
+[Informatics, Project I](https://www.ntnu.edu/studies/courses/IT1901#tab=omEmnet)
+at NTNU.
+
+Throughout the semester, we developed a full-stack Java application using an
+agile workflow with great focus on proper Git workflow.
+
+## Technical details
+
+The frontend was developed using the user interface framework
+[JavaFX](https://openjfx.io/).
+
+The REST API was developed using
+[Spring Boot](https://spring.io/projects/spring-boot). This was - all things
+considered - a very enjoyable framework to work with. In addition to it being
+very easy to set up a basic API, Spring Boot also helps you automatically
+document RESTful services using
+[Spring REST Docs](https://spring.io/projects/spring-restdocs).
+
+The Java project was built using [Maven](https://maven.apache.org/). The
+frontend, Java models, integration tests, and the Spring Boot API was separated
+into each respective Maven module. This allowed for a clean application
+architecture. An important requirement for the project was that one must be able
+to build and run the application using GitPod. Maven helped achieve this, albeit
+with some bumps along the road. For the final result, one could open the project
+in GitPod, run `mvn clean install`, and then run the application.
+
+## Running the application
+
+In addition to getting some experience with Maven, the group decided to wrap
+relevant Maven commands in `make` commands using a `Makefile`. Having to write a
+`Makefile` from scratch was a great learning experience, and opened my eyes to
+what `make` **really** is. If you want to inspect the `Makefile`, or any other part
+of the application, the project source code can be found using
+[this link](https://github.com/magnusrodseth/cognition).
+
+## Testing
+
+The group wrote tests for both the frontend, our models and the REST API.
+
+I found it very handy that Spring REST Docs synergized with the REST API tests.
+See the code block below for an example.
+
+```java lineNumbers filename="WebRequestsTest.java"
+@Test
+@DisplayName("Expect 200 when getting users.")
+void expect200WhenGettingUsers() {
+    try {
+        initializeUser();
+        this.mvc.perform(get("/users")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(document("{methodName}",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint())));
+        } catch (Exception e) {
+            fail();
+        }
+    }
+```
+
+Because we can declare `.andDo(document("{methodName}", ...))` in the REST API
+test, we get the following **auto-generated** REST documentation:
+
+```adoc lineNumbers filename="expect200WhenGettingUsers/http-request.adoc"
+[source,http,options="nowrap"]
+----
+GET /users HTTP/1.1
+Content-Type: application/json
+Host: localhost:8080
+
+----
+```
+
+```adoc lineNumbers filename="expect200WhenGettingUsers/http-response.adoc"
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 89
+
+[ {
+  "quizzes" : [ ],
+  "username" : "test-username",
+  "password" : "test-password"
+} ]
+----
+```
+
+Quite neat, if you ask me.
+
+## Design
+
+Below are some screenshots of the frontend design of the Cognition application.
+
+<Image 
+    src="/img/projects/cognition/flashcard-1.png"
+    caption="A sample flashcard question."
+    />
+
+<Image
+    src="/img/projects/cognition/flashcard-2-question.png"
+    caption="Another sample flashcard question."
+    />
+
+<Image
+    src="/img/projects/cognition/flashcard-2-answer.png"
+    caption="The answer to the above-mentioned flashcard question."
+    />
+
+<Image
+    src="/img/projects/cognition/home-screen.png"
+    caption="The home screen for the Cognition application."
+    />
+
+<Image
+    src="/img/projects/cognition/login-screen.png"
+    caption="The login screen for the Cognition application."
+    />
+
+<Image
+    src="/img/projects/cognition/quiz-screen.png"
+    caption="A sample quiz screen."
+    />

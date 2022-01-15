@@ -1,3 +1,50 @@
+.light {
+  /* Light mode code color */
+  --color-code-background: #e5e7eb;
+  --color-code-background-file: #d1d5db;
+  --color-code-line-hover: #d1d5d0;
+
+  /* Material Light syntax highlighting */
+  /* https://github.com/PrismJS/prism-themes/blob/master/themes/prism-material-light.css */
+  --color-code-text: hsla(218, 23%, 23%, 1);
+  --color-code-comment: #aabfc9;
+  --color-code-punctuation: #39adb5;
+  --color-code-const: #7c4dff;
+  --color-code-bool: #7c4dff;
+  --color-code-string: #fb923c;
+  --color-code-var: #e53935;
+  --color-code-func: #7c4dff;
+  --color-code-keyword: #7c4dff;
+  --color-code-regex: #6182b8;
+}
+
+.dark {
+  /* Dark mode code color */
+  --color-code-background: #111827;
+  --color-code-background-file: #1f2937;
+  --color-code-line-hover: #141d2e;
+
+  /* Material Oceanic syntax highlighting */
+  /* https://github.com/PrismJS/prism-themes/blob/master/themes/prism-material-oceanic.css */
+  --color-code-text: #d9f99d;
+  --color-code-comment: #546e7a;
+  --color-code-punctuation: #89ddff;
+  --color-code-const: #a5b4fc;
+  --color-code-bool: #a5b4fc;
+  --color-code-string: #a7f3d0;
+  --color-code-var: #f07178;
+  --color-code-func: #a5b4fc;
+  --color-code-keyword: #a5b4fc;
+  --color-code-regex: #f2ff00;
+}
+
+/* Tailwind */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 @tailwind base;
 @tailwind components;
 
@@ -39,6 +86,14 @@
 
   .icon {
     @apply block h-8 w-8;
+  }
+
+  .md-link {
+    @apply dark:text-indigo-200 dark:hover:text-indigo-400 text-indigo-700 hover:text-indigo-900 smooth;
+  }
+
+  .md-heading {
+    @apply flex items-baseline mt-4 mb-2 font-bold text-gray-700 dark:text-gray-200 tracking-wide;
   }
 }
 
