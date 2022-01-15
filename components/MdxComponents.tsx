@@ -97,7 +97,7 @@ export const components = {
 
   },
   p: ({ ...props }) => {
-    return <p {...props} className="mb-4" />
+    return <p {...props} className="mb-4 leading-relaxed" />
   },
 
   code: ({ children, lineNumbers, filename, id }: CodeProps) => {

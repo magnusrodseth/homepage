@@ -1,6 +1,8 @@
 ---
 title: Clean Code by Robert Martin - Summary and reflections
-description: My personal summary, reflections and key takeaways after reading this popular book about software craftsmanship.
+description:
+  My personal summary, reflections and key takeaways after reading this popular
+  book about software craftsmanship.
 publishedAt: "2022-01-13"
 updatedAt?: "2022-01-13"
 isPublished: true
@@ -181,3 +183,130 @@ of the reader did not see, and respect, the writer's point of view.
 With that, chapter 2 begins, focusing on meaningful names in code.
 
 ## 2 - Meaningful Names
+
+Martin spends chapter 2 on meaningful names in a code base. This chapter is
+split into multiple subheadings, and I want to highlight the ones I resonated
+with the most.
+
+### Use Intention-Revealing Names
+
+The name of a variable, function or class should **answer all the big
+questions**: **Why** does it it exist, **what** does it do, and **how** is it
+used? Additionally, even though it may seem obvious, refactor the name when you
+come up with a better one.
+
+To exemplify, Martin displays two blocks of code:
+
+```java lineNumbers
+public List<int[]> getThem() {
+    List<int[]> list1 = new ArrayList<int[]>();
+    for (int[] x : theList) {
+        if(x[0] == 4) {
+            list1.add(x);
+        }
+    }
+    return list1;
+}
+```
+
+The problem with this block of code is not its simplicity, but the
+**implicity**. In other words, the context is not explicit in the code itself.
+When reading this block of code, we wonder:
+
+1. What is in `theList`?
+2. What is the significance of `x[0]`?
+3. What is the significance of the constant `4`?
+4. How do I use the returned list `list1`?
+
+Martin then provides a much better option, using **intention-revealing names**:
+
+```java lineNumbers
+public List<int[]> getFlaggedCells() {
+    List<int[]> flaggedCells = new ArrayList<int[]>();
+    for (int[] cell : gameBoard) {
+        if(cell[STATUS_VALUE] == FLAGGED) {
+            flaggedCells.add(cell);
+        }
+    }
+    return flaggedCells;
+}
+```
+
+This is much more explicit! If we have an object-oriented language, we can make
+this code even more readable.
+
+```java lineNumbers
+public List<Cell> getFlaggedCells() {
+    List<Cell> flaggedCells = new ArrayList<Cell>();
+    for (Cell cell : gameBoard) {
+        if(cell.isFlagged()) {
+            flaggedCells.add(cell);
+        }
+    }
+    return flaggedCells;
+}
+```
+
+### Make Meaningful Distinctions
+
+Concretely, number-series naming in non-informative. Take a look at this
+example:
+
+```java lineNumbers
+public static void copyCharacters(char a1[], char a2[]) {
+    // Logic goes here
+}
+```
+
+A simple fix would be to simply **not use number-series naming**:
+
+```java lineNumbers
+public static void copyCharacters(char source[], char destination[]) {
+    // Logic goes here
+}
+```
+
+### Use Pronounceable Names
+
+Plain and simple: **Programming is a social activity**. You should not impede
+productivity by using names that are not possible to pronounce.
+
+### Use Searchable Names
+
+Here's something that I've not thought of, but that really makes a lot of sense:
+
+**`Readable names == searchable names`**.
+
+Naming a variable `e` is a poor choice, as it is the most common letter in the
+English alphabet. Naming a variable `WORK_DAYS_PER_WEEK` is much more readable,
+and it is also easier to search for using tools like `Find in Files...` in
+modern IDEs!
+
+### Avoid Mental Mapping
+
+Of course, it is okay to use `i` or `j` to keep track of indices when looping
+over a simple array. However, this is not scalable or transferrable to other
+situations other than looping over an array.
+
+Personally, when looping over a two-dimensional array, I try my best to use
+`row` and `col` instead of `i` and `j`, as this is much more readable. Then I
+can give the item at a given row and column a descriptive variable name, e.g.
+`var cell = cells[row][col];`.
+
+The key takeaway here is that **clarity is king**. Professional programmers use
+their powers for good and write code that others can understand.
+
+### Pick One Word per Concept
+
+Have you ever created an application with a
+[CRUD structure](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
+for persistent storage? When getting an item, should you name the method
+`get()`, `read()`, `retrieve()`, `fetch()` or something else?
+
+Let's say you're creating a web API with [Node.js](https://nodejs.org/en/),
+using the vanilla `fetch()` function to send HTTP requests. Should your custom
+fetch functions be called `fetchUsers()`, `getUsers()`, `readUsers()` or
+something else?
+
+The bottom line here is: **Pick one word for one abstract concept and stick with
+it**. It helps you and other co-developers down the line.
