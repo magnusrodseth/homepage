@@ -609,3 +609,408 @@ BufferedOutputStream output = ctx.createScratchFileStream(classFileName);
 Never mind the details of how this implementation really works. The point is
 this: **We have abstracted away necessary details while upholding The Law of
 Demeter, clearly maintaining the intent**.
+
+## 7 - Error Handling
+
+This is yet another chapter that I did not get much out of, as I have some
+relevant experience with object-oriented programming in Java. Of course, this
+carries over to other languages, but some of this stuff is quite elementary.
+I'll simply list the key points I took away from this chapter.
+
+**Error handling is important, but if it obscures logic, it's wrong**.
+
+**Write tests that enforce exceptions**. Then add behavior to satisfy your
+tests.
+
+**Checked exceptions (in Java) can sometimes be useful if an application is
+critical**. In general application development, the dependency of checked
+exceptions throughout the code base outweighs the benefits of safety.
+
+**It can be useful to wrap third-party API exception in your own custom
+exceptions**. This minimizes your dependency upon the third-party API: You can
+choose to move to a different API later without having to follow the breadcrumbs
+of the previous third-party API throughout your entire application.
+
+**Don't return `null`, and don't pass `null` into a method**... But we all knew
+that 😉
+
+## 8 - Boundaries
+
+> It is better to depend on something you control than something you don't
+> control, in order to prevent the risk of it controlling you.
+
+This chapter seemed a bit out of place. However, Martin did explain something
+called "learning test" which caught my interests.
+
+### Learnings Tests
+
+Learning and integrating a third-party API can be quite hard. Doing both at the
+same time can be very difficult. Instead of experimenting and trying new
+functionality in our _production code_, we can write tests to explore our
+understanding of the third-party API and to validate if the API does the job
+we're looking to get done. This is **learning tests**.
+
+Learning tests are free and have a positive return on investment. When the
+third-party API releases a new version, our learning tests will check if our
+desired functionality still holds.
+
+Regardless of whether we're in need of learning tests when using a third-party
+API, a clean boundary between our application and the third-party API should be
+upheld. These **boundary tests** may keep us on an older version of the API
+library than what is really necessary.
+
+## 9 - Unit Tests
+
+### Introduction
+
+When I first saw this chapter headline, I really got my hopes up. I have been
+part of many projects where test coverage was either lacking or altogether
+non-existent. Oftentimes, this led to some technical debt, but always to an
+uncertainty whether our new feature was safe for production.
+
+### The Three Laws of Test-Driven Development (TDD)
+
+TDD tells us to write unit tests before production code, but this is really an
+oversimplification. When I read about the three laws of TDD, this approach
+**really** caught my eye.
+
+1. **The First Law**. You may not write production code until you have written a
+   failing unit test. Okay, that makes sense.
+2. **The Second Law**. You may not write more of a unit test than is sufficient
+   to fail, and _not compiling is failing_. Oh, so you write the test until you
+   get a compilation error, and then you implement a class or a method in order
+   to get the test to compile. Note that when the class or method is created,
+   you stop implementing production code again, and rather focus on writing out
+   the test.
+3. **The Third Law**. You may not write more production code than is sufficient
+   to pass the recently failing test. In my eyes and ears, that means that it is
+   okay to have methods without implementation as long as the test passes. Now,
+   when the test passes, you go to the definition of a method and start filling
+   in the blanks in order to achieve desired functionality.
+
+These three steps lock in a cycle that is approximately 30 seconds long. **The
+tests and the production code is written together, with the tests just a few
+seconds ahead of the production code**.
+
+This way, our tests cover virtually all of our production code. This poses a
+management problem, but also brings huge benefits.
+
+### Keeping Tests Clean
+
+Dirty tests are tests that are written completely after seemingly correct
+production code. Having dirty tests is equivalent to, if not worse than, having
+no tests. Tests must change along with production code. Dirty tests are harder
+to change. As we modify production code, old tests fail. If we do not manage our
+tests and keep them clean, this may cause tests to become a liability and not a
+team player.
+
+Having no tests is also bad. As the production code grows, adding new
+functionality becomes increasingly difficult, as you don't know what is going to
+break. This also carries over on the production code itself, as one does not
+dare clean it up due to fear of it breaking.
+
+Moral of the story: **Test code is just as important as production code. It
+requires thought, design and care. It must be kept as clean as production
+code**.
+
+### Clean Tests
+
+So what makes a clean test? Martin claims it is 3 things: **readability,
+readability, readability**.But what makes a test readable? **Clarity, simplicity
+and density of expression**.
+
+#### Build, Operate, Check
+
+We can use the **build, operate, check** pattern when creating a test. The first
+part of a test builds up the sample data. The second part operates on that
+sample data. The last parts checks that the desired behavior was achieved.
+
+#### Domain-Specific Language
+
+Complex test can quickly become cluttered and difficult to read. Hence, we build
+up a set of function and utilities that makes test more convenient to read and
+write. These functions and utilities are either created for increased
+readability, or modularity if multiple tests are quite alike when building,
+operating and checking. This **domain-specific language** of functions and
+utilities are developed over time; it evolves inline with our tests. Let's look
+at an example.
+
+```java lineNumbers
+@Test
+public void canGetDataAsXML() throws Exception {
+    makePageWithContent("TestPage", "test page");
+
+    submitRequest("TestPage", "type:data");
+
+    assertResponseIsXML();
+    assertResponseContains("test page");
+}
+```
+
+Never mind the actual test, but **notice the method names** when building,
+operating and checking data.
+
+### F.I.R.S.T.
+
+Clean tests follow 5 rules that form the acronym _F.I.R.S.T._:
+
+**Fast**. Tests should be fast. When tests run slow, you won't want to run them
+frequently. If you don't run tests frequently, you won't find problems fast
+enough to easily fix them. You won't feel free to clean up the code. Eventually,
+you get rotting code.
+
+**Independent**. Tests should not depend on each other. One test should not set
+up conditions for another test. Use set-ups and tear-downs after every test
+where needed.
+
+**Repeatable**. Tests should repeat in any environment. You should be able to
+run tests in production, staging, development, with internet connection and
+without internet connection. If tests are not repeatable, then you always have
+an excuse for why the test fails. You're also unable to run tests in any
+environment if they're not repeatable.
+
+**Self-Validating**. Tests should have a boolean output; pass or fail. If a test
+is not self-validating, a test becomes subjective, and we don't want that.
+
+**Timely**. The tests need to be written in a timely fashion. Unit tests should
+be written just before that production code that makes them pass is written.
+
+### Final words and reflection
+
+This part got quite long, but I genuinely think this is among the most important
+parts of the entire book. Hence, if I revisit these notes later down the road, I
+want to be able to read through these notes and truly capture the essence of
+unit testing, at least according to Martin.
+
+## 10 - Classes
+
+I found it to be quite a lot of useful information in this chapter.
+
+### Classes Should Be Small
+
+The name of a class should describe what responsibility it fulfills. **If we
+cannot derive a concise name for a class, then it's likely too large**. Class
+names including `Processor`, `Manager`, `Super` almost always hints to a class
+being too large.
+
+### The Single Responsibility Principle
+
+The Single Responsibility Principle (SRP) states that **a class or a module
+should have one, and only one, _reason to change_**.
+
+After finishing developing some functionality, we often fail to the other
+concern of organization and code cleanliness. One might think that many smaller
+classes are more difficult to navigate than few large classes, but we still have
+the same amount of code! There are no more moving parts in many small classes
+than few large classes. **Each small class encapsulates a single responsibility,
+has a single reason to change, and collaborates with few other classes to
+achieve desired behavior**. This begs the questions:
+
+**Do you want your tools organized into toolboxes with many small drawers with
+well-defined components? Or do you want a few drawers that you just toss
+everything into?**
+
+### Cohesion
+
+The strategy of keeping functions small and keeping parameter lists short can
+lead to a drastic increase of instance variables _that are only used by a small
+number of class methods_. When this happens, this often means that we can
+extract a smaller class from the original larger class. This increases
+cohesiveness.
+
+### Open-Close Principle (OCP)
+
+**A class should be open for extension, but closed for modification**. Child
+classes are a great way to extend functionality while not modifying the parent
+class functionality.
+
+### Dependency Inversion Principle (DIP)
+
+**A class should depend on abstractions, not on implementation details**. This
+ties into unit testing and mocking objects. Let's say you have a full-stack
+application with a frontend and a web server, with some API controller in
+between. When testing the frontend, depending on the abstraction of the API
+controller allows us to mock the object and not rely on having a real connection
+to our web server.
+
+## 11 - Systems
+
+### Introduction
+
+The very first words in this chapter is a quote from the previous CTO of
+Microsoft, [Ray Ozzie](https://en.wikipedia.org/wiki/Ray_Ozzie):
+
+> Complexity kills. It sucks the life out of developers, it makes products
+> difficult to plan, build and test.
+
+This reminded me of another quote I heard recently, related to database
+development:
+
+> Simplicity is the ultimate sophistication.
+
+### Constructing versus Using a System
+
+Software systems should separate the startup process, when the application is
+constructed and the dependencies are "wired" together, from the runtime logic
+that takes over after startup. For instance, a construction site where you're
+building a hotel is very different from the finished hotel. Different people
+work there, the interior and exterior looks different, and the daily tasks are
+different. To a certain degree, this holds for system and architecture
+development in software too.
+
+### Factories
+
+We want an application to be started from a `Main` class or a `main` method.
+Sometimes, of course, we need to make the running application itself responsible
+for creating an object. This is where factories comes in. For instance, in a
+feed ordering system, we must be able to add an `Item` to an `Order`. This is
+where we use the **abstract factory pattern** to give the application control
+over when to create an `Item`, but still keep the details of that construction
+of objects separate from the application code. For a visual example, see the
+image below.
+
+<Image
+    src="/img/blog/clean-code/factory-design-pattern.jpeg"
+    caption="The main method asks the factory to creates shapes."
+    />
+
+### Dependency Injection
+
+Dependency injection is a powerful mechanism for separating construction from
+use.
+
+An object should not take responsibility for instantiating dependencies itself.
+Instead, it passes this responsibility to an authoritative mechanism, thereby
+inverting the control of responsibility. This authoritative mechanism is often a
+`main` routine or a special-purpose container.
+
+True dependency injection is quite strict. A class should take no steps to
+manage its dependencies. The class simply offers setter methods or constructor
+parameters (or both) to be used in order to **inject** the dependencies. During
+construction, the authoritative mechanism instantiates required objects on
+demand, and uses constructor parameters or setter methods to wire dependencies
+together.
+
+The objects that depend on each other can be defined in a configuration file or
+programmatically in a construction module.
+
+### Scaling Up
+
+Who can justify the expense of a six-lane highway through a small town that
+_anticipates_ growth? Who would want that in their town?
+
+This analogy leads into an important point: **It is a myth that we can get
+systems right the first time**. Instead, we should implement today's user
+stories, then incrementally improve upon our existing product. **Test-driven
+development, refactoring and clean code makes this work on a code level**.
+
+### Cross-Cutting Concerns
+
+We use the term _cross-cutting concerns_ for concerns intersecting domains, for
+instance how persistence concerns your entire application.
+
+To solve the problem of cross-cutting concerns, we have **aspect-oriented
+programming (AOP)**. In aspect-oriented programming, modular constructs called
+_aspects_ specify which points of the system should have their behavior modified
+in order to support a given concern. This specification is done using a
+declarative configuration file or a programmatic mechanism.
+
+In fact, [Spring](https://spring.io/) can be used in an aspect-oriented way. In
+Spring, we write business logic as Plain Old Java Objects (POJOs). These POJOs
+have no dependency on the frameworks, and is simply concerned with the business
+logic. This makes them easier to test, and to verify that you're actually
+implementing user stories correctly.
+
+In Spring, you incorporate application infrastructure using a configuration file
+or an API. These declarations drive the dependency injection (DI) container in
+Spring. In turn, the DI container instantiates major objects and wires them
+together on demand.
+
+An example of a Spring configuration file from
+[Baeldung](https://www.baeldung.com/spring-application-context) can be seen
+below.
+
+```xml lineNumbers app.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="accountService" class="com.baeldung.applicationcontext.AccountService">
+    <constructor-arg name="accountRepository" ref="accountRepository" />
+  </bean>
+
+  <bean id="accountRepository" class="com.baeldung.applicationcontext.AccountRepository" />
+</beans>
+```
+
+Another approach is to use Java-based configuration:
+
+```java lineNumbers AccountConfig.java
+@Configuration
+public class AccountConfig {
+
+  @Bean
+  public AccountService accountService() {
+    return new AccountService(accountRepository());
+  }
+
+  @Bean
+  public AccountRepository accountRepository() {
+    return new AccountRepository();
+  }
+}
+```
+
+**Each bean is like on part of a nested russian doll**. See the image below for
+context.
+
+<Image
+    src="/img/blog/clean-code/beans-russian-doll.png"
+    caption="An illustration from the book visualizing how beans in Spring works."
+    />
+
+**The client believes it is invoking methods on a `Bank` object, but it is
+actually talking to the outermost set of decorator objects that extend the basic
+behavior of the `Bank` POJO**.
+
+### Test the System Architecture
+
+When you write system architecture like described above, you achieve separation
+of concerns, and it is possible to write test suites for your architecture. It
+is not necessary to do a _Big Design Up Front (BDOF)_. In fact, BDOF is harmful
+due to the psychological nature of humans not wanting to tear down something
+that is already in-place and working, no matter how messy it may be.
+
+### Optimize Decision Making
+
+It is best to **postpone decision until the last possible moment**. This is not
+lazy or irresponsible. Rather, it allows us to have the most information at hand
+and make the most informed choices. A premature decision has much less customer
+feedback, mental reflection, and experience with the implementation choices.
+
+The agility provided by a system described in this chapter, with modularized
+concerns, no matter the language, allows us to make optimal, just-in-time
+decisions based on the most recent knowledge. The complexity of a decision is
+also reduced.
+
+### Use Industry Standards When They Add Demonstrable Value
+
+Standards make it easier to reuse ideas and components, recruit people with
+relevant experience, encapsulate good ideas, and wire components together.
+However, the process of creating standards can sometimes take too long for
+industry to wait. Some standards lose touch with the real needs of the consumers
+it is intended to serve.
+
+### In Summary
+
+An optimal system architecture consists of modularized domains of concern, each
+of which is implemented with Plain Old Java (or other languages) Objects. The
+different domains are integrated together with minimally invasive Aspects or
+Aspect-like tools (for instance Spring). This architecture can be test-driven,
+just like the production code. Never forget to use the simplest thing that can
+possibly work.
+
+## 12 - Emergence
