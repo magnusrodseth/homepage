@@ -10,9 +10,10 @@ import ReactGA from "react-ga"
 
 const App = ({ Component, pageProps }: AppProps) => {
   ReactGA.initialize(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || "")
-  ReactGA.pageview(window.location.pathname + window.location.search)
 
   const router = useRouter();
+
+  ReactGA.pageview(router.asPath)
 
   const is404Page = router.pathname == "/404";
 
