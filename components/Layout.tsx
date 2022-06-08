@@ -35,7 +35,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }: LayoutProps) => {
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', 'GA_MEASUREMENT_ID');
+          gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
         `}
         </Script>
       </Head>
