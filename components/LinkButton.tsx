@@ -1,5 +1,6 @@
 import Link from "next/link"
 import classNames from "../utils/classNames"
+import ReactGA from "react-ga"
 
 interface LinkButtonProps {
     href: string;
@@ -9,8 +10,18 @@ interface LinkButtonProps {
 
 const LinkButton = ({ href, className, label }: LinkButtonProps) => {
     const styles = className ? className : "";
+
+    const handleOnClick = () => {
+        ReactGA.event({
+            category: "Link",
+            action: "Clicked link"
+        })
+    }
+
     return (
-        <div className="inline-flex rounded-md shadow">
+        <div
+            className="inline-flex rounded-md shadow"
+            onClick={handleOnClick}>
             <Link href={href}>
                 <a className={classNames(styles)}>
                     {label}

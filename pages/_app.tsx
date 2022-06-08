@@ -6,8 +6,12 @@ import React from "react";
 import Layout from "../components/Layout";
 import { useRouter } from "next/dist/client/router";
 import capitalize from "../utils/capitalize";
+import ReactGA from "react-ga"
 
 const App = ({ Component, pageProps }: AppProps) => {
+  ReactGA.initialize(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || "")
+  ReactGA.pageview(window.location.pathname + window.location.search)
+
   const router = useRouter();
 
   const is404Page = router.pathname == "/404";
