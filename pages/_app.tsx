@@ -3,10 +3,11 @@ import "../styles/globals.css"
 import "../styles/codeblock.css"
 import type { AppProps } from "next/app";
 import React from "react";
-import Layout from "../components/Layout";
+import Layout from "../src/components/Layout";
 import { useRouter } from "next/dist/client/router";
-import capitalize from "../utils/capitalize";
+import capitalize from "../src/utils/capitalize";
 import ReactGA from "react-ga"
+import useTheme from "@/hooks/useTheme";
 
 const App = ({ Component, pageProps }: AppProps) => {
   ReactGA.initialize(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || "")
@@ -21,6 +22,8 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   const hasSubPage = router.pathname.split("/").length > 1;
 
+  const theme = useTheme()
+
   if (is404Page) {
     return (
       <Component {...pageProps} />
@@ -29,11 +32,12 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   if (isHomePage) {
     return (
-      <Layout title={"Home"}>
+      <Layout title={"Home"} theme={theme}>
         <Component {...pageProps} />
       </Layout>
     );
   }
+
 
   if (hasSubPage) {
     const split = router.pathname.split("/");
@@ -43,14 +47,14 @@ const App = ({ Component, pageProps }: AppProps) => {
     const title = split[1];
 
     return (
-      <Layout title={capitalize(title)}>
+      <Layout title={capitalize(title)} theme={theme}>
         <Component {...pageProps} />
       </Layout>
     );
   }
 
   return (
-    <Layout title={capitalize(router.pathname.substring(1))}>
+    <Layout title={capitalize(router.pathname.substring(1))} theme={theme}>
       <Component {...pageProps} />
     </Layout>
   );

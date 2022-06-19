@@ -1,9 +1,9 @@
-import PageWrapper from '../../components/PageWrapper';
-import classNames from '../../utils/classNames';
-import { FrontMatter } from '../../types/frontmatter';
+import PageWrapper from '../../src/components/PageWrapper';
+import classNames from '../../src/utils/classNames';
+import { FrontMatter } from '../../src/types/frontmatter';
 import { GetStaticProps } from 'next';
-import { getFrontMatters, MDX_PROJECTS_PATH } from '../../lib/mdx';
-import ArticleCards from '../../components/article/ArticleCards';
+import { getFrontMatters, MDX_PROJECTS_PATH } from '../../src/lib/mdx';
+import ArticleCards from '../../src/components/article/ArticleCards';
 
 
 const ProjectIndex = ({ projects }: { projects: FrontMatter[] }) => {

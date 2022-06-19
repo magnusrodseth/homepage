@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from "next/types"
-import { Article } from "../../types/article"
-import ArticleComponent from "../../components/article/ArticleComponent"
-import { getFrontMatters, getMdxBySlug, MDX_BLOG_PATH } from "../../lib/mdx"
-import NoContent from "../../components/NoContent"
+import { Article } from "../../src/types/article"
+import ArticleComponent from "../../src/components/article/ArticleComponent"
+import { getFrontMatters, getMdxBySlug, MDX_BLOG_PATH } from "../../src/lib/mdx"
+import NoContent from "../../src/components/NoContent"
 
 const BlogPost = ({ post }: { post: Article }) => {
     return post ? <ArticleComponent article={post} backTo="blog" /> : <NoContent />

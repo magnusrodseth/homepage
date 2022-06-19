@@ -1,7 +1,7 @@
-import classNames from "../utils/classNames"
+import classNames from "../src/utils/classNames"
 import Typewriter from 'typewriter-effect';
-import LinkButton from "../components/LinkButton";
-import PageWrapper from "../components/PageWrapper";
+import LinkButton from "../src/components/LinkButton";
+import PageWrapper from "../src/components/PageWrapper";
 
 const Index = () => {
   const typewriterStrings = ['fundamentally curious.', 'an engineer at heart.', 'eager to challenge myself.'];

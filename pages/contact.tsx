@@ -1,5 +1,5 @@
 import { ChevronDoubleDownIcon } from "@heroicons/react/outline"
-import PageWrapper from "../components/PageWrapper"
+import PageWrapper from "../src/components/PageWrapper"
 
 const Contact = () => {
     return (

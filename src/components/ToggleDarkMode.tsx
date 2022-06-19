@@ -1,16 +1,18 @@
+import useThemeStore from "@/state/useThemeStore"
 import { Switch } from "@headlessui/react"
 import { MoonIcon, SunIcon } from "@heroicons/react/outline"
 import { memo } from "react"
-import { useDarkMode } from "../hooks/useDarkMode"
 import classNames from "../utils/classNames"
+import { THEME } from "@/constants"
 
 const ToggleDarkMode = memo(() => {
-    const [isDark, setIsDark] = useDarkMode()
+    const { theme, toggleTheme } = useThemeStore();
+    const isDark = theme === THEME.darkTheme
 
     return (
         <Switch
             checked={isDark}
-            onChange={(checked) => setIsDark(checked)}
+            onChange={toggleTheme}
             className={classNames(`${isDark ? 'dark:bg-indigo-400' : 'bg-gray-400'}`,
                 "relative inline-flex items-center h-8 rounded-full w-16")}
         >

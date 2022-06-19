@@ -1,7 +1,7 @@
-import classNames from "../utils/classNames";
+import classNames from "../src/utils/classNames";
 import React from "react";
 import Head from "next/head";
-import ReturnButton from "../components/ReturnButton";
+import ReturnButton from "../src/components/ReturnButton";
 
 const Custom404 = () => {
   return (

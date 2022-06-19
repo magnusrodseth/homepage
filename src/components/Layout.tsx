@@ -1,3 +1,4 @@
+import { ITheme } from "@/types/state";
 import Head from "next/head";
 import Script from "next/script";
 import React from "react";
@@ -8,9 +9,10 @@ import Navbar from "./Navbar";
 interface LayoutProps {
   children: any;
   title: string;
+  theme: ITheme
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, title }: LayoutProps) => {
+const Layout: React.FC<LayoutProps> = ({ children, theme, title }: LayoutProps) => {
   return (
     <div>
       <Head>
@@ -40,7 +42,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }: LayoutProps) => {
         </Script>
       </Head>
 
-      <div className="">
+      <div>
         <header >
           <Navbar />
         </header>

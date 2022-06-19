@@ -1,12 +1,12 @@
 import Image from "next/image"
-import classNames from '../utils/classNames';
-import PageWrapper from '../components/PageWrapper';
+import classNames from '../src/utils/classNames';
+import PageWrapper from '../src/components/PageWrapper';
 import { GetStaticProps } from "next";
-import { getMdxBySlug, MDX_ABOUT_PATH } from "../lib/mdx";
-import { Article } from "../types/article";
+import { getMdxBySlug, MDX_ABOUT_PATH } from "../src/lib/mdx";
+import { Article } from "../src/types/article";
 import { getMDXComponent } from "mdx-bundler/client";
 import { useMemo } from "react";
-import { components } from "../components/MdxComponents";
+import { components } from "../src/components/MdxComponents";
 
 const About = ({ about }: { about: Article }) => {
     const { code, frontmatter } = about;
