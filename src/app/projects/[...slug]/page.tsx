@@ -8,7 +8,7 @@ import "@/styles/mdx.css";
 import { Metadata } from "next";
 import Image from "next/image";
 
-import { absoluteUrl, formatDate } from "@/lib/utils";
+import { formatDate, getUrl } from "@/lib/utils";
 import { env } from "@/env.mjs";
 import BackLink from "@/components/back-link";
 import { H1, H2, H3 } from "@/components/ui/typography";
@@ -43,7 +43,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const url = env.NEXT_PUBLIC_APP_URL;
+  const url = getUrl();
 
   const ogUrl = new URL(`${url}/api/og`);
   ogUrl.searchParams.set("heading", project.title);
@@ -57,7 +57,7 @@ export async function generateMetadata({
       title: project.title,
       description: project.description,
       type: "article",
-      url: absoluteUrl(project.slug),
+      url: `${url}/projects/${project.slugAsParams}`,
       images: [
         {
           url: ogUrl.toString(),

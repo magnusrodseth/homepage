@@ -1,3 +1,4 @@
+import { env } from "@/env.mjs";
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -13,6 +14,13 @@ export function formatDate(input: string | number): string {
   });
 }
 
-export function absoluteUrl(path: string) {
-  return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
-}
+export const getUrl = () => {
+  let url =
+    env.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
+    "http://localhost:3000";
+
+  // Make sure to include `https://` when not localhost.
+  url = url.includes("http") ? url : `https://${url}`;
+
+  return url;
+};

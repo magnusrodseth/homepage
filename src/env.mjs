@@ -4,9 +4,9 @@ import { z } from "zod";
 export const env = createEnv({
   server: {},
   client: {
-    NEXT_PUBLIC_APP_URL: z.string().optional(),
+    NEXT_PUBLIC_VERCEL_URL: z.string().optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_VERCEL_URL: process.env.NEXT_PUBLIC_VERCEL_URL,
   },
 });
