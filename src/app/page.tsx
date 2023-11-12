@@ -9,7 +9,9 @@ export default function Home() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <H2 className="animate-slide-enter">{siteConfig.name}</H2>
+      <H2 className="animate-slide-enter uppercase text-4xl font-inter">
+        {siteConfig.name}
+      </H2>
 
       {indexPage && (
         <div className="mt-4">
