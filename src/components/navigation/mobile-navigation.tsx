@@ -8,6 +8,8 @@ import NavigationLink from "./navigation-link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "../mode-toggle";
+import { Separator } from "../ui/separator";
+import Socials from "../socials";
 
 const MobileNavigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +21,7 @@ const MobileNavigation = () => {
   }, [pathname]);
 
   return (
-    <div className="flex lg:hidden">
+    <div className="flex md:hidden">
       <Sheet open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
         <SheetTrigger asChild>
           <Button variant="ghost">
@@ -27,10 +29,16 @@ const MobileNavigation = () => {
           </Button>
         </SheetTrigger>
         <SheetContent>
-          <div className="mt-16 flex flex-col items-center justify-center space-y-8">
+          <div className="mt-16 flex flex-col items-center justify-center space-y-4">
             {navigation.map((item, index) => (
               <NavigationLink key={index} item={item} />
             ))}
+
+            <Separator className="w-1/2" />
+
+            <Socials />
+
+            <Separator className="w-1/2" />
 
             <ModeToggle />
           </div>
