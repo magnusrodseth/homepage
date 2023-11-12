@@ -170,7 +170,7 @@ const components = {
   code: ({ className, ...props }: HTMLElementProps) => (
     <code
       className={cn(
-        "relative rounded border px-[0.3rem] py-[0.2rem] font-mono text-sm",
+        "relative text-primary/80 px-[0.3rem] py-[0.2rem] font-mono text-sm",
         "animate-slide-enter delay-300",
         className
       )}
