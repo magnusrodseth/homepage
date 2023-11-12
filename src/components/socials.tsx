@@ -9,7 +9,7 @@ const Socials = () => {
         href={siteConfig.github}
         aria-label="GitHub link"
         target="_blank"
-        className="hover-rise text-muted-foreground"
+        className="hover-rise text-muted-foreground hover:text-foreground duration-150"
       >
         <Icons.gitHub className="h-5 w-5" />
       </Link>
@@ -18,7 +18,7 @@ const Socials = () => {
         href={siteConfig.linkedIn}
         aria-label="LinkedIn link"
         target="_blank"
-        className="hover-rise text-muted-foreground"
+        className="hover-rise text-muted-foreground hover:text-foreground duration-150"
       >
         <Icons.linkedIn className="h-5 w-5" />
       </Link>
@@ -27,7 +27,7 @@ const Socials = () => {
         href={siteConfig.email}
         aria-label="LinkedIn link"
         target="_blank"
-        className="hover-rise text-muted-foreground"
+        className="hover-rise text-muted-foreground hover:text-foreground duration-150"
       >
         <Icons.send className="h-5 w-5" />
       </Link>
