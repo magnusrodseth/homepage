@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Socials from "./socials";
 
 export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
   return (
@@ -19,6 +20,8 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
             . All Rights Reserved.
           </p>
         </div>
+
+        <Socials />
       </div>
     </footer>
   );
