@@ -3,6 +3,7 @@ import DesktopNavigation from "./desktop-navigation";
 import MobileNavigation from "./mobile-navigation";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
+import Logo from "../logo";
 
 const Navbar = async () => {
   return (
@@ -17,7 +18,7 @@ const Navbar = async () => {
             href="/"
           >
             <div className="flex flex-col justify-center items-start">
-              <span className="font-bold text-4xl">{siteConfig.name}</span>
+              <Logo />
             </div>
           </Link>
 
