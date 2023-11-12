@@ -59,6 +59,7 @@ import {
   Pencil,
   Dot,
   ArrowUpRight,
+  Lightbulb,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -72,6 +73,7 @@ export const Icons = {
   chevronDown: ChevronDown,
   chevronUp: ChevronUp,
   arrowUpRight: ArrowUpRight,
+  lightbulb: Lightbulb,
   trash: Trash,
   copy: Copy,
   dot: Dot,

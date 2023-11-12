@@ -15,6 +15,7 @@ import { H1, H2, H3 } from "@/components/ui/typography";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { Icons } from "@/components/icons";
+import { Callout } from "@/components/callout";
 
 interface ProjectPageProps {
   params: {
@@ -116,6 +117,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         )}
       </div>
       <H1 className="animate-slide-enter">{project.title}</H1>
+
+      <Callout className="animate-slide-enter" icon={<Icons.lightbulb />}>
+        {project.description}
+      </Callout>
+
       {project.image && (
         <div className="w-full relative animate-slide-enter delay-200">
           <Image
