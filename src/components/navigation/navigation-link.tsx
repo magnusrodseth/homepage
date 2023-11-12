@@ -18,9 +18,8 @@ const NavigationLink = ({ item }: { item: NavItem }) => {
       target={isExternalLink ? "_blank" : undefined}
       className={cn(
         active
-          ? buttonVariants({ variant: "default" })
-          : buttonVariants({ variant: "ghost" }),
-        "hover:bg-secondary"
+          ? buttonVariants({ variant: "secondary", size: "sm" })
+          : buttonVariants({ variant: "link", size: "sm" })
       )}
     >
       {item.title}

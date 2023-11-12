@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 const Navbar = async () => {
   return (
-    <div className={cn("w-full py-2 shadow-sm")}>
+    <div className={cn("w-full py-2")}>
       <header className="container z-40">
         <div className="flex h-20 items-center justify-between py-6">
           <Link
@@ -18,7 +18,6 @@ const Navbar = async () => {
           >
             <div className="flex flex-col justify-center items-start">
               <span className="font-bold text-4xl">{siteConfig.name}</span>
-              <span className="text-xs w-[20ch] font-mono">MR</span>
             </div>
           </Link>
 

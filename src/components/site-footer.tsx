@@ -10,7 +10,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
           <p className="text-center text-sm leading-loose md:text-left">
             &copy; {new Date().getFullYear()}.{" "}
             <Link
-              href="https://www.ntva.no"
+              href="https://magnusrodseth.com"
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"

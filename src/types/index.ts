@@ -4,6 +4,9 @@ export type SiteConfig = {
   url: string;
   keywords: string[];
   ogImage: string;
+  github: string;
+  linkedIn: string;
+  email: string;
 };
 
 export type RouteProps = {

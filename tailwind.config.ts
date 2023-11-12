@@ -1,3 +1,5 @@
+const plugin = require("tailwindcss/plugin");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -71,11 +73,32 @@ module.exports = {
           to: { height: 0 },
         },
       },
+      translate: {
+        rise: "-0.25rem",
+      },
+      variants: {
+        extend: {
+          translate: ["hover"],
+        },
+      },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(function ({ addUtilities }: any) {
+      const newUtilities = {
+        ".hover-rise": {
+          transition: "transform 300ms ease",
+          "&:hover": {
+            transform: "translateY(-0.25rem)",
+          },
+        },
+      };
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    }),
+  ],
 };
