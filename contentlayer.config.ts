@@ -72,6 +72,10 @@ export const Project = defineDocumentType(() => ({
       type: "string",
       required: false,
     },
+    githubLink: {
+      type: "string",
+      required: false,
+    },
     published: {
       type: "boolean",
       default: true,

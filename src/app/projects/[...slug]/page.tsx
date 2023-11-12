@@ -115,6 +115,21 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             </Link>
           </div>
         )}
+
+        {project.githubLink && (
+          <div className="flex justify-center items-center gap-x-2">
+            <Separator orientation="vertical" className="h-6" />
+
+            <Link
+              href={project.githubLink}
+              target="_blank"
+              className="flex justify-center items-center gap-x-1 hover:text-foreground transition-all duration-300"
+            >
+              <Icons.gitHub className="w-4 inline" />
+              View on GitHub
+            </Link>
+          </div>
+        )}
       </div>
       <H1 className="animate-slide-enter">{project.title}</H1>
 

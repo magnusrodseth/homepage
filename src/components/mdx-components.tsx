@@ -57,18 +57,22 @@ const components = {
   a: ({
     className,
     ...props
-  }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
-    <Link
-      href={props.href ?? ""}
-      target="_blank"
-      className={cn(
-        "font-medium underline underline-offset-4",
-        "animate-slide-enter delay-300",
-        className
-      )}
-      {...props}
-    />
-  ),
+  }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
+    const isInternal = props.href?.startsWith("/");
+
+    return (
+      <Link
+        href={props.href ?? ""}
+        target={!isInternal ? "_blank" : undefined}
+        className={cn(
+          "font-medium underline underline-offset-4",
+          "animate-slide-enter delay-300",
+          className
+        )}
+        {...props}
+      />
+    );
+  },
   p: ({ className, ...props }: HTMLElementProps) => (
     <P
       className={cn(
