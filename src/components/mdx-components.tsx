@@ -74,14 +74,7 @@ const components = {
     );
   },
   p: ({ className, ...props }: HTMLElementProps) => (
-    <P
-      className={cn(
-        "mt-0 [&:not(:first-child)]:mb-8 [&:not(:first-child)]:mt-1",
-        "animate-slide-enter delay-300",
-        className
-      )}
-      {...props}
-    />
+    <P className={cn("animate-slide-enter delay-300", className)} {...props} />
   ),
   ul: ({ className, ...props }: HTMLElementProps) => (
     <ul
@@ -172,8 +165,7 @@ const components = {
     />
   ),
   pre: ({ className, ...props }: HTMLElementProps) => (
-    // <InlineCode className={cn(className)} {...props} />
-    <div>this is a test</div>
+    <InlineCode className={cn(className)} {...props} />
   ),
   code: ({ className, ...props }: HTMLElementProps) => (
     <code

@@ -88,9 +88,16 @@ export const Project = defineDocumentType(() => ({
   computedFields,
 }));
 
+export const Page = defineDocumentType(() => ({
+  name: "Page",
+  filePathPattern: `pages/**/*.mdx`,
+  contentType: "mdx",
+  computedFields,
+}));
+
 export default makeSource({
   contentDirPath: "./src/content",
-  documentTypes: [Post, Project],
+  documentTypes: [Post, Project, Page],
 
   mdx: {
     remarkPlugins: [remarkGfm],
