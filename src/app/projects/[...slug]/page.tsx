@@ -93,7 +93,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <article className="container relative max-w-5xl py-6 lg:py-10">
       <BackLink />
-      <div className="flex justify-start items-center my-4 gap-x-2 text-muted-foreground text-sm">
+      <div className="flex justify-start items-center my-4 gap-x-2 text-muted-foreground text-sm animate-slide-enter">
         {project.date && (
           <time dateTime={project.date}>
             Published on {formatDate(project.date)}
@@ -115,20 +115,26 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </div>
         )}
       </div>
-      <H1>{project.title}</H1>
+      <H1 className="animate-slide-enter">{project.title}</H1>
       {project.image && (
-        <Image
-          src={project.image}
-          alt={project.title}
-          width={720}
-          height={405}
-          className="my-8 rounded-md border bg-muted transition-colors"
-          priority
-        />
+        <div className="w-full relative animate-slide-enter delay-200">
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            className="my-8 rounded-md border bg-muted transition-colors object-cover"
+            priority
+          />
+        </div>
       )}
-      <Mdx code={project.body.code} />
-      <hr className="mt-12" />
-      <div className="flex justify-center py-6 lg:py-10">
+
+      <div className="my-8">
+        <Mdx code={project.body.code} />
+      </div>
+
+      <Separator className="my-4" />
+
+      <div className="flex justify-center">
         <BackLink />
       </div>
     </article>

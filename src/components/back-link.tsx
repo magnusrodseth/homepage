@@ -9,7 +9,7 @@ const BackLink = () => {
 
   return (
     <Button
-      className="flex justify-center items-center gap-x-2 text-muted-foreground my-8 px-0"
+      className="flex justify-center items-center gap-x-2 text-muted-foreground my-8 px-0 animate-slide-enter"
       variant="link"
       size="sm"
       onClick={() => router.back()}

@@ -1,8 +1,7 @@
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 
-interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
-  children: ReactNode;
+export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
   className?: string;
 }
 
