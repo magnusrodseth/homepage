@@ -57,6 +57,7 @@ import {
   Headphones,
   Copy,
   Pencil,
+  Dot,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -71,6 +72,7 @@ export const Icons = {
   chevronUp: ChevronUp,
   trash: Trash,
   copy: Copy,
+  dot: Dot,
   calendarClock: CalendarClock,
   chat: MessagesSquare,
   newspaper: Newspaper,

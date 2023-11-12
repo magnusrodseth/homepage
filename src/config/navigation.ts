@@ -6,7 +6,7 @@ export const navigation: NavItem[] = [
     href: "/blog",
   },
   {
-    title: "About",
-    href: "/about",
+    title: "Projects",
+    href: "/projects",
   },
 ];

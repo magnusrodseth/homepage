@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "../styles/globals.css";
-// import "../styles/mdx.css";
+import "@/styles/globals.css";
 import { siteConfig } from "@/config/site";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";

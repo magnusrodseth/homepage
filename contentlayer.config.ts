@@ -1,3 +1,4 @@
+import { readingTimeInMinutes } from "./src/lib/readingTime";
 import {
   ComputedFields,
   defineDocumentType,
@@ -16,6 +17,10 @@ const computedFields: ComputedFields = {
   slugAsParams: {
     type: "string",
     resolve: (doc) => doc._raw.flattenedPath.split("/").slice(1).join("/"),
+  },
+  readingTimeInMinutes: {
+    type: "number",
+    resolve: (doc) => readingTimeInMinutes(doc.body.raw),
   },
 };
 
@@ -47,9 +52,37 @@ export const Post = defineDocumentType(() => ({
   computedFields,
 }));
 
+export const Project = defineDocumentType(() => ({
+  name: "Project",
+  filePathPattern: `projects/**/*.mdx`,
+  contentType: "mdx",
+  fields: {
+    title: {
+      type: "string",
+      required: true,
+    },
+    description: {
+      type: "string",
+    },
+    date: {
+      type: "date",
+      required: true,
+    },
+    published: {
+      type: "boolean",
+      default: true,
+    },
+    image: {
+      type: "string",
+      required: false,
+    },
+  },
+  computedFields,
+}));
+
 export default makeSource({
   contentDirPath: "./src/content",
-  documentTypes: [Post],
+  documentTypes: [Post, Project],
 
   mdx: {
     remarkPlugins: [remarkGfm],
