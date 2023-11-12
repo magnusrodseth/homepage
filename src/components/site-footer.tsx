@@ -1,4 +1,3 @@
-import { ModeToggle } from "./mode-toggle";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -20,7 +19,6 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
             . All Rights Reserved.
           </p>
         </div>
-        <ModeToggle />
       </div>
     </footer>
   );

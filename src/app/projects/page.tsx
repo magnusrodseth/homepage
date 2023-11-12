@@ -73,7 +73,7 @@ export default async function ProjectsPage() {
                 {projectsByYear[year].map((project) => (
                   <Link
                     key={project._id}
-                    className="flex justify-start items-center gap-x-2 text-muted-foreground hover:text-slate-50 animate-slide-enter transition-all"
+                    className="flex justify-start items-center gap-x-2 text-muted-foreground hover:text-foreground animate-slide-enter transition-all"
                     href={`/projects/${project.slugAsParams}`}
                     style={{ animationDelay: delay }}
                   >

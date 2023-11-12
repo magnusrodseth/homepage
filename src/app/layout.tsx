@@ -53,7 +53,7 @@ export default function RootLayout({
           "bg-background font-sans antialiased"
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <Navbar />
           <div className="md:container">
             <main className="flex-1 min-h-screen m-8">{children}</main>

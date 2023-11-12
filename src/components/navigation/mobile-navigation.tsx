@@ -7,7 +7,6 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import NavigationLink from "./navigation-link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { ModeToggle } from "../mode-toggle";
 import { Separator } from "../ui/separator";
 import Socials from "../socials";
 
@@ -37,10 +36,6 @@ const MobileNavigation = () => {
             <Separator className="w-1/2" />
 
             <Socials />
-
-            <Separator className="w-1/2" />
-
-            <ModeToggle />
           </div>
         </SheetContent>
       </Sheet>
