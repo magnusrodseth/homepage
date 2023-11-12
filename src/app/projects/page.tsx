@@ -43,7 +43,7 @@ export default async function ProjectsPage() {
     <div className="mx-auto max-w-2xl">
       <div className="flex flex-col gap-y-2">
         <H2 className="animate-slide-enter">Projects</H2>
-        <Small className="animate-slide-enter mb-8">
+        <Small className="animate-slide-enter mb-16">
           A collection of professional and personal projects I have worked on
           throughout my career.
         </Small>

@@ -58,6 +58,7 @@ import {
   Copy,
   Pencil,
   Dot,
+  ArrowUpRight,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -70,6 +71,7 @@ export const Icons = {
   chevronRight: ChevronRight,
   chevronDown: ChevronDown,
   chevronUp: ChevronUp,
+  arrowUpRight: ArrowUpRight,
   trash: Trash,
   copy: Copy,
   dot: Dot,

@@ -68,6 +68,10 @@ export const Project = defineDocumentType(() => ({
       type: "date",
       required: true,
     },
+    link: {
+      type: "string",
+      required: false,
+    },
     published: {
       type: "boolean",
       default: true,

@@ -1,17 +1,20 @@
 import { notFound } from "next/navigation";
-import { allPosts, allProjects } from "contentlayer/generated";
+import { allProjects } from "contentlayer/generated";
 
 import { Mdx } from "@/components/mdx-components";
 
+import "@/styles/globals.css";
 import "@/styles/mdx.css";
 import { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 
-import { absoluteUrl, cn, formatDate } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
+import { absoluteUrl, formatDate } from "@/lib/utils";
 import { env } from "@/env.mjs";
+import BackLink from "@/components/back-link";
+import { H1, H2, H3 } from "@/components/ui/typography";
+import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
+import { Icons } from "@/components/icons";
 
 interface ProjectPageProps {
   params: {
@@ -88,30 +91,31 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   }
 
   return (
-    <article className="container relative max-w-3xl py-6 lg:py-10">
-      <Link
-        href="/projects"
-        className={cn(
-          buttonVariants({ variant: "ghost" }),
-          "absolute left-[-200px] top-14 hidden xl:inline-flex"
-        )}
-      >
-        <Icons.chevronLeft className="mr-2 h-4 w-4" />
-        See all posts
-      </Link>
-      <div>
+    <article className="container relative max-w-5xl py-6 lg:py-10">
+      <BackLink />
+      <div className="flex justify-start items-center my-4 gap-x-2 text-muted-foreground text-sm">
         {project.date && (
-          <time
-            dateTime={project.date}
-            className="block text-sm text-muted-foreground"
-          >
+          <time dateTime={project.date}>
             Published on {formatDate(project.date)}
           </time>
         )}
-        <h1 className="mt-2 inline-block text-4xl leading-tight lg:text-5xl">
-          {project.title}
-        </h1>
+
+        {project.link && (
+          <div className="flex justify-center items-center gap-x-2">
+            <Separator orientation="vertical" className="h-6" />
+
+            <Link
+              href={project.link}
+              target="_blank"
+              className="flex justify-center items-center gap-x-1 group hover:text-foreground transition-all duration-300"
+            >
+              <Icons.link className="w-4 inline group-hover:rotate-180 duration-300" />
+              Read more
+            </Link>
+          </div>
+        )}
       </div>
+      <H1>{project.title}</H1>
       {project.image && (
         <Image
           src={project.image}
@@ -125,10 +129,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <Mdx code={project.body.code} />
       <hr className="mt-12" />
       <div className="flex justify-center py-6 lg:py-10">
-        <Link href="/blog" className={cn(buttonVariants({ variant: "ghost" }))}>
-          <Icons.chevronLeft className="mr-2 h-4 w-4" />
-          See all posts
-        </Link>
+        <BackLink />
       </div>
     </article>
   );
