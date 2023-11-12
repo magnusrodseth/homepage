@@ -94,7 +94,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <article className="container relative max-w-5xl py-6 lg:py-10">
       <BackLink />
-      <div className="flex justify-start items-center my-4 gap-x-2 text-muted-foreground text-sm animate-slide-enter">
+      <div className="flex flex-col md:flex-row gap-y-2 justify-start items-center my-4 gap-x-2 text-muted-foreground text-sm animate-slide-enter">
         {project.date && (
           <time dateTime={project.date}>
             Published on {formatDate(project.date)}
@@ -103,7 +103,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
         {project.link && (
           <div className="flex justify-center items-center gap-x-2">
-            <Separator orientation="vertical" className="h-6" />
+            <Separator orientation="vertical" className="h-6 hidden md:flex" />
 
             <Link
               href={project.link}
@@ -118,7 +118,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
         {project.githubLink && (
           <div className="flex justify-center items-center gap-x-2">
-            <Separator orientation="vertical" className="h-6" />
+            <Separator orientation="vertical" className="h-6 hidden md:flex" />
 
             <Link
               href={project.githubLink}
