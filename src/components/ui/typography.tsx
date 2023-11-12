@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 
-type TypographyProps = {
+interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
   children: ReactNode;
   className?: string;
-};
+}
 
 export function H1({ children, className }: TypographyProps) {
   return (
@@ -32,13 +32,14 @@ export function H2({ children, className }: TypographyProps) {
   );
 }
 
-export function H3({ children, className }: TypographyProps) {
+export function H3({ children, className, ...props }: TypographyProps) {
   return (
     <h3
       className={cn(
         "scroll-m-20 text-2xl font-semibold tracking-tight",
         className
       )}
+      {...props}
     >
       {children}
     </h3>
