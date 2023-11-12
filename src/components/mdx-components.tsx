@@ -172,7 +172,8 @@ const components = {
     />
   ),
   pre: ({ className, ...props }: HTMLElementProps) => (
-    <InlineCode className={cn(className)} {...props} />
+    // <InlineCode className={cn(className)} {...props} />
+    <div>this is a test</div>
   ),
   code: ({ className, ...props }: HTMLElementProps) => (
     <code
