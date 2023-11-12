@@ -71,7 +71,11 @@ const components = {
   ),
   p: ({ className, ...props }: HTMLElementProps) => (
     <P
-      className={cn("mt-0 mb-4", "animate-slide-enter delay-300", className)}
+      className={cn(
+        "mt-0 [&:not(:first-child)]:mb-8 [&:not(:first-child)]:mt-1",
+        "animate-slide-enter delay-300",
+        className
+      )}
       {...props}
     />
   ),
