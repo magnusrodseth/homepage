@@ -69,11 +69,11 @@ export default async function ProjectsPage() {
                 {year}
               </H3>
 
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-y-4">
                 {projectsByYear[year].map((project) => (
                   <Link
                     key={project._id}
-                    className="flex justify-start items-center gap-x-2 text-muted-foreground hover:text-foreground animate-slide-enter transition-all"
+                    className="flex flex-col md:flex-row justify-start items-start md:items-center gap-x-2 text-muted-foreground hover:text-foreground animate-slide-enter transition-all"
                     href={`/projects/${project.slugAsParams}`}
                     style={{ animationDelay: delay }}
                   >
