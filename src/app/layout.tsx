@@ -9,6 +9,7 @@ import { SiteFooter } from "@/components/site-footer";
 import Navbar from "@/components/navigation/navbar";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/providers/theme-provider";
+import GridBackground from "@/components/grid-background";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -54,6 +55,8 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <Navbar />
+
+          <GridBackground />
           <div className="md:container">
             <main className="flex-1 min-h-screen m-8">{children}</main>
 
