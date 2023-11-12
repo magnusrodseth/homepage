@@ -120,16 +120,15 @@ const components = {
     alt,
     ...props
   }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      className={cn(
-        "rounded-md border",
-        "animate-slide-enter delay-300",
-        className
-      )}
-      alt={alt}
-      {...props}
-    />
+    <div className="my-4 max-w-4xl mx-auto flex justify-center items-center w-full">
+      <Image
+        src={props.src ?? ""}
+        width={700}
+        height={600}
+        alt={alt ?? ""}
+        className="object-cover my-2 mx-auto shadow-md hover:shadow-lg transition-all duration-300 rounded-lg"
+      />
+    </div>
   ),
   hr: ({ ...props }) => (
     <Separator className="my-6 animate-slide-enter delay-300" {...props} />

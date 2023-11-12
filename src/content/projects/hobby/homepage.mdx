@@ -1,0 +1,96 @@
+---
+title: My personal homepage
+description: My little corner of the internet.
+date: "2023-07-29"
+link: "https://magnusrodseth.com"
+githubLink: "https://github.com/magnusrodseth/homepage"
+---
+
+## Hello, world
+
+This is my personal homepage. It's built with [Astro](https://astro.build), [TypeScript](https://www.typescriptlang.org), [Svelte](https://svelte.dev), [TailwindCSS](https://tailwindcss.com), and hosted using [Vercel](https://vercel.com).
+
+## Choosing the technology stack
+
+I've been wanting to try out both Astro and Svelte for a while now, so I thought it would be a good idea to try them out together.
+
+Astro is **the** framework of choice when building static pages -- just like this one!
+
+Astro uses the so-called [island architecture](https://docs.astro.build/en/concepts/islands/), which means that you can use any framework you want to build your pages. I chose Svelte because I've been wanting to try it out for a while now, and I'm really happy with the result. Svelte really does provide the greatest developer experience I've ever had.
+
+## Astro and Markdown
+
+Astro makes it easy to write content in Markdown, and then use it in your pages. In fact, the very page you're reading right now is written in Markdown!
+
+Specifically, using content collections and file-based routing, my portfolio structure looks something like this:
+
+```
+src/
+  content/
+    portfolio/
+      hobby/
+        homepage.md
+        other-stuff.md
+
+  pages/
+    index.astro
+    portfolio/
+      index.astro
+      [...slug].astro
+```
+
+The `pages` directory contains the pages that Astro will render, whilst the `content` directory contains the Markdown files that Astro will use to render the content of those pages. For more information, see the [Astro docs](https://docs.astro.build/en/guides/content-collections/).
+
+Then, I have a `MdxLayout.astro` component that I use to render the content of my portfolio pages. This component is responsible for rendering the page's title, description, and content.
+
+## Styling
+
+I'm using TailwindCSS to style my pages.
+
+Because Astro uses some [_✨ Remark / Rehype magic ✨_](https://docs.astro.build/en/guides/markdown-content/) to convert the Markdown content to HTML, I can simply define the Markdown styling in my global styles using Tailwind. This means that I can write my Markdown content in a way that's easy to read, and then use Tailwind to style it separately.
+
+For example, if you read `this code snippet` in the Markdown file, it will be rendered as `<code>this code snippet</code>`. I can then style the `<code>` element using Tailwind in my global styles:
+
+```css
+code {
+  @apply text-sky-200 px-1;
+}
+```
+
+## Compile time validation of frontmatter
+
+Content collections are the best way to manage and author content in any Astro project. Collections help to organize your documents, validate your frontmatter, and provide automatic TypeScript type-safety for all of your content.
+
+In my `content/config.ts` file, I define the shape of my content collections:
+
+```ts
+import { defineCollection, z } from "astro:content";
+
+const portfolio = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    tags: z.array(z.string()),
+    publishedAt: z.string(),
+    link: z.string().optional(),
+    githubLink: z.string().optional(),
+    draft: z.boolean().optional(),
+  }),
+});
+
+export const collections = {
+  portfolio,
+};
+```
+
+The key of the `collections` object is the name of the collection, and the value is the collection itself. This key corresponds to the name of the directory in the `content` directory. The frontmatter of each `.md` file in that directory must match the shape of the collection:
+
+```md
+---
+description: Some description
+tags: ["astro", "typescript", "svelte", "tailwindcss"]
+---
+```
+
+This frontmatter is validated at compile time, and will actually throw an error because it lacks the `title` and `publishedAt` properties. This is great, because it means that I can't accidentally forget to add required properties to the frontmatter.
