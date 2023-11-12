@@ -6,6 +6,17 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const truncate = ({
+  string,
+  length,
+}: {
+  string: string;
+  length: number;
+}) => {
+  if (string.length <= length) return string;
+  return string.slice(0, length).replace(/\s+\S*$/, "...");
+};
+
 export function formatDate(input: string | number): string {
   const date = new Date(input);
   return date.toLocaleDateString("en-US", {
