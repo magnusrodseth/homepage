@@ -2,7 +2,8 @@ import { SiteConfig } from "@/types";
 
 export const siteConfig: SiteConfig = {
   name: "Magnus Rødseth",
-  description: "My personal corner of the Internet.",
+  description:
+    "My personal corner of the Internet. I am Magnus Rødseth, a developer deeply committed to crafting high-quality, performant solutions.",
   url: "https://magnusrodseth.com",
   ogImage: "https://magnusrodseth.com/og.jpg",
   github: "https://github.com/magnusrodseth",
