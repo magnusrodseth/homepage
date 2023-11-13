@@ -59,7 +59,9 @@ export default function RootLayout({
 
           <GridBackground />
           <div className="md:container">
-            <main className="flex-1 min-h-screen m-8">{children}</main>
+            <main className="flex-1 min-h-screen my-8 mx-2 md:mx-8">
+              {children}
+            </main>
 
             <SiteFooter />
             <Toaster richColors />
