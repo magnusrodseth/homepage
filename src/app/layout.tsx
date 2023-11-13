@@ -10,6 +10,7 @@ import Navbar from "@/components/navigation/navbar";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/providers/theme-provider";
 import GridBackground from "@/components/grid-background";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -62,6 +63,8 @@ export default function RootLayout({
 
             <SiteFooter />
             <Toaster richColors />
+
+            <Analytics />
           </div>
         </ThemeProvider>
       </body>
