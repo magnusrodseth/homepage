@@ -10,6 +10,8 @@ import { Icons } from "@/components/icons";
 import { formatReadingTime } from "@/lib/readingTime";
 import { Separator } from "@/components/ui/separator";
 import { slate } from "tailwindcss/colors";
+import FilterProjectsDropdown from "@/components/filter-projects-dropdown";
+import { RouteProps } from "@/types";
 
 export const metadata = {
   title: "Projects",
@@ -19,12 +21,21 @@ type ProjectsByYear = {
   [year: string]: Project[];
 };
 
-export default async function ProjectsPage() {
+export default async function ProjectsPage({ searchParams }: RouteProps) {
+  const type = searchParams.type ?? undefined;
+
   const projects = allProjects
     .filter((project) => project.published)
+    .filter((project) => !type || project.slugAsParams.startsWith(type))
     .sort((a, b) => {
       return compareDesc(new Date(a.date), new Date(b.date));
     });
+
+  const types = allProjects
+    // `/projects/professional/slug` => `professional`
+    .map((project) => project.slugAsParams.split("/")[0])
+    // Remove duplicates
+    .filter((value, index, self) => self.indexOf(value) === index);
 
   const projectsByYear = projects.reduce((acc, project) => {
     const year = new Date(project.date).getFullYear();
@@ -41,11 +52,14 @@ export default async function ProjectsPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="flex flex-col gap-y-2">
-        <H2 className="animate-slide-enter">Projects</H2>
-        <Small className="animate-slide-enter mb-16">
-          A collection of professional and personal projects I have worked on
-          throughout my career.
+      <div className="flex flex-col gap-y-2 mb-32">
+        <div className="w-full flex justify-between">
+          <H2 className="animate-slide-enter">Projects</H2>
+          <FilterProjectsDropdown types={types} />
+        </div>
+        <Small className="animate-slide-enter">
+          A collection of professional, freelance, school and personal projects
+          I have worked on throughout my career.
         </Small>
       </div>
 
