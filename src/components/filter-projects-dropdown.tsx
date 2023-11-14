@@ -9,22 +9,30 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { Icons } from "./icons";
-import { capitalize } from "@/lib/utils";
+import { capitalize, cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 
 type FilterProjectsDropdownProps = {
   types: string[];
+  initialType: string | null;
 };
 
-const FilterProjectsDropdown = ({ types }: FilterProjectsDropdownProps) => {
+const FilterProjectsDropdown = ({
+  types,
+  initialType,
+}: FilterProjectsDropdownProps) => {
+  const [selectedType, setSelectedType] = useState<string | null>(initialType);
   const pathname = usePathname();
   const router = useRouter();
 
   const handleOnClick = (type: string) => {
+    setSelectedType(type);
     router.push(`${pathname}?type=${type}`);
   };
 
   const handleReset = () => {
+    setSelectedType(null);
     router.push(pathname);
   };
 
@@ -33,10 +41,13 @@ const FilterProjectsDropdown = ({ types }: FilterProjectsDropdownProps) => {
       <DropdownMenuTrigger>
         <Button
           variant="secondary"
-          className="flex justify-center items-center gap-x-2 cursor-pointer"
+          className={cn(
+            "flex justify-center items-center gap-x-2 cursor-pointer",
+            "animate-slide-enter duration-300"
+          )}
         >
           <Icons.chevronDown />
-          Filter
+          {selectedType ? capitalize(selectedType) : "Filter"}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -48,6 +59,9 @@ const FilterProjectsDropdown = ({ types }: FilterProjectsDropdownProps) => {
                 handleOnClick(type);
               }}
             >
+              {selectedType === type && (
+                <Icons.check className="w-4 text-primary mr-1" />
+              )}
               {capitalize(type)}
             </DropdownMenuItem>
           );

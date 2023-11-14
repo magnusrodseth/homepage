@@ -22,7 +22,7 @@ type ProjectsByYear = {
 };
 
 export default async function ProjectsPage({ searchParams }: RouteProps) {
-  const type = searchParams.type ?? undefined;
+  const type = searchParams.type ?? null;
 
   const projects = allProjects
     .filter((project) => project.published)
@@ -55,7 +55,7 @@ export default async function ProjectsPage({ searchParams }: RouteProps) {
       <div className="flex flex-col gap-y-2 mb-32">
         <div className="w-full flex justify-between">
           <H2 className="animate-slide-enter">Projects</H2>
-          <FilterProjectsDropdown types={types} />
+          <FilterProjectsDropdown types={types} initialType={type} />
         </div>
         <Small className="animate-slide-enter">
           A collection of professional, freelance, school and personal projects
