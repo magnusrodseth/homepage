@@ -63,48 +63,57 @@ export default async function ProjectsPage({ searchParams }: RouteProps) {
         </Small>
       </div>
 
-      <div className="flex flex-col gap-y-32 mt-16">
-        {sortedYears.map((year, index) => {
-          const delay = `${index * 0.2}s`;
+      {projects.length === 0 && (
+        <Muted className="animate-slide-enter">
+          <span className="font-bold">Oops!</span> Nothing to see here yet.
+          Please come back later.
+        </Muted>
+      )}
 
-          return (
-            <div key={year} className="flex flex-col relative">
-              <H3
-                className={cn(
-                  "animate-slide-enter font-inter text-9xl",
-                  "text-transparent",
-                  "absolute -top-20 -left-6 md:-left-12"
-                )}
-                style={{
-                  animationDelay: delay,
-                  WebkitTextStroke: `1px ${slate[800]}`,
-                }}
-              >
-                {year}
-              </H3>
+      {projects.length > 0 && (
+        <div className="flex flex-col gap-y-32 mt-16">
+          {sortedYears.map((year, index) => {
+            const delay = `${index * 0.2}s`;
 
-              <div className="flex flex-col gap-y-4">
-                {projectsByYear[year].map((project) => (
-                  <Link
-                    key={project._id}
-                    className="flex flex-col md:flex-row justify-start items-start md:items-center gap-x-2 text-muted-foreground hover:text-foreground animate-slide-enter transition-all"
-                    href={`/projects/${project.slugAsParams}`}
-                    style={{ animationDelay: delay }}
-                  >
-                    <Large>{project.title}</Large>
+            return (
+              <div key={year} className="flex flex-col relative">
+                <H3
+                  className={cn(
+                    "animate-slide-enter font-inter text-9xl",
+                    "text-transparent",
+                    "absolute -top-20 -left-6 md:-left-12"
+                  )}
+                  style={{
+                    animationDelay: delay,
+                    WebkitTextStroke: `1px ${slate[800]}`,
+                  }}
+                >
+                  {year}
+                </H3>
 
-                    <Muted className="flex justify-center items-center">
-                      {formatDate(project.date)}{" "}
-                      <Icons.dot className="inline" />{" "}
-                      {formatReadingTime(project.readingTimeInMinutes)}
-                    </Muted>
-                  </Link>
-                ))}
+                <div className="flex flex-col gap-y-4">
+                  {projectsByYear[year].map((project) => (
+                    <Link
+                      key={project._id}
+                      className="flex flex-col md:flex-row justify-start items-start md:items-center gap-x-2 text-muted-foreground hover:text-foreground animate-slide-enter transition-all"
+                      href={`/projects/${project.slugAsParams}`}
+                      style={{ animationDelay: delay }}
+                    >
+                      <Large>{project.title}</Large>
+
+                      <Muted className="flex justify-center items-center">
+                        {formatDate(project.date)}{" "}
+                        <Icons.dot className="inline" />{" "}
+                        {formatReadingTime(project.readingTimeInMinutes)}
+                      </Muted>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
 
       <Separator className="my-8" />
 
