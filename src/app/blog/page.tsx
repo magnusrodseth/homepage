@@ -1,15 +1,12 @@
 import Link from "next/link";
-import { Project, allPosts, allProjects } from "contentlayer/generated";
+import { allPosts } from "contentlayer/generated";
 import { compareDesc } from "date-fns";
-
-import { cn, formatDate } from "@/lib/utils";
-import { H2, H3, Large, Muted, Small } from "@/components/ui/typography";
+import { formatDate } from "@/lib/utils";
+import { H2, Large, Muted, Small } from "@/components/ui/typography";
 import BackLink from "@/components/back-link";
 import { Icons } from "@/components/icons";
 import { formatReadingTime } from "@/lib/readingTime";
 import { Separator } from "@/components/ui/separator";
-import { slate } from "tailwindcss/colors";
-import FilterProjectsDropdown from "@/components/filter-projects-dropdown";
 import { RouteProps } from "@/types";
 
 export const metadata = {
@@ -18,7 +15,9 @@ export const metadata = {
 
 export default async function BlogPage({ searchParams }: RouteProps) {
   const posts = allPosts
-    .filter((post) => post.published)
+    .filter((post) =>
+      process.env.NODE_ENV === "production" ? post.published : true
+    )
     .sort((a, b) => {
       return compareDesc(new Date(a.date), new Date(b.date));
     });

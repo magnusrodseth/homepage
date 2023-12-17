@@ -25,7 +25,9 @@ export default async function ProjectsPage({ searchParams }: RouteProps) {
   const type = searchParams.type ?? null;
 
   const projects = allProjects
-    .filter((project) => project.published)
+    .filter((project) =>
+      process.env.NODE_ENV === "production" ? project.published : true
+    )
     .filter((project) => !type || project.slugAsParams.startsWith(type))
     .sort((a, b) => {
       return compareDesc(new Date(a.date), new Date(b.date));

@@ -1,0 +1,312 @@
+---
+title: Designing Data-Intensive Applications
+description: My summary and notes on the book Designing Data-Intensive Applications by Martin Kleppmann.
+date: '2023-12-01'
+published: false
+---
+
+## Introduction
+
+This post is a summary of my reading of the book [Designing Data-Intensive Applications](https://dataintensive.net/) by Martin Kleppmann.
+
+It consists largely of me paraphrasing all important parts of the book, perhaps with some additional comments of my own.
+
+### Who should read this book?
+
+If you develop applications that have some kind of server/backend for storing or processing data, and your applications use the internet (e.g., web applications, mobile apps, or internet-connected sensors), then this book is for you.
+
+It is especially relevant if you need to make decisions about the architecture of the systems you work on—for example, if you need to choose tools for solving a given problem and figure out how best to apply them.
+
+This book discusses the various principles and trade-offs that are fundamental to data systems, and we explore the different design decisions taken by different products.
+
+We look primarily at the architecture of data systems and the ways they are integrated into data-intensive applications.
+
+## Chapter 1. Reliable, Scalable, and Maintainable Applications
+
+Many applications today are data-intensive, as opposed to compute-intensive. The bigger problems are usually the amount of data, the complexity of data, and the speed at which it is changing.
+
+For example, many applications need to:
+
+- Store data so that they, or another application, can find it again later (databases)
+
+- Remember the result of an expensive operation, to speed up reads (caches)
+
+- Allow users to search data by keyword or filter it in various ways (search indexes)
+
+- Send a message to another process, to be handled asynchronously (stream processing)
+
+- Periodically crunch a large amount of accumulated data (batch processing)
+
+There are various approaches to caching, several ways of building search indexes, and so on.
+
+### Thinking about Data Systems
+
+Although a database and a message queue have some superficial similarity—both store data for some time—they have very different access patterns, which means different performance characteristics, and thus very different implementations.
+
+Many new tools for data storage and processing have emerged in recent years. They are optimized for a variety of different use cases, and they no longer neatly fit into traditional categories.
+
+Increasingly many applications now have such demanding or wide-ranging requirements that a single tool can no longer meet all of its data processing and storage needs. Instead, the work is broken down into tasks that can be performed efficiently on a single tool, and those different tools are stitched together using application code.
+
+When you combine several tools in order to provide a service, the services interface or application
+programming interface (API) usually hides those implementation details from clients. Now you have
+essentially created a new, special-purpose data system from smaller, general-purpose components. You are now not
+only an application developer, but also a data system designer.
+
+If you are designing a data system or service, a lot of tricky questions arise. How do you ensure
+that the data remains correct and complete, even when things go wrong internally? How do you provide
+consistently good performance to clients, even when parts of your system are degraded? How do you
+scale to handle an increase in load? What does a good API for the service look like?
+
+The book focuses on three concerns that are important in most software systems:
+
+- **Reliability**: The system should continue to work correctly (performing the correct function at the desired level of performance) even in the face of adversity (hardware or software faults, and even human error).
+
+- **Scalability**: As the system grows, there should be reasonable ways of dealing with that growth.
+
+- **Maintainability**: Over time, many different people will work on the system (engineering and operations, both
+maintaining current behavior and adapting the system to new use cases), and they should all be
+able to work on it productively.
+
+### Reliability
+
+The things that can go wrong are called faults, and systems that anticipate faults and can cope
+with them are called fault-tolerant or resilient. A fault is usually defined as one component of the system
+deviating from its spec, whereas a failure is when the system as a whole stops providing the
+required service to the user.
+
+In a fault-tolerant system, it can make sense to increase the rate of
+faults by triggering them deliberately. By deliberately inducing faults, you ensure
+that the fault-tolerance machinery is continually exercised and tested, which can increase your
+confidence that faults will be handled correctly when they occur naturally.
+
+In some cloud platforms such as Amazon Web Services (AWS) it is fairly common for virtual machine instances
+to become unavailable without warning, as the platforms are designed to
+prioritize flexibility and elasticityi
+over single-machine reliability.
+
+Hence there is a move toward systems that can tolerate the loss of entire machines, by using
+software fault-tolerance techniques in preference or in addition to hardware redundancy. Such
+systems also have operational advantages: a single-server system requires planned downtime if you
+need to reboot the machine (to apply operating system security patches, for example), whereas a
+system that can tolerate machine failure can be patched one node at a time, without downtime of the
+entire system.
+
+### Human Errors
+
+How do we make our systems reliable, in spite of unreliable humans? The best systems combine several
+approaches:
+
+- **Design systems in a way that minimizes opportunities for error.** However, if the interfaces are too restrictive people will work around them,
+negating their benefit, so this is a tricky balance to get right.
+
+- **Decouple the places where people make the most mistakes from the places where they can cause failures.** Provide fully featured non-production sandbox environments where
+people can explore and experiment safely, using real data, without affecting real users.
+
+- **Test thoroughly at all levels, from unit tests to whole-system integration tests and manual tests.** Automated testing is great for covering routine cases, but it is no substitute for thinking.
+
+- **Allow quick and easy recovery from human errors, to minimize the impact in the case of a failure.** Make it fast to roll back configuration changes, roll out new code gradually.
+
+- **Set up detailed and clear monitoring**. This is referred to as _telemetry_.
+
+- **Implement good management practices and training**.
+
+### How important is reliability?
+
+Bugs in business applications cause lost
+productivity (and legal risks if figures are reported incorrectly), and outages of ecommerce sites
+can have huge costs in terms of lost revenue and damage to reputation.
+
+There are situations in which we may choose to sacrifice reliability in order to reduce development
+cost (e.g., when developing a prototype product for an unproven market) or operational cost (e.g., for
+a service with a very narrow profit margin)—but we should be very conscious of when we are
+cutting corners.
+
+### Scalability
+
+Scalability is the term we use to describe a system's ability to cope with increased load. Discussing scalability means considering questions
+like “If the system grows in a particular way, what are our options for coping with the growth?” and
+“How can we add computing resources to handle the additional load?”
+
+#### Describing Load
+
+Load can be described with a few numbers which
+we call load parameters. The best choice of parameters depends on the architecture of your
+system. To make this idea more concrete, let's consider Twitter as an example:
+
+Twitter's scaling challenge is not primarily due to tweet volume, but due to
+fan-out - each user follows many people, and each user
+is followed by many people. There are broadly two ways of implementing these two operations:
+
+1. **Posting a tweet simply inserts the new tweet into a global collection of tweets**. When a user
+requests their home timeline, look up all the people they follow, find all the tweets for each of
+those users, and merge them (sorted by time). In a relational database, you could write a query such as:
+
+```sql
+SELECT tweets.*, users.* FROM tweets
+  JOIN users   ON tweets.sender_id    = users.id
+  JOIN follows ON follows.followee_id = users.id
+  WHERE follows.follower_id = current_user
+```
+
+2. **Maintain a cache for each user's home timeline—like a mailbox of tweets for each recipient
+user**. When a user posts a tweet, look up all the people who
+follow that user, and insert the new tweet into each of their home timeline caches. The request to
+read the home timeline is then cheap, because its result has been computed ahead of time.
+
+The first version of Twitter used approach 1, but the systems struggled to keep up with the load of
+home timeline queries, so the company switched to approach 2. This works better because the average
+rate of published tweets is almost two orders of magnitude lower than the rate of home timeline
+reads, and so in this case it's preferable to do more work at write time and less at read time.
+
+However, some users have over 30 million followers. This
+means that a single tweet may result in over 30 million writes to home timelines! Doing this in a
+timely manner—Twitter tries to deliver tweets to followers within five seconds—is a significant
+challenge.
+
+Now that approach 2 is robustly implemented, Twitter is
+moving to a hybrid of both approaches. Most users' tweets continue to be fanned out to home
+timelines at the time when they are posted, but a small number of users with a very large number of
+followers (i.e., celebrities) are excepted from this fan-out. Tweets from any celebrities that a
+user may follow are fetched separately and merged with that user's home timeline when it is read,
+like in approach 1. This hybrid approach is able to deliver consistently good performance.
+
+#### Describing performance
+
+We can look at performance in two ways:
+
+- **When you increase a load parameter and keep the system resources unchanged, how is the performance of your system affected?**
+
+- **When you increase a load parameter, how much do you need to increase the resources if you want to keep performance unchanged?**
+
+In a batch processing system, we usually care about throughput - the number of
+records we can process per second, or the total time it takes to run a job on a dataset of a certain
+size. In an online system, we usually care about the service's
+response time - that is, the time between a client sending a request and receiving a response.
+
+Usually it is better to use percentiles to describe performance. If you take your list of response times and sort it from
+fastest to slowest, then the median is the halfway point: for example, if your median response
+time is 200 ms, that means half your requests return in less than 200 ms, and half your
+requests take longer than that.
+
+This makes the median a good metric if you want to know how long users typically have to wait: half
+of user requests are served in less than the median response time, and the other half take longer
+than the median. The median is also known as the 50th percentile, and sometimes abbreviated as p50.
+
+In order to figure out how bad your outliers are, you can look at higher percentiles: the 95th,
+99th, and 99.9th percentiles are common (abbreviated p95, p99, and p999). They are the
+response time thresholds at which 95%, 99%, or 99.9% of requests are faster than that particular
+threshold. For example, if the 95th percentile response time is 1.5 seconds, that means 95 out of
+100 requests take less than 1.5 seconds, and 5 out of 100 requests take 1.5 seconds or more.
+
+Amazon describes response time
+requirements for internal services in terms of the 99.9th percentile. This is because the customers with the slowest requests are often those who have
+the most data on their accounts because they have made many purchases—that is, they're the most
+valuable customers. Amazon has
+also observed that a 100 ms increase in response time reduces sales by 1%.
+
+Queueing delays often account for a large part of the response time at high percentiles. It only takes a small number of slow requests to hold up the processing of subsequent requests, and the problem cascades.
+
+#### Approaches for Coping with Load
+
+An architecture that is appropriate for one level of load is unlikely to cope with 10 times that
+load. If you are working on a fast-growing service, it is therefore likely that you will need to
+rethink your architecture on every order of magnitude load increase—or perhaps even more often than
+that.
+
+People often talk of a dichotomy between scaling up (vertical scaling, moving to a more powerful
+machine) and scaling out (horizontal scaling, distributing the load across multiple smaller
+machines).
+
+Some systems are elastic, meaning that they can automatically add computing resources when they
+detect a load increase, whereas other systems are scaled manually (a human analyzes the capacity and
+decides to add more machines to the system). An elastic system can be useful if load is highly
+unpredictable, but manually scaled systems are simpler and may have fewer operational surprises.
+
+The architecture of systems that operate at large scale is usually highly specific to the
+application—there is no such thing as a generic, one-size-fits-all scalable architecture. The problem may be the volume of reads, the volume of
+writes, the volume of data to store, the complexity of the data, the response time requirements, the
+access patterns, or (usually) some mixture of all of these plus many more issues.
+
+<Callout>
+  An architecture that scales well for a particular application is built around assumptions of which
+  operations will be common and which will be rare—the load parameters. In an early-stage startup or an unproven product it’s usually more important to
+  be able to iterate quickly on product features than it is to scale to some hypothetical future
+  load.
+</Callout>
+
+### Maintainability
+
+The majority of the cost of software is not in its initial development, but in
+its ongoing maintenance—fixing bugs, keeping its systems operational, investigating failures,
+adapting it to new platforms, modifying it for new use cases, repaying technical debt, and adding
+new features. Unfortunately, many people working on software systems dislike maintenance of so-called
+legacy systems.
+
+#### Operability: Making Life Easy for Operations
+
+Good operations can often work around the limitations of bad (or
+incomplete) software, but good software cannot run reliably with bad operations. It is still up to humans to set up that automation in the first place and
+to make sure it's working correctly. Good operability means making routine tasks easy, allowing the operations team to focus their efforts
+on high-value activities.
+
+#### Simplicity: Managing Complexity
+
+Small software projects can have delightfully simple and expressive code, but as projects get
+larger, they often become very complex and difficult to understand.
+
+There are various possible symptoms of complexity: explosion of the state space, tight coupling of
+modules, tangled dependencies, inconsistent naming and terminology, hacks aimed at solving
+performance problems, special-casing to work around issues elsewhere, and many more.
+Much has been said on this topic already.
+
+When complexity makes maintenance hard, budgets and schedules are often overrun. Reducing complexity greatly
+improves the maintainability of software, and thus simplicity should be a key goal for the systems
+we build.
+
+One of the best tools we have for removing accidental complexity is **abstraction**. SQL is an abstraction that hides complex on-disk and in-memory data structures,
+concurrent requests from other clients, and inconsistencies after crashes. Finding good abstractions is very hard.
+
+#### Evolvability: Making Change Easy
+
+It's extremely unlikely that your system's requirements will remain unchanged forever. You learn new facts, previously unanticipated use cases emerge,
+business priorities change, users request new features, new platforms replace old platforms, legal
+or regulatory requirements change, growth of the system forces architectural changes, etc.
+
+The Agile community has also developed technical tools and patterns that are helpful when
+developing software in a frequently changing environment, such as test-driven development (TDD) and
+refactoring. For example, how would you “refactor” Twitter's architecture for
+assembling home timelines?
+
+<Callout>
+  The ease with which you can modify a data system, and adapt it to changing requirements, is closely
+  linked to its simplicity and its abstractions: simple and easy-to-understand systems are usually
+  easier to modify than complex ones. But since this is such an important idea, we will use a
+  different word to refer to agility on a data system level: evolvability
+</Callout>
+
+### Summary
+
+An application has to meet various requirements in order to be useful. There are functional
+requirements (what it should do, such as allowing data to be stored, retrieved, searched, and processed in
+various ways), and some nonfunctional requirements (general properties like security,
+reliability, compliance, scalability, compatibility, and maintainability). In this chapter we
+discussed reliability, scalability, and maintainability in detail.
+
+Reliability means making systems work correctly, even when faults occur. Faults can be in hardware
+(typically random and uncorrelated), software (bugs are typically systematic and hard to deal with),
+and humans (who inevitably make mistakes from time to time). Fault-tolerance techniques can hide
+certain types of faults from the end user.
+
+Scalability means having strategies for keeping performance good, even when load increases. In
+order to discuss scalability, we first need ways of describing load and performance quantitatively.
+We briefly looked at Twitter's home timelines as an example of describing load, and response time
+percentiles as a way of measuring performance. In a scalable system, you can add processing capacity
+in order to remain reliable under high load.
+
+Maintainability has many facets, but in essence it's about making life better for the engineering
+and operations teams who need to work with the system. Good abstractions can help reduce complexity
+and make the system easier to modify and adapt for new use cases. Good operability means having good
+visibility into the system's health, and having effective ways of managing it.
+
+There are certain patterns and techniques that keep reappearing in different kinds of
+applications.
