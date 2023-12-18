@@ -12,7 +12,7 @@ import { Separator } from "./ui/separator";
 type HTMLElementProps = React.HTMLAttributes<HTMLElement>;
 
 const components = {
-  h1: ({ className, ...props }: HTMLElementProps) => (
+  h1: ({ className, id, ...props }: HTMLElementProps) => (
     <H1
       className={cn(
         "mt-2 scroll-m-20 text-4xl font-bold tracking-tight",
@@ -22,7 +22,7 @@ const components = {
       {...props}
     />
   ),
-  h2: ({ className, ...props }: HTMLElementProps) => (
+  h2: ({ className, id, ...props }: HTMLElementProps) => (
     <H2
       className={cn("mb-0", "animate-slide-enter delay-300", className)}
       {...props}
@@ -31,7 +31,7 @@ const components = {
   h3: ({ className, ...props }: HTMLElementProps) => (
     <H3 className={cn("animate-slide-enter delay-300", className)} {...props} />
   ),
-  h4: ({ className, ...props }: HTMLElementProps) => (
+  h4: ({ className, id, ...props }: HTMLElementProps) => (
     <H4 className={cn("animate-slide-enter delay-300", className)} {...props} />
   ),
   h5: ({ className, ...props }: HTMLElementProps) => (

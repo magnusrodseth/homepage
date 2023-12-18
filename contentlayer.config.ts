@@ -8,6 +8,13 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
+import GithubSlugger from "github-slugger";
+
+export type Heading = {
+  level: string;
+  text: string | undefined;
+  slug: string | undefined;
+};
 
 const computedFields: ComputedFields = {
   slug: {
@@ -21,6 +28,44 @@ const computedFields: ComputedFields = {
   readingTimeInMinutes: {
     type: "number",
     resolve: (doc) => readingTimeInMinutes(doc.body.raw),
+  },
+  headings: {
+    type: "json",
+    // Fetch every heading from the MDX file
+    resolve: async (doc): Promise<Heading[]> => {
+      const regexHeader = /\n(?<flag>#{1,6})\s+(?<content>.+)/g;
+      const slugger = new GithubSlugger();
+
+      const rawBody = (await doc.body.raw) as string;
+
+      const headings = Array.from(rawBody.matchAll(regexHeader)).map(
+        ({ groups }) => {
+          const flag = groups?.flag || "";
+          const content = groups?.content;
+
+          return {
+            level:
+              flag?.length == 1
+                ? "one"
+                : flag?.length == 2
+                ? "two"
+                : flag?.length == 3
+                ? "three"
+                : flag?.length == 4
+                ? "four"
+                : flag?.length == 5
+                ? "five"
+                : flag?.length == 6
+                ? "six"
+                : "one",
+            text: content,
+            slug: content ? slugger.slug(content) : undefined,
+          };
+        }
+      );
+
+      return headings;
+    },
   },
 };
 
@@ -47,6 +92,11 @@ export const Post = defineDocumentType(() => ({
     image: {
       type: "string",
       required: false,
+    },
+    toc: {
+      type: "boolean",
+      required: false,
+      default: true,
     },
   },
   computedFields,
@@ -84,6 +134,11 @@ export const Project = defineDocumentType(() => ({
       type: "string",
       required: false,
     },
+    toc: {
+      type: "boolean",
+      required: false,
+      default: true,
+    },
   },
   computedFields,
 }));
@@ -102,8 +157,8 @@ export default makeSource({
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
-      rehypeSlug,
       [
+        rehypeSlug,
         rehypePrettyCode,
         {
           theme: "github-dark",

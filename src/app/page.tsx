@@ -1,6 +1,6 @@
 import { Mdx } from "@/components/mdx-components";
 import Socials from "@/components/socials";
-import { H1, H2, H3, H4, Muted, P } from "@/components/ui/typography";
+import { H2, Muted } from "@/components/ui/typography";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { allPages } from "contentlayer/generated";
