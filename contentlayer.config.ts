@@ -158,6 +158,7 @@ export default makeSource({
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
       rehypeSlug,
+      rehypeAutolinkHeadings,
       [
         rehypePrettyCode,
         {
@@ -174,15 +175,6 @@ export default makeSource({
           },
           onVisitHighlightedWord(node: any) {
             node.properties.className = ["word--highlighted"];
-          },
-        },
-      ],
-      [
-        rehypeAutolinkHeadings,
-        {
-          properties: {
-            className: ["subheading-anchor"],
-            ariaLabel: "Link to section",
           },
         },
       ],
