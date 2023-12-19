@@ -6,7 +6,17 @@ import { cn } from "@/lib/utils";
 import { Callout } from "@/components/callout";
 import { MdxCard } from "@/components/mdx-card";
 import Link from "next/link";
-import { Blockquote, H1, H2, H3, H4, InlineCode, P } from "./ui/typography";
+import {
+  Blockquote,
+  H1,
+  H2,
+  H3,
+  H4,
+  InlineCode,
+  Muted,
+  P,
+  Small,
+} from "./ui/typography";
 import { Separator } from "./ui/separator";
 
 type HTMLElementProps = React.HTMLAttributes<HTMLElement>;
@@ -113,7 +123,7 @@ const components = {
     alt,
     ...props
   }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    <div className="my-4 max-w-4xl mx-auto flex justify-center items-center w-full">
+    <div className="flex flex-col justify-center items-center my-4 max-w-4xl mx-auto w-full">
       <Image
         src={props.src ?? ""}
         width={700}
@@ -121,6 +131,7 @@ const components = {
         alt={alt ?? ""}
         className="object-cover my-2 mx-auto shadow-md hover:shadow-lg transition-all duration-300 rounded-lg"
       />
+      {alt && <Small className="my-2 text-center block italic">{alt}</Small>}
     </div>
   ),
   hr: ({ ...props }) => (
