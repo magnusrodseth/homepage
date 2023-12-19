@@ -117,7 +117,7 @@ database. In such cases, using a document model can lead to significantly more c
 code and worse performance.
 
 <Callout>
-  By personal experience, the above-mentioned approach is a headache to maintain. 
+  In my personal experience, the above-mentioned approach is a headache to maintain. 
   Manually worrying about joins is cumbersome and not really performant. 
   In this case, one would be better of using a relational approach.
 </Callout>
@@ -147,7 +147,7 @@ name in one field, and you instead want to store the first name and last name se
 In a document database, you would just start writing new documents with the new fields and have
 code in the application that handles the case when old documents are read. For example:
 
-```
+```js
 if (user && user.name && !user.first_name) {
     // Documents written before Dec 8, 2013 don't have first_name
     user.first_name = user.name.split(" ")[0];
