@@ -18,6 +18,7 @@ import { Icons } from "@/components/icons";
 import { Callout } from "@/components/callout";
 import { Heading } from "contentlayer.config";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import BackToTop from "@/components/back-to-top";
 
 interface PostPageProps {
   params: {
@@ -150,7 +151,7 @@ export default async function PostPage({ params }: PostPageProps) {
             <div className="pr-4 lg:pr-0">
               <Large className="animate-slide-enter">On this page</Large>
 
-              <Separator className="my-4 animate-slide-enter delay-200" />
+              <Separator className="my-4 animate-slide-enter" />
 
               <div className="flex flex-col gap-y-2 text-muted-foreground text-sm">
                 {headings.map((heading) => {
@@ -159,7 +160,7 @@ export default async function PostPage({ params }: PostPageProps) {
                       key={`#${heading.slug}`}
                       data-level={heading.level}
                       className={cn(
-                        "animate-slide-enter delay-300",
+                        "animate-slide-enter",
                         "data-[level=three]:pl-2 data-[level=four]:pl-4 data-[level=five]:pl-6 data-[level=six]:pl-8 hover:text-foreground transition-all duration-300"
                       )}
                     >
@@ -168,6 +169,10 @@ export default async function PostPage({ params }: PostPageProps) {
                   );
                 })}
               </div>
+
+              <Separator className="my-4 animate-slide-enter" />
+
+              <BackToTop />
             </div>
           </ScrollArea>
         </aside>

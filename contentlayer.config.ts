@@ -157,8 +157,8 @@ export default makeSource({
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
+      rehypeSlug,
       [
-        rehypeSlug,
         rehypePrettyCode,
         {
           theme: "github-dark",
