@@ -163,8 +163,8 @@ UPDATE users SET first_name = split_part(name, ' ', 1);
 ```
 
 Schema changes have a bad reputation of being slow and requiring downtime. This reputation is not
-entirely deserved: most relational database systems execute the ALTER TABLE statement in a few
-milliseconds. MySQL is a notable exception—it copies the entire table on ALTER TABLE, which
+entirely deserved: most relational database systems execute the `ALTER TABLE` statement in a few
+milliseconds. MySQL is a notable exception—it copies the entire table on `ALTER TABLE`, which
 can mean minutes or even hours of downtime when altering a large table.
 
 However, in cases where all records are expected to have the same
