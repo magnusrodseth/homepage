@@ -41,7 +41,7 @@ export default async function BlogPage({ searchParams }: RouteProps) {
       )}
 
       {posts.length > 0 && (
-        <div className="flex flex-col gap-y-32 mt-16">
+        <div className="flex flex-col gap-y-2 mt-16">
           {posts.map((post, index) => {
             const delay = `${index * 0.2}s`;
 

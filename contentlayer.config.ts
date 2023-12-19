@@ -137,7 +137,7 @@ export const Project = defineDocumentType(() => ({
     toc: {
       type: "boolean",
       required: false,
-      default: true,
+      default: false,
     },
   },
   computedFields,

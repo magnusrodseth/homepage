@@ -157,17 +157,13 @@ export default async function PostPage({ params }: PostPageProps) {
                   return (
                     <div
                       key={`#${heading.slug}`}
-                      className="animate-slide-enter delay-300"
+                      data-level={heading.level}
+                      className={cn(
+                        "animate-slide-enter delay-300",
+                        "data-[level=three]:pl-2 data-[level=four]:pl-4 data-[level=five]:pl-6 data-[level=six]:pl-8 hover:text-foreground transition-all duration-300"
+                      )}
                     >
-                      <Link
-                        data-level={heading.level}
-                        href={`#${heading.slug}`}
-                        className={cn(
-                          "data-[level=two] data-[level=three]:pl-2 data-[level=four]:pl-4 data-[level=five]:pl-6 data-[level=six]:pl-8 hover:text-foreground transition-all duration-300"
-                        )}
-                      >
-                        {heading.text}
-                      </Link>
+                      <Link href={`#${heading.slug}`}>{heading.text}</Link>
                     </div>
                   );
                 })}
