@@ -1,24 +1,11 @@
 import { notFound } from "next/navigation";
-import { allPosts, allProjects } from "contentlayer/generated";
+import { allPosts } from "contentlayer/generated";
 
-import { Mdx } from "@/components/mdx-components";
-
-import "@/styles/globals.css";
-import "@/styles/mdx.css";
 import { Metadata } from "next";
-import Image from "next/image";
 
-import { cn, formatDate, getUrl } from "@/lib/utils";
-import { env } from "@/env.mjs";
-import BackLink from "@/components/back-link";
-import { H1, H2, H3, H4, Large } from "@/components/ui/typography";
-import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
-import { Icons } from "@/components/icons";
-import { Callout } from "@/components/callout";
+import { getUrl } from "@/lib/utils";
 import { Heading } from "contentlayer.config";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import BackToTop from "@/components/back-to-top";
+import ArticleLayout from "@/components/article-layout";
 
 interface PostPageProps {
   params: {
@@ -95,95 +82,5 @@ export default async function PostPage({ params }: PostPageProps) {
     notFound();
   }
 
-  return (
-    <div
-      className={cn(
-        "flex flex-col lg:flex-row w-full justify-between",
-        post.toc ? "lg:gap-x-4" : "lg:gap-x-0"
-      )}
-    >
-      <article className="container relative max-w-5xl py-6 lg:py-10">
-        <BackLink />
-
-        <div className="flex flex-col md:flex-row gap-y-2 justify-start items-center my-4 gap-x-2 text-muted-foreground text-sm animate-slide-enter">
-          {post.date && (
-            <time dateTime={post.date}>Published {formatDate(post.date)}</time>
-          )}
-          {post.readingTimeInMinutes && (
-            <>
-              <Separator
-                orientation="vertical"
-                className="h-6 hidden md:flex"
-              />
-              <span>{post.readingTimeInMinutes} min read</span>
-            </>
-          )}
-        </div>
-        <H1 className="animate-slide-enter">{post.title}</H1>
-
-        <Callout className="animate-slide-enter" icon={<Icons.lightbulb />}>
-          {post.description}
-        </Callout>
-
-        {post.image && (
-          <div className="w-full relative animate-slide-enter delay-200">
-            <Image
-              src={post.image}
-              alt={post.title}
-              fill
-              className="my-8 rounded-md border bg-muted transition-colors object-cover"
-              priority
-            />
-          </div>
-        )}
-
-        <div className="my-8">
-          <Mdx code={post.body.code} />
-        </div>
-
-        <Separator className="my-4" />
-
-        <div className="flex justify-center">
-          <BackLink />
-        </div>
-      </article>
-      {post.toc && (
-        <aside
-          className={cn(
-            "order-first mx-8",
-            "lg:order-last lg:sticky lg:top-[2rem] lg:h-[calc(100vh-2rem)]"
-          )}
-        >
-          <ScrollArea className="h-64 lg:h-full">
-            <div className="pr-4 lg:pr-0">
-              <Large className="animate-slide-enter">On this page</Large>
-
-              <Separator className="my-4 animate-slide-enter" />
-
-              <div className="flex flex-col gap-y-2 text-muted-foreground text-sm">
-                {headings.map((heading) => {
-                  return (
-                    <div
-                      key={`#${heading.slug}`}
-                      data-level={heading.level}
-                      className={cn(
-                        "animate-slide-enter",
-                        "data-[level=three]:pl-2 data-[level=four]:pl-4 data-[level=five]:pl-6 data-[level=six]:pl-8 hover:text-foreground transition-all duration-300"
-                      )}
-                    >
-                      <Link href={`#${heading.slug}`}>{heading.text}</Link>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <Separator className="my-4 animate-slide-enter" />
-
-              <BackToTop />
-            </div>
-          </ScrollArea>
-        </aside>
-      )}
-    </div>
-  );
+  return <ArticleLayout item={post} headings={headings} />;
 }
