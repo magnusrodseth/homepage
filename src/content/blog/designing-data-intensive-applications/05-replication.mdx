@@ -1,0 +1,409 @@
+---
+title: Replication
+description: Summary of chapter 5 of Designing Data-Intensive Applications by Martin Kleppmann.
+date: '2023-12-05'
+published: true
+---
+
+## Scaling to Higher Load
+
+We now move up a level and ask: what happens if multiple machines are involved in storage and retrieval of data?
+
+There are various reasons why you might want to distribute a database across multiple machines:
+
+- **Scalability**
+
+- **Fault tolerance/high availability**
+
+- **Latency**
+
+If all you need is to scale to higher load, the simplest approach is to buy a more powerful
+machine (sometimes called vertical scaling or scaling up).
+
+### Shared-Nothing Architectures
+
+By contrast, shared-nothing architectures (sometimes called horizontal scaling or scaling out) have gained a lot of
+popularity. In this approach, each machine or virtual machine running the database software is
+called a node. Each node uses its CPUs, RAM, and disks independently. Any coordination
+between nodes is done at the software level, using a conventional network.
+
+With cloud deployments of virtual machines, you don't need to be operating at Google
+scale: even for small companies, a multi-region distributed architecture is now feasible.
+
+In this part of the book, we focus on shared-nothing architectures—not because they are
+necessarily the best choice for every use case, but rather because they require the most caution
+from you, the application developer. If your data is distributed across multiple nodes, you need to
+be aware of the constraints and trade-offs that occur in such a distributed system—the database
+cannot magically hide these from you.
+
+### Replication versus Partitioning
+
+There are two common ways data is distributed across multiple nodes:
+
+- **Replication**. Keeping a copy of the same data on several different nodes, potentially in different
+    locations.  Replication provides redundancy: if some nodes are unavailable, the data can still
+    be served from the remaining nodes. Replication can also help improve performance.
+
+- **Partitioning**. Splitting a big database into smaller subsets called partitions so that different
+    partitions can be assigned to different nodes (also known as sharding).
+
+## Introduction
+
+Replication means keeping a copy of the same data on multiple machines that are connected via a
+network. There are several reasons
+why you might want to replicate data:
+
+- **To keep data geographically close to your users** (and thus reduce latency).
+
+- **To allow the system to continue working even if some of its parts have failed**, thus
+    increasing the **availability** of your system.
+
+- **To scale out the number of machines that can serve read queries** (and thus increase read
+    throughput).
+
+
+If the data that you're replicating does not change over time, then replication is easy: you just
+need to copy the data to every node once, and you're done. All of the difficulty in replication lies
+in handling changes to replicated data, and that's what this chapter is about. We will discuss
+three popular algorithms for replicating changes between nodes: single-leader, multi-leader, and
+leaderless replication. Almost all distributed databases use one of these three approaches. They
+all have various pros and cons, which we will examine in detail.
+
+## Leaders and Followers
+
+Each node that stores a copy of the database is called a replica.
+
+Every write to the database needs to be processed by every replica; otherwise, the replicas would no
+longer contain the same data. The most common solution for this is called **leader-based
+replication** (also known as active/passive or master-slave replication). This is illustrated in the image below. It works as follows:
+
+1. One of the replicas is designated the leader (also known as master or primary). When
+clients want to write to the database, they must send their requests to the leader, which first
+writes the new data to its local storage.
+
+2. The other replicas are known as followers (read replicas, slaves, secondaries, or
+hot standbys). Whenever the leader writes new data to its local storage, it also sends the
+data change to all of its followers as part of a  replication log or
+change stream. Each follower takes the log from the leader and updates its local copy of the
+database accordingly, by applying all writes in the same order as they were processed on the
+leader.
+
+3. Whenever the leader writes new data to its local storage, it also sends the
+data change to all of its followers as part of a  replication log or
+change stream. Each follower takes the log from the leader and updates its local copy of the
+database accordingly, by applying all writes in the same order as they were processed on the
+leader.
+
+![Leader-based replication](/blog/designing-data-intensive-applications/leader-based-replication.jpeg)
+
+This mode of replication is a built-in feature of many relational databases, such as PostgreSQL. It is also used in some nonrelational databases, including MongoDB. Finally, leader-based
+replication is not restricted to only databases: distributed message brokers such as Kafka and RabbitMQ highly available queues also use it.
+
+### Synchronous Versus Asynchronous Replication
+
+An important detail of a replicated system is whether the replication happens synchronously or
+asynchronously.
+
+Think about what happens in the image above, where the user of a website updates
+their profile image. At some point in time, the client sends the update request to the leader;
+shortly afterward, it is received by the leader. At some point, the leader forwards the data change
+to the followers. Eventually, the leader notifies the client that the update was successful.
+
+In the following image, the communication between various components of the
+system is shown: the user's client, the leader, and two followers. Time flows from left to right. A request
+or response message is shown as a thick arrow.
+
+![Leader-based replication with one synchronous and one asynchronous follower](/blog/designing-data-intensive-applications/leader-based-replication-with-synchronous-and-asynchronous-followers.jpeg)
+
+In this example, the replication to follower 1 is
+synchronous: the leader waits until follower 1 has confirmed that it received the write before
+reporting success to the user, and before making the write visible to other clients. The replication
+to follower 2 is asynchronous: the leader sends the message, but doesn't wait for a response from
+the follower.
+
+The advantage of synchronous replication is that the follower is guaranteed to have an up-to-date
+copy of the data that is consistent with the leader. If the leader suddenly fails, we can be sure
+that the data is still available on the follower. The disadvantage is that if the synchronous
+follower doesn't respond (because it has crashed, or there is a network fault, or for any other
+reason), the write cannot be processed. The leader must block all writes and wait until the
+synchronous replica is available again.
+
+For that reason, it is impractical for all followers to be synchronous: any one node outage would
+cause the whole system to grind to a halt. In practice, if you enable synchronous replication on a
+database, it usually means that one of the followers is synchronous, and the others are
+asynchronous. If the synchronous follower becomes unavailable or slow, one of the asynchronous
+followers is made synchronous. This guarantees that you have an up-to-date copy of the data on at
+least two nodes: the leader and one synchronous follower. This configuration is sometimes also
+called semi-synchronous.
+
+A fully asynchronous configuration has the advantage that the leader can continue
+processing writes, even if all of its followers have fallen behind.
+
+### Setting Up New Followers
+
+From time to time, you need to set up new followers—perhaps to increase the number of replicas,
+or to replace failed nodes. How do you ensure that the new follower has an accurate copy of the
+leader's data?
+
+Fortunately, setting up a
+follower can usually be done without downtime. Conceptually, the process looks like this:
+
+1. Take a consistent snapshot of the leader's database at some point in time—if possible, without
+taking a lock on the entire database. Most databases have this feature, as it is also required
+for backups.
+
+2. Copy the snapshot to the new follower node.
+
+3. The follower connects to the leader and requests all the data changes that have happened since
+the snapshot was taken. This requires that the snapshot is associated with an exact position in
+the leader's replication log.
+
+4. When the follower has processed the backlog of data changes since the snapshot, we say it has
+caught up. It can now continue to process data changes from the leader as they happen.
+
+### Handling Node Outages
+
+Any node in the system can go down, perhaps unexpectedly due to a fault, but just as likely due to
+planned maintenance (for example, rebooting a machine to install a kernel security patch). Being
+able to reboot individual nodes without downtime is a big advantage for operations and maintenance.
+Thus, our goal is to keep the system as a whole running despite individual node failures, and to keep
+the impact of a node outage as small as possible.
+
+**How do you achieve high availability with leader-based replication?**
+
+#### Follower Failure: Catch-Up Recovery
+
+On its local disk, each follower keeps a log of the data changes it has received from the leader. If
+a follower crashes and is restarted, or if the network between the leader and the follower is
+temporarily interrupted, the follower can recover quite easily: from its log, it knows the last
+transaction that was processed before the fault occurred. Thus, the follower can connect to the
+leader and request all the data changes that occurred during the time when the follower was
+disconnected. When it has applied these changes, it has caught up to the leader and can continue
+receiving a stream of data changes as before.
+
+#### Leader Failure: Failover
+
+Handling a failure of the leader is trickier: one of the followers needs to be promoted to be the
+new leader, clients need to be reconfigured to send their writes to the new leader, and the other
+followers need to start consuming data changes from the new leader. This process is called
+failover.
+
+An automatic failover process usually
+consists of the following steps:
+
+1. **Determining that the leader has failed**. There are many things that could potentially go wrong:
+crashes, power outages, network issues, and more. There is no foolproof way of detecting what
+has gone wrong, so most systems simply use a timeout: nodes frequently bounce messages back and
+forth between each other, and if a node doesn't respond for some period of time—say, 30
+seconds—it is assumed to be dead.
+
+2. **Choosing a new leader**. This could be done through an election process (where the leader is chosen by
+a majority of the remaining replicas), or a new leader could be appointed by a previously elected
+controller node. The best candidate for leadership is usually the replica with the most
+up-to-date data changes from the old leader (to minimize any data loss).
+
+3. **Reconfiguring the system to use the new leader**. Clients now need to send
+their write requests to the new leader. If the old leader comes back, it might still believe that it is
+the leader, not realizing that the other replicas have
+forced it to step down. The system needs to ensure that the old leader becomes a follower and
+recognizes the new leader.
+
+Failover is fraught with things that can go wrong:
+
+- **If asynchronous replication is used, the new leader may not have received all the writes from the old
+leader before it failed**.
+
+- **Discarding writes is especially dangerous if other storage systems outside of the database need to
+be coordinated with the database contents**. For example, in one incident at GitHub, an out-of-date MySQL follower
+was promoted to leader. The database used an autoincrementing counter to assign primary keys to
+new rows, but because the new leader's counter lagged behind the old leader's, it reused some
+primary keys that were previously assigned by the old leader. These primary keys were also used in
+a Redis store, so the reuse of primary keys resulted in inconsistency between MySQL and Redis,
+which caused some private data to be disclosed to the wrong users.
+
+- **It could happen that two nodes both believe
+that they are the leader**. This situation is called split brain, and it is dangerous: if both
+leaders accept writes, and there is no process for resolving conflicts, data is likely to be lost or corrupted.
+
+<Callout>
+  There are no easy solutions to these problems. For this reason, some operations teams prefer to
+  perform failovers manually, even if the software supports automatic failover.
+</Callout>
+
+## Reading Your Own Writes
+
+Many applications let the user submit some data and then view what they have submitted. This might
+be a record in a customer database, or a comment on a discussion thread, or something else of that sort.
+When new data is submitted, it must be sent to the leader, but when the user views the data, it can
+be read from a follower. This is especially appropriate if data is frequently viewed but only
+occasionally written.
+
+<Callout>
+  With asynchronous replication, there is a problem: If the user views the data shortly after making a write, the
+  new data may not yet have reached the replica. To the user, it looks as though the data they
+  submitted was lost, so they will be understandably unhappy.
+</Callout>
+
+This problem is illustrated in the image below.
+
+![A user makes a write, followed by a read from a stale replica. To prevent this anomaly, we need read-after-write consistency.](/blog/designing-data-intensive-applications/read-after-write-consistency.jpeg)
+
+In this situation, we need read-after-write consistency. This is a guarantee that if the user reloads the page, they will always see any updates they
+submitted themselves. It makes no promises about other users: other users' updates may not be
+visible until some later time. However, it reassures the user that their own input has been saved
+correctly.
+
+## Monotonic Reads
+
+![A user first reads from a fresh replica, then from a stale replica. Time appears to go backward. To prevent this anomaly, we need monotonic reads.](/blog/designing-data-intensive-applications/monotonic-reads.jpeg)
+
+In the image above, we see an example where we need **monotonic reads**. Monotonic reads is a guarantee that this
+kind of anomaly does not happen. It's a lesser guarantee than strong consistency, but a stronger
+guarantee than eventual consistency. When you read data, you may see an old value; monotonic reads
+only means that if one user makes several reads in sequence, they will not see time go
+backward—i.e., they will not read older data after having previously read newer data.
+
+One way of achieving monotonic reads is to make sure that each user always makes their reads from
+the same replica (different users can read from different replicas). For example, the replica can be
+chosen based on a hash of the user ID, rather than randomly. However, if that replica fails, the
+user's queries will need to be rerouted to another replica.
+
+## Solutions for Replication Lag
+
+When working with an eventually consistent system, it is worth thinking about how the application
+behaves if the replication lag increases to several minutes or even hours. If the answer is “no
+problem,” that's great. However, if the result is a bad experience for users, it's important to
+design the system to provide a stronger guarantee, such as read-after-write. Pretending that
+replication is synchronous when in fact it is asynchronous is a recipe for problems down the line.
+
+<Callout>
+  It would be better if application developers didn't have to worry about subtle replication issues
+  and could just trust their databases to “do the right thing.” This is why transactions exist: they
+  are a way for a database to provide stronger guarantees so that the application can be simpler.
+
+  Single-node transactions have existed for a long time. However, in the move to distributed
+  (replicated and partitioned) databases, many systems have abandoned them, claiming that transactions
+  are too expensive in terms of performance and availability, and asserting that eventual consistency
+  is inevitable in a scalable system.
+</Callout>
+
+## Multi-Leader Replication
+
+Leader-based replication has one major downside: there is only one leader, and all writes must go
+through it.
+
+A natural extension of the leader-based replication model is to allow more than one node to accept
+writes. Replication still happens in the same way: each node that processes a write must forward
+that data change to all the other nodes. We call this a multi-leader configuration (also known as
+master-master or active/active replication). In this setup, each leader simultaneously acts as a
+follower to the other leaders.
+
+### Clients with offline operation
+
+Multi-leader replication is appropriate is if you have an application
+that needs to continue to work while it is disconnected from the internet. Consider the calendar apps on your mobile phone, your laptop, and other devices. You
+need to be able to see your meetings (make read requests) and enter new meetings (make write
+requests) at any time, regardless of whether your device currently has an internet connection. If
+you make any changes while you are offline, they need to be synced with a server and your other
+devices when the device is next online.
+
+In this case, every device has a local database that acts as a leader (it accepts write requests),
+and there is an asynchronous multi-leader replication process (sync) between the replicas of your
+calendar on all of your devices. The replication lag may be hours or even days, depending on when
+you have internet access available.
+
+There are tools that aim to make this kind of multi-leader configuration easier. For example,
+CouchDB is designed for this mode of operation.
+
+### Collaborative editing
+
+Real-time collaborative editing applications allow several people to edit a document
+simultaneously. Google Docs allow multiple people to concurrently edit a text document or spreadsheet.
+
+We don't usually think of collaborative editing as a database replication problem, but it has a lot
+in common with the previously mentioned offline editing use case. When one user edits a document,
+the changes are instantly applied to their local replica (the state of the document in their web
+browser or client application) and asynchronously replicated to the server and any other users who
+are editing the same document.
+
+<Callout>
+  If you want to guarantee that there will be no editing conflicts, the application must obtain a lock
+  on the document before a user can edit it. If another user wants to edit the same document, they
+  first have to wait until the first user has committed their changes and released the lock. This
+  collaboration model is equivalent to single-leader replication with transactions on the leader.
+
+  However, for faster collaboration, you may want to make the unit of change very small (e.g., a single
+  keystroke) and avoid locking. This approach allows multiple users to edit simultaneously, but it also brings
+  all the challenges of multi-leader replication, including requiring conflict resolution.
+</Callout>
+
+## Leaderless Replication
+
+Some data storage systems take a different approach, abandoning the concept of a leader and
+allowing any replica to directly accept writes from clients. Some of the earliest replicated data
+systems were leaderless but the
+idea was mostly forgotten during the era of dominance of relational databases. It once again became
+a fashionable architecture for databases after Amazon used it for its in-house Dynamo system.
+
+In some leaderless implementations, the client directly sends its writes to several replicas, while
+in others, a coordinator node does this on behalf of the client. However, unlike a leader database,
+that coordinator does not enforce a particular ordering of writes. As we shall see, this difference in design has
+profound consequences for the way the database is used.
+
+## Summary
+
+In this chapter we looked at the issue of replication. Replication can serve several purposes:
+
+- **High availability**. Keeping the system running, even when one machine (or several machines, or an
+entire datacenter) goes down.
+
+- **Disconnected operation**. Allowing an application to continue working when there is a network
+interruption.
+
+- **Latency**. Placing data geographically close to users, so that users can interact with it faster.
+
+- **Scalability**. Being able to handle a higher volume of reads than a single machine could handle,
+by performing reads on replicas.
+
+**Despite being a simple goal—keeping a copy of the same data on several machines—replication turns out
+to be a remarkably tricky problem**. It requires carefully thinking about concurrency and about all
+the things that can go wrong, and dealing with the consequences of those faults. At a minimum, we
+need to deal with unavailable nodes and network interruptions (and that's not even considering the
+more insidious kinds of fault, such as silent data corruption due to software bugs).
+
+We discussed three main approaches to replication:
+
+- **Single-leader replication**. Clients send all writes to a single node (the leader), which sends a
+stream of data change events to the other replicas (followers). Reads can be performed on any
+replica, but reads from followers might be stale.
+
+- **Multi-leader replication**. Clients send each write to one of several leader nodes, any of which
+can accept writes. The leaders send streams of data change events to each other and to any
+follower nodes.
+
+- **Leaderless replication**. Clients send each write to several nodes, and read from several nodes
+in parallel in order to detect and correct nodes with stale data.
+
+**Each approach has advantages and disadvantages**. Single-leader replication is popular because it is fairly
+easy to understand and there is no conflict resolution to worry about. Multi-leader and
+leaderless replication can be more robust in the presence of faulty nodes, network interruptions,
+and latency spikes—at the cost of being harder to reason about and providing only very weak
+consistency guarantees.
+
+**Replication can be synchronous or asynchronous, which has a profound effect on the system behavior
+when there is a fault**. Although asynchronous replication can be fast when the system is running
+smoothly, it's important to figure out what happens when replication lag increases and servers fail.
+If a leader fails and you promote an asynchronously updated follower to be the new leader, recently
+committed data may be lost.
+
+We looked at some strange effects that can be caused by replication lag, and we discussed a few
+consistency models which are helpful for deciding how an application should behave under replication
+lag:
+
+- **Read-after-write consistency**. Users should always see data that they submitted themselves.
+
+- **Monotonic reads**. After users have seen the data at one point in time, they shouldn’t later see
+the data from some earlier point in time.
+
+- **Consistent prefix reads**. Users should see the data in a state that makes causal sense:
+for example, seeing a question and its reply in the correct order.

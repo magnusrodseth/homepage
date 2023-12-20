@@ -8,7 +8,7 @@ import { buttonVariants } from "../ui/button";
 
 const NavigationLink = ({ item }: { item: NavItem }) => {
   const pathname = usePathname();
-  const active = pathname === item.href;
+  const active = pathname.startsWith(item.href);
 
   const isExternalLink = item.href.startsWith("http");
 

@@ -106,8 +106,17 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <div className="flex flex-col md:flex-row gap-y-2 justify-start items-center my-4 gap-x-2 text-muted-foreground text-sm animate-slide-enter">
           {project.date && (
             <time dateTime={project.date}>
-              Published on {formatDate(project.date)}
+              Published {formatDate(project.date)}
             </time>
+          )}
+          {project.readingTimeInMinutes && (
+            <>
+              <Separator
+                orientation="vertical"
+                className="h-6 hidden md:flex"
+              />
+              <span>{project.readingTimeInMinutes} min read</span>
+            </>
           )}
 
           {project.link && (

@@ -107,9 +107,16 @@ export default async function PostPage({ params }: PostPageProps) {
 
         <div className="flex flex-col md:flex-row gap-y-2 justify-start items-center my-4 gap-x-2 text-muted-foreground text-sm animate-slide-enter">
           {post.date && (
-            <time dateTime={post.date}>
-              Published on {formatDate(post.date)}
-            </time>
+            <time dateTime={post.date}>Published {formatDate(post.date)}</time>
+          )}
+          {post.readingTimeInMinutes && (
+            <>
+              <Separator
+                orientation="vertical"
+                className="h-6 hidden md:flex"
+              />
+              <span>{post.readingTimeInMinutes} min read</span>
+            </>
           )}
         </div>
         <H1 className="animate-slide-enter">{post.title}</H1>

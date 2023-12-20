@@ -131,7 +131,9 @@ const components = {
         alt={alt ?? ""}
         className="object-cover my-2 mx-auto shadow-md hover:shadow-lg transition-all duration-300 rounded-lg"
       />
-      {alt && <Small className="my-2 text-center block italic">{alt}</Small>}
+      {alt && (
+        <Small className="my-2 text-center block italic w-10/12">{alt}</Small>
+      )}
     </div>
   ),
   hr: ({ ...props }) => (
