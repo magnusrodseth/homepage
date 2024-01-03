@@ -23,7 +23,7 @@ const MobileNavigation = () => {
     <div className="flex md:hidden">
       <Sheet open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
         <SheetTrigger asChild>
-          <Button variant="ghost">
+          <Button variant="ghost" aria-label="Open menu">
             <Icons.menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
