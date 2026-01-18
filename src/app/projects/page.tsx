@@ -71,7 +71,12 @@ export default async function ProjectsPage() {
   }
 
   const experienceProjects = experiences
-    .filter((exp) => exp.type === "professional" || exp.type === "freelance")
+    .filter(
+      (exp) =>
+        exp.type === "professional" ||
+        exp.type === "freelance" ||
+        exp.type === "internship"
+    )
     .map(experienceToProject);
 
   const allProjects = [...experienceProjects, ...githubProjects].sort(

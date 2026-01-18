@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import IndexContent from "@/content/pages/index.mdx";
 import profilePicture from "../../public/profile-picture.jpg";
 import { ProfileImage } from "@/components/profile-image";
+import { Testimonials } from "@/components/testimonials";
 
 export default function Home() {
   return (
@@ -42,6 +43,8 @@ export default function Home() {
         </Muted>
         <Socials />
       </div>
+
+      <Testimonials />
     </div>
   );
 }

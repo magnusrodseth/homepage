@@ -20,16 +20,12 @@ export type Experience = {
 export type Testimonial = {
   id: string;
   quote: string;
-  fullQuote?: string;
   author: {
     name: string;
     role: string;
     company: string;
     companyUrl?: string;
-    email?: string;
-    phone?: string;
     linkedInUrl?: string;
-    avatarUrl?: string;
   };
 };
 
