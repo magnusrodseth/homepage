@@ -55,6 +55,20 @@ export type SpotifyTrack = {
   songUrl?: string;
 };
 
+export type RecentTrack = {
+  title: string;
+  artist: string;
+  album: string;
+  albumArt: string;
+  songUrl: string;
+  playedAt: string;
+  context?: {
+    type: "playlist" | "album" | "artist" | "show";
+    name?: string;
+    url: string;
+  };
+};
+
 export type BlogPost = {
   slug: string;
   title: string;

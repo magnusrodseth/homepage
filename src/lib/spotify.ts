@@ -1,4 +1,4 @@
-import { SpotifyTrack } from "./data/types";
+import { RecentTrack, SpotifyTrack } from "./data/types";
 
 const SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token";
 const SPOTIFY_NOW_PLAYING_URL =
@@ -124,4 +124,120 @@ export function isSpotifyConfigured(): boolean {
     process.env.SPOTIFY_CLIENT_SECRET &&
     process.env.SPOTIFY_REFRESH_TOKEN
   );
+}
+
+type SpotifyContext = {
+  type: "playlist" | "album" | "artist" | "show";
+  uri: string;
+  external_urls: { spotify: string };
+} | null;
+
+type SpotifyItem = {
+  track: {
+    name: string;
+    artists: Array<{ name: string }>;
+    album: {
+      name: string;
+      images: Array<{ url: string }>;
+    };
+    external_urls: { spotify: string };
+  };
+  played_at: string;
+  context: SpotifyContext;
+};
+
+async function getPlaylistName(
+  playlistId: string,
+  accessToken: string
+): Promise<string | null> {
+  try {
+    const response = await fetch(
+      `https://api.spotify.com/v1/playlists/${playlistId}?fields=name`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        next: { revalidate: 300 },
+      }
+    );
+    if (!response.ok) return null;
+    const data = await response.json();
+    return data.name;
+  } catch {
+    return null;
+  }
+}
+
+export async function getRecentlyPlayedTracks(
+  limit: number = 5
+): Promise<RecentTrack[]> {
+  const accessToken = await getAccessToken();
+
+  if (!accessToken) {
+    return [];
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.spotify.com/v1/me/player/recently-played?limit=${Math.min(limit, 50)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        next: { revalidate: 60 },
+      }
+    );
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data = await response.json();
+    const items: SpotifyItem[] = data.items;
+
+    const playlistIds = new Set<string>();
+    for (const item of items) {
+      if (item.context?.type === "playlist") {
+        const id = item.context.uri.split(":").pop();
+        if (id) playlistIds.add(id);
+      }
+    }
+
+    const playlistNames = new Map<string, string>();
+    await Promise.all(
+      Array.from(playlistIds).map(async (id) => {
+        const name = await getPlaylistName(id, accessToken);
+        if (name) playlistNames.set(id, name);
+      })
+    );
+
+    return items.map((item) => {
+      let context: RecentTrack["context"];
+
+      if (item.context) {
+        const playlistId = item.context.uri.split(":").pop();
+        context = {
+          type: item.context.type,
+          url: item.context.external_urls.spotify,
+          name:
+            item.context.type === "playlist" && playlistId
+              ? playlistNames.get(playlistId)
+              : item.context.type === "album"
+                ? item.track.album.name
+                : undefined,
+        };
+      }
+
+      return {
+        title: item.track.name,
+        artist: item.track.artists.map((a) => a.name).join(", "),
+        album: item.track.album.name,
+        albumArt: item.track.album.images[0]?.url,
+        songUrl: item.track.external_urls.spotify,
+        playedAt: item.played_at,
+        context,
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching recently played tracks:", error);
+    return [];
+  }
 }

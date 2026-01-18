@@ -1,5 +1,5 @@
 import Socials from "@/components/socials";
-import { H2, Muted } from "@/components/ui/typography";
+import { H2, H3, Muted } from "@/components/ui/typography";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import IndexContent from "@/content/pages/index.mdx";
@@ -7,6 +7,7 @@ import profilePicture from "../../public/profile-picture.jpg";
 import { ProfileImage } from "@/components/profile-image";
 import { Testimonials } from "@/components/testimonials";
 import { GitHubContributions } from "@/components/github-calendar";
+import { SpotifyRecentTracks } from "@/components/spotify-recent";
 
 export default function Home() {
   return (
@@ -47,7 +48,20 @@ export default function Home() {
 
       <Testimonials />
 
-      <GitHubContributions />
+      <section className="mt-16 animate-slide-enter delay-600">
+        <H3 className="mb-6 text-xl">Activity</H3>
+
+        <div className="space-y-8">
+          <div>
+            <p className="text-sm text-muted-foreground mb-3">GitHub</p>
+            <GitHubContributions />
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground mb-3">Recently Played on Spotify</p>
+            <SpotifyRecentTracks />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
