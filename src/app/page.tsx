@@ -6,6 +6,7 @@ import IndexContent from "@/content/pages/index.mdx";
 import profilePicture from "../../public/profile-picture.jpg";
 import { ProfileImage } from "@/components/profile-image";
 import { Testimonials } from "@/components/testimonials";
+import { GitHubContributions } from "@/components/github-calendar";
 
 export default function Home() {
   return (
@@ -45,6 +46,8 @@ export default function Home() {
       </div>
 
       <Testimonials />
+
+      <GitHubContributions />
     </div>
   );
 }
