@@ -1,12 +1,11 @@
 import type { Heading } from "@/types";
+import GithubSlugger from "github-slugger";
+
+const slugger = new GithubSlugger();
 
 function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .trim();
+  slugger.reset();
+  return slugger.slug(text);
 }
 
 export function extractHeadings(content: string): Heading[] {
