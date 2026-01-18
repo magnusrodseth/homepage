@@ -74,14 +74,16 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       children,
       ...props
     }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
-      const isInternal = href?.startsWith("/");
+      const isAnchor = href?.startsWith("#");
+      const isInternal = href?.startsWith("/") || isAnchor;
 
       return (
         <Link
           href={href ?? ""}
           target={!isInternal ? "_blank" : undefined}
           className={cn(
-            "font-medium underline underline-offset-4",
+            !isAnchor && "font-medium underline underline-offset-4",
+            isAnchor && "no-underline hover:text-primary/80 transition-colors",
             "animate-slide-enter delay-300",
             className
           )}
@@ -129,21 +131,35 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {...props}
       />
     ),
-    img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
-      <span className="flex flex-col justify-center items-center my-4 max-w-4xl mx-auto w-full">
-        <Image
-          src={props.src ?? ""}
-          width={700}
-          height={600}
-          alt={props.alt ?? ""}
-          className="object-cover my-2 mx-auto shadow-md hover:shadow-lg transition-all duration-300 rounded-lg"
+    img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => {
+      const src = typeof props.src === "string" ? props.src : "";
+      return (
+        <span className="flex flex-col justify-center items-center my-4 max-w-4xl mx-auto w-full">
+          <Image
+            src={src}
+            width={700}
+            height={600}
+            alt={props.alt ?? ""}
+            className="object-cover my-2 mx-auto shadow-md hover:shadow-lg transition-all duration-300 rounded-lg"
+          />
+          {props.alt && (
+            <Small className="my-2 text-center block italic w-10/12">
+              {props.alt}
+            </Small>
+          )}
+        </span>
+      );
+    },
+    video: (props: React.VideoHTMLAttributes<HTMLVideoElement>) => (
+      <div className="flex justify-center my-4 w-full">
+        <video
+          {...props}
+          className={cn(
+            "shadow-md hover:shadow-lg transition-all duration-300 rounded-lg max-w-full",
+            props.className
+          )}
         />
-        {props.alt && (
-          <Small className="my-2 text-center block italic w-10/12">
-            {props.alt}
-          </Small>
-        )}
-      </span>
+      </div>
     ),
     hr: () => <Separator className="my-6 animate-slide-enter delay-300" />,
     table: ({

@@ -71,7 +71,18 @@
   * {
     @apply border-border;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
   }
+  /* Scroll margin for anchor links - accounts for sticky header */
+  h1, h2, h3, h4, h5, h6 {
+    scroll-margin-top: 6rem;
+  }
+}
+
+.mdx video {
+  @apply mx-auto block shadow-md hover:shadow-lg transition-all duration-300 rounded-lg max-w-full my-4;
 }

@@ -5,26 +5,28 @@ export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
   className?: string;
 }
 
-export function H1({ children, className }: TypographyProps) {
+export function H1({ children, className, ...props }: TypographyProps) {
   return (
     <h1
       className={cn(
         "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
         className
       )}
+      {...props}
     >
       {children}
     </h1>
   );
 }
 
-export function H2({ children, className }: TypographyProps) {
+export function H2({ children, className, ...props }: TypographyProps) {
   return (
     <h2
       className={cn(
         "scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0",
         className
       )}
+      {...props}
     >
       {children}
     </h2>
@@ -45,13 +47,14 @@ export function H3({ children, className, ...props }: TypographyProps) {
   );
 }
 
-export function H4({ children, className }: TypographyProps) {
+export function H4({ children, className, ...props }: TypographyProps) {
   return (
     <h4
       className={cn(
         "scroll-m-20 text-xl font-semibold tracking-tight",
         className
       )}
+      {...props}
     >
       {children}
     </h4>

@@ -9,20 +9,27 @@ import { ProfileImage } from "@/components/profile-image";
 export default function Home() {
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
-        <H2
-          className={cn(
-            "animate-slide-enter uppercase text-4xl font-extrabold tracking-tight",
-            "bg-linear-to-r from-indigo-100 to-indigo-400 text-transparent bg-clip-text"
-          )}
-        >
-          {siteConfig.name}
-        </H2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-10 items-center">
+        <div className="order-2 sm:order-1 flex flex-col justify-center">
+          <p className="animate-slide-enter text-lg text-muted-foreground mb-1">
+            Nice to meet you, I&apos;m
+          </p>
+          <H2
+            className={cn(
+              "animate-slide-enter delay-100 uppercase text-4xl sm:text-5xl font-extrabold tracking-tight",
+              "bg-linear-to-r from-indigo-100 to-indigo-400 text-transparent bg-clip-text"
+            )}
+          >
+            {siteConfig.name}
+          </H2>
+        </div>
 
-        <ProfileImage
-          src={profilePicture}
-          alt={`Profile picture of ${siteConfig.name}`}
-        />
+        <div className="order-1 sm:order-2 w-full max-w-[280px] sm:max-w-none mx-auto sm:mx-0">
+          <ProfileImage
+            src={profilePicture}
+            alt={`Profile picture of ${siteConfig.name}`}
+          />
+        </div>
       </div>
 
       <div className="mt-4 mdx">

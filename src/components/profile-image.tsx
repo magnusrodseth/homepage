@@ -46,15 +46,15 @@ export function ProfileImage({ src, alt }: ProfileImageProps) {
       <button
         type="button"
         onClick={open}
-        className="animate-slide-enter overflow-hidden rounded-full w-24 h-24 sm:w-28 sm:h-28 shrink-0 cursor-pointer"
+        className="animate-slide-enter overflow-hidden rounded-2xl w-full aspect-square cursor-pointer shadow-xl shadow-indigo-500/10 ring-1 ring-white/10"
         aria-label={`View ${alt}`}
       >
         <Image
           src={src}
           alt={alt}
           placeholder="blur"
-          className="object-cover transition-transform duration-300 hover:scale-110"
-          sizes="(max-width: 640px) 96px, 112px"
+          className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+          sizes="(max-width: 640px) 100vw, 280px"
         />
       </button>
 

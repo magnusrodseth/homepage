@@ -24,3 +24,9 @@ export type NavItem = {
   href: string;
   disabled?: boolean;
 };
+
+export type Heading = {
+  depth: number;
+  text: string;
+  slug: string;
+};
