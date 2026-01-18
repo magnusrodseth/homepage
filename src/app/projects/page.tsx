@@ -64,10 +64,8 @@ export default async function ProjectsPage() {
   let githubProjects: ProjectItem[] = [];
 
   try {
-    const { pinned, recent } = await getReposWithPinned(username);
-    const allRepos = [...pinned, ...recent.slice(0, 4)];
-    const nonForkedRepos = allRepos.filter((repo) => !repo.fork);
-    githubProjects = nonForkedRepos.map(repoToProject);
+    const { recent } = await getReposWithPinned(username);
+    githubProjects = recent.map(repoToProject);
   } catch (error) {
     console.error("Failed to fetch GitHub repos:", error);
   }

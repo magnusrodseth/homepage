@@ -1,6 +1,24 @@
 import { Octokit } from "octokit";
 import { GitHubRepo } from "./data/types";
 
+const IGNORED_REPOS = new Set([
+  "magnusrodseth", // profile README
+  "docker-course",
+  "data-structures-and-algorithms",
+  "complete-sql-mastery",
+  "it2810-project-1",
+  "it2810-project-2",
+  "it2810-project-3",
+  "it2810-project-4",
+  "sobekkseter-upload",
+  "rod",
+  "rodseth-consulting",
+  "tdt4259-aneo",
+  "ledig",
+  "plotify",
+  "geo-genius",
+]);
+
 function getOctokit() {
   return new Octokit({
     auth: process.env.GITHUB_TOKEN,
@@ -23,13 +41,13 @@ export async function getRepos(username: string): Promise<GitHubRepo[]> {
     const octokit = getOctokit();
     const { data: repos } = await octokit.rest.repos.listForUser({
       username,
-      sort: "created",
+      sort: "pushed",
       direction: "desc",
       per_page: 100,
     });
 
     return repos
-      .filter((repo) => !repo.fork && !repo.archived)
+      .filter((repo) => !repo.fork && !repo.archived && !IGNORED_REPOS.has(repo.name))
       .map((repo) => ({
         id: repo.id,
         name: repo.name,
@@ -152,7 +170,7 @@ export async function getReposWithPinned(
   ]);
 
   const pinnedIds = new Set(pinned.map((r) => r.id));
-  const recent = allRepos.filter((r) => !pinnedIds.has(r.id)).slice(0, 10);
+  const recent = allRepos.filter((r) => !pinnedIds.has(r.id));
 
   return { pinned, recent };
 }
