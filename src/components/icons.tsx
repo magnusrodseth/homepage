@@ -60,6 +60,7 @@ import {
   Dot,
   ArrowUpRight,
   Lightbulb,
+  Star,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -141,4 +142,5 @@ export const Icons = {
   bookMarked: BookMarked,
   arrowDownToLine: ArrowDownToLine,
   podcast: Podcast,
+  star: Star,
 };

@@ -2,7 +2,14 @@ import { Icons } from "@/components/icons";
 import { truncate } from "@/lib/utils";
 import { OpenGraphImageSchema } from "@/schemas/og";
 import { ImageResponse } from "@vercel/og";
-import { slate } from "tailwindcss/colors";
+
+// Slate colors from Tailwind (hardcoded to avoid v4 import issues)
+const slate = {
+  50: "#f8fafc",
+  100: "#f1f5f9",
+  800: "#1e293b",
+  900: "#0f172a",
+};
 
 export const runtime = "edge";
 

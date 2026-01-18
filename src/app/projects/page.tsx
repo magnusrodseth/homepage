@@ -1,78 +1,117 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Project, allPosts, allProjects } from "contentlayer/generated";
-import { compareDesc } from "date-fns";
-
 import { cn, formatDate } from "@/lib/utils";
-import { H2, H3, Large, Muted, P, Small } from "@/components/ui/typography";
+import { H2, H3, Large, Muted, Small } from "@/components/ui/typography";
 import BackLink from "@/components/back-link";
 import { Icons } from "@/components/icons";
-import { formatReadingTime } from "@/lib/readingTime";
 import { Separator } from "@/components/ui/separator";
-import { slate } from "tailwindcss/colors";
-import FilterProjectsDropdown from "@/components/filter-projects-dropdown";
-import { RouteProps } from "@/types";
+import { getAllExperiences, Experience } from "@/lib/data/experience";
+import { getReposWithPinned } from "@/lib/github";
+import { GitHubRepo } from "@/lib/data/types";
+import { env } from "@/env.mjs";
 
 export const metadata = {
   title: "Projects",
 };
 
-type ProjectsByYear = {
-  [year: string]: Project[];
+type ProjectItem = {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  url?: string;
+  technologies?: string[];
+  stars?: number;
+  language?: string;
+  isGitHub: boolean;
 };
 
-export default async function ProjectsPage({ searchParams }: RouteProps) {
-  const type = searchParams.type ?? null;
+function experienceToProject(exp: Experience): ProjectItem {
+  const hasSpecificProject = exp.links && exp.links.length > 0;
+  const title = hasSpecificProject
+    ? `${exp.role} — ${exp.links![0].title}`
+    : `${exp.role} at ${exp.company}`;
 
-  const projects = allProjects
-    .filter((project) =>
-      process.env.NODE_ENV === "production" ? project.published : true
-    )
-    .filter((project) => !type || project.slugAsParams.startsWith(type))
-    .sort((a, b) => {
-      return compareDesc(new Date(a.date), new Date(b.date));
-    });
+  return {
+    id: exp.id,
+    title,
+    description: exp.description,
+    date: exp.startDate,
+    url: exp.companyUrl,
+    technologies: exp.technologies,
+    isGitHub: false,
+  };
+}
 
-  const types = allProjects
-    // `/projects/professional/slug` => `professional`
-    .map((project) => project.slugAsParams.split("/")[0])
-    // Remove duplicates
-    .filter((value, index, self) => self.indexOf(value) === index);
+function repoToProject(repo: GitHubRepo): ProjectItem {
+  return {
+    id: `gh-${repo.id}`,
+    title: repo.name,
+    description: repo.description || "No description",
+    date: repo.createdAt,
+    url: repo.htmlUrl,
+    technologies: repo.topics,
+    stars: repo.stargazersCount,
+    language: repo.language || undefined,
+    isGitHub: true,
+  };
+}
 
-  const projectsByYear = projects.reduce((acc, project) => {
-    const year = new Date(project.date).getFullYear();
-    if (!acc[year]) {
-      acc[year] = [];
-    }
-    acc[year].push(project);
-    return acc;
-  }, {} as ProjectsByYear);
+export default async function ProjectsPage() {
+  const experiences = getAllExperiences();
+  const username = env.GITHUB_USERNAME;
 
-  const sortedYears = Object.keys(projectsByYear).sort((a, b) =>
-    compareDesc(new Date(a), new Date(b))
+  let githubProjects: ProjectItem[] = [];
+
+  try {
+    const { pinned, recent } = await getReposWithPinned(username);
+    const allRepos = [...pinned, ...recent.slice(0, 4)];
+    const nonForkedRepos = allRepos.filter((repo) => !repo.fork);
+    githubProjects = nonForkedRepos.map(repoToProject);
+  } catch (error) {
+    console.error("Failed to fetch GitHub repos:", error);
+  }
+
+  const experienceProjects = experiences
+    .filter((exp) => exp.type === "professional" || exp.type === "freelance")
+    .map(experienceToProject);
+
+  const allProjects = [...experienceProjects, ...githubProjects].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
+  const projectsByYear = allProjects.reduce(
+    (acc, project) => {
+      const year = new Date(project.date).getFullYear().toString();
+      if (!acc[year]) {
+        acc[year] = [];
+      }
+      acc[year].push(project);
+      return acc;
+    },
+    {} as Record<string, ProjectItem[]>
+  );
+
+  const sortedYears = Object.keys(projectsByYear).sort(
+    (a, b) => parseInt(b) - parseInt(a)
   );
 
   return (
     <div className="mx-auto max-w-2xl">
       <div className="flex flex-col gap-y-2 mb-32">
-        <div className="w-full flex justify-between">
-          <H2 className="animate-slide-enter">Projects</H2>
-          <FilterProjectsDropdown types={types} initialType={type} />
-        </div>
+        <H2 className="animate-slide-enter">Projects</H2>
         <Small className="animate-slide-enter">
-          A collection of professional, freelance, school and personal projects
-          I have worked on throughout my career.
+          A collection of professional work and open source projects.
         </Small>
       </div>
 
-      {projects.length === 0 && (
+      {allProjects.length === 0 && (
         <Muted className="animate-slide-enter">
           <span className="font-bold">Oops!</span> Nothing to see here yet.
           Please come back later.
         </Muted>
       )}
 
-      {projects.length > 0 && (
+      {allProjects.length > 0 && (
         <div className="flex flex-col gap-y-32 mt-16">
           {sortedYears.map((year, index) => {
             const delay = `${index * 0.2}s`;
@@ -87,28 +126,20 @@ export default async function ProjectsPage({ searchParams }: RouteProps) {
                   )}
                   style={{
                     animationDelay: delay,
-                    WebkitTextStroke: `1px ${slate[800]}`,
+                    WebkitTextStroke: "1px var(--color-slate-800)",
                   }}
                 >
                   {year}
                 </H3>
 
                 <div className="flex flex-col gap-y-4">
-                  {projectsByYear[year].map((project) => (
-                    <Link
-                      key={project._id}
-                      className="flex flex-col md:flex-row justify-start items-start md:items-center gap-x-2 text-muted-foreground hover:text-foreground animate-slide-enter transition-all"
-                      href={`/projects/${project.slugAsParams}`}
-                      style={{ animationDelay: delay }}
-                    >
-                      <Large>{project.title}</Large>
-
-                      <Muted className="flex justify-center items-center">
-                        {formatDate(project.date)}{" "}
-                        <Icons.dot className="inline" />{" "}
-                        {formatReadingTime(project.readingTimeInMinutes)}
-                      </Muted>
-                    </Link>
+                  {projectsByYear[year].map((project, cardIndex) => (
+                    <ProjectCard
+                      key={project.id}
+                      project={project}
+                      yearDelay={index * 0.2}
+                      cardIndex={cardIndex}
+                    />
                   ))}
                 </div>
               </div>
@@ -120,6 +151,112 @@ export default async function ProjectsPage({ searchParams }: RouteProps) {
       <Separator className="my-8" />
 
       <BackLink />
+    </div>
+  );
+}
+
+function ProjectCard({
+  project,
+  yearDelay,
+  cardIndex,
+}: {
+  project: ProjectItem;
+  yearDelay: number;
+  cardIndex: number;
+}) {
+  const delay = `${yearDelay + cardIndex * 0.08}s`;
+
+  const content = (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <Large className="truncate">{project.title}</Large>
+          {project.isGitHub && (
+            <Icons.gitHub className="h-4 w-4 opacity-40 shrink-0" />
+          )}
+        </div>
+        {project.url && (
+          <Icons.arrowUpRight className="h-4 w-4 opacity-30 shrink-0 mt-1" />
+        )}
+      </div>
+
+      {project.description && project.description !== "No description" && (
+        <Small className="text-muted-foreground/70 line-clamp-2">
+          {project.description}
+        </Small>
+      )}
+
+      <div className="flex items-center flex-wrap gap-x-2 gap-y-1">
+        <Muted className="flex items-center gap-1">
+          {formatDate(project.date)}
+          {project.stars !== undefined && project.stars > 0 && (
+            <>
+              <Icons.dot className="inline" />
+              <span className="flex items-center gap-1">
+                <Icons.star className="h-3 w-3" />
+                {project.stars}
+              </span>
+            </>
+          )}
+          {project.language && (
+            <>
+              <Icons.dot className="inline" />
+              <span>{project.language}</span>
+            </>
+          )}
+        </Muted>
+      </div>
+
+      {project.technologies && project.technologies.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mt-1">
+          {project.technologies.slice(0, 5).map((tech) => (
+            <span
+              key={tech}
+              className="px-2 py-0.5 text-xs rounded-md bg-muted/50 text-muted-foreground"
+            >
+              {tech}
+            </span>
+          ))}
+          {project.technologies.length > 5 && (
+            <span className="px-2 py-0.5 text-xs text-muted-foreground/50">
+              +{project.technologies.length - 5}
+            </span>
+          )}
+        </div>
+      )}
+    </div>
+  );
+
+  const cardStyles = cn(
+    "block rounded-lg px-4 py-3",
+    "border border-border/50",
+    "bg-background/50 backdrop-blur-sm",
+    "animate-slide-enter transition-all duration-300"
+  );
+
+  if (project.url) {
+    return (
+      <Link
+        className={cn(
+          cardStyles,
+          "text-muted-foreground hover:text-foreground",
+          "hover:border-border hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+        )}
+        href={project.url}
+        target="_blank"
+        style={{ animationDelay: delay }}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <div
+      className={cn(cardStyles, "text-muted-foreground")}
+      style={{ animationDelay: delay }}
+    >
+      {content}
     </div>
   );
 }

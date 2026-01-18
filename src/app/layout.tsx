@@ -10,7 +10,6 @@ import Navbar from "@/components/navigation/navbar";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/providers/theme-provider";
 import GridBackground from "@/components/grid-background";
-// import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,7 +44,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="no" suppressHydrationWarning>
+    <html lang="no" className="dark" suppressHydrationWarning>
       <body
         className={cn(
           GeistSans.variable,
@@ -54,7 +53,7 @@ export default function RootLayout({
           "bg-background font-sans antialiased"
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" forcedTheme="dark">
           <Navbar />
 
           <GridBackground />
