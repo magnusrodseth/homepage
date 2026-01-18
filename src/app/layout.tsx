@@ -58,7 +58,7 @@ export default function RootLayout({
 
           <GridBackground />
           <div className="md:container">
-            <main className="flex-1 min-h-screen my-8 mx-2 md:mx-8">
+            <main className="flex-1 min-h-screen my-8 px-4 sm:px-6 lg:px-8">
               {children}
             </main>
 

@@ -11,12 +11,12 @@ export default function Home() {
     <div className="mx-auto max-w-2xl">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-10 items-center">
         <div className="order-2 sm:order-1 flex flex-col justify-center">
-          <p className="animate-slide-enter text-lg text-muted-foreground mb-1">
-            Nice to meet you, I&apos;m
+          <p className="animate-slide-enter text-xl sm:text-2xl text-muted-foreground">
+            Hi! I&apos;m
           </p>
           <H2
             className={cn(
-              "animate-slide-enter delay-100 uppercase text-4xl sm:text-5xl font-extrabold tracking-tight",
+              "animate-slide-enter delay-100 uppercase text-4xl sm:text-5xl font-extrabold tracking-tight -mt-1",
               "bg-linear-to-r from-indigo-100 to-indigo-400 text-transparent bg-clip-text"
             )}
           >

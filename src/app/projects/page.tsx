@@ -8,6 +8,7 @@ import { getAllExperiences, Experience } from "@/lib/data/experience";
 import { getReposWithPinned } from "@/lib/github";
 import { GitHubRepo } from "@/lib/data/types";
 import { env } from "@/env.mjs";
+import { ExpandableText } from "@/components/expandable-text";
 
 export const metadata = {
   title: "Projects",
@@ -181,9 +182,10 @@ function ProjectCard({
       </div>
 
       {project.description && project.description !== "No description" && (
-        <Small className="text-muted-foreground/70 line-clamp-2">
-          {project.description}
-        </Small>
+        <ExpandableText
+          text={project.description}
+          className="text-muted-foreground/70"
+        />
       )}
 
       <div className="flex items-center flex-wrap gap-x-2 gap-y-1">

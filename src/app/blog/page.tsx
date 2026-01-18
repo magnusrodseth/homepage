@@ -4,7 +4,7 @@ import { H2, H3, Large, Muted, Small } from "@/components/ui/typography";
 import BackLink from "@/components/back-link";
 import { Icons } from "@/components/icons";
 import { Separator } from "@/components/ui/separator";
-import { getBlogPosts, BlogPost } from "@/lib/blog";
+import { getBlogPosts, BlogPostMeta } from "@/lib/blog";
 
 export const metadata = {
   title: "Blog",
@@ -22,7 +22,7 @@ export default function BlogPage() {
       acc[year].push(post);
       return acc;
     },
-    {} as Record<string, BlogPost[]>
+    {} as Record<string, BlogPostMeta[]>
   );
 
   const sortedYears = Object.keys(postsByYear).sort(
@@ -96,7 +96,7 @@ function PostCard({
   yearDelay,
   cardIndex,
 }: {
-  post: BlogPost;
+  post: BlogPostMeta;
   yearDelay: number;
   cardIndex: number;
 }) {

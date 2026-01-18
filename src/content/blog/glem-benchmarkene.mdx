@@ -1,0 +1,109 @@
+---
+title: "Glem benchmarkene: Derfor bør du bry deg om Claude Opus 4.5"
+description: "Det Anthropic har gjort her, handler mindre om at modellen har lest flere bøker, og mer om at de har endret måten modellen jobber på."
+date: "2025-11-18"
+---
+
+*Denne artikkelen ble opprinnelig publisert på [Kode24](https://www.kode24.no/artikkel/glem-benchmarkene-derfor-bor-du-bry-deg-om-claude-opus-45/250271).*
+
+---
+
+Det er lett å bli nummen av den konstante strømmen med nye AI-modeller. Enda en uke, enda en benchmark som flytter seg noen prosentpoeng.
+
+Men lanseringen av Claude Opus 4.5 og de nye funksjonene for Advanced Tool Use fanget oppmerksomheten min av helt andre grunner enn kun marginale hopp på et søylediagram.
+
+Det Anthropic har gjort her, handler mindre om at modellen har lest flere bøker, og mer om at de har endret måten modellen jobber på. De har tatt tak i de kjedelige, men kritiske flaskehalsene vi utviklere møter: begrensninger i kontekst, latency i API-kall og kostnaden av komplekse oppgaver.
+
+Her er en gjennomgang av hva som er nytt, og hvorfor dette er interessant for deg - enten du bygger avanserte agenter eller bare bruker verktøy som Claude Code i hverdagen.
+
+## Tool Search Tool: "Lazy loading" for kontekst
+
+Hvis du har forsøkt å gi en LLM tilgang til mange verktøy samtidig - enten det er i en agent du bygger, eller i et CLI-miljø som Claude Code - kjenner du problemet: "Context Bloat".
+
+Å legge inn definisjoner for 50+ verktøy spiser opp tusenvis av tokens før du i det hele tatt har stilt det første spørsmålet. Det gjør prosesseringen tregere, dyrere, og øker sjansen for at modellen blir forvirret.
+
+Løsningen Anthropic nå ruller ut minner mye om lazy loading: I stedet for å laste alle verktøyene inn i konteksten ved oppstart, gir du modellen et "søke-verktøy". Når Claude innser at den trenger å gjøre noe den ikke har verktøy for i minnet (f.eks. "sjekk deployment-status" eller "sjekk været"), søker den i katalogen, og laster kun inn definisjonen for det relevante verktøyet der og da.
+
+![Forskjellen mellom tradisjonell approach og Tool Search - ubrukte verktøysdefinisjoner spiser opp store deler av kontekstvinduet. Med Tool Search lastes kun det nødvendige.](/blog/context-usage.png)
+
+Dette betyr at du i teorien kan ha tusenvis av tilgjengelige verktøy i systemet ditt, uten at det påvirker ytelsen eller prisen på hver enkelt request på en drastisk måte.
+
+## Programmatic Tool Calling
+
+Tradisjonell "Function Calling" føles ofte som en ping-pong-match:
+
+1. Modellen ber om å kjøre verktøy A.
+2. Verktøy A kjøres og sender svaret tilbake til modellen.
+3. Modellen leser svaret og ber om verktøy B.
+4. Verktøy B kjøres og sender svaret tilbake til modellen.
+
+Dette skaper mye latency. Med Programmatic Tool Calling kan Claude i stedet skrive og kjøre et Python-script i en sandbox (hos Anthropic). Dette scriptet kan kalle flere verktøy, prosessere dataene, kjøre løkker og logikk, og kun returnere det endelige svaret.
+
+**Hvorfor er dette viktig?**
+
+- **Færre hallusinasjoner:** LLM-er sliter ofte med presis matte og logikk. Python er perfekt til det. Ved å la modellen skrive koden for å løse problemet, i stedet for å "tenke" seg frem til svaret, øker presisjonen.
+- **Effektivitet:** Du bytter ut ti frem-og-tilbake kall med 1 eksekvering.
+
+![Flytdiagrammet viser forskjellen: I stedet for å gå frem og tilbake til brukeren, kjører Claude en indre loop med Python-kode i en sikker container før det endelige svaret leveres.](/blog/programmatic-tool-calling.png)
+
+## Beviset: "The Puzzle Room Challenge"
+
+Teori er vel og bra, men Anthropic kjørte et interessant eksperiment for å vise forskjellen i praksis. De satte opp to modeller til å løse en serie med 7 matematiske låser for å åpne en digital safe:
+
+- Sonnet 4.5 med tradisjonell tool calling.
+- Opus 4.5 med programmatic tool calling.
+
+![Til venstre ser vi Sonnet 4.5 som sliter med høy token-bruk ved bruk av tradisjonelle verktøy. Til høyre har Opus 4.5 løst problemet programmatisk med en brøkdel av ressursene.](/blog/sonnet-vs-opus.png)
+
+Resultatet var en tankevekker:
+
+- **Sonnet (Tradisjonell):** Prøvde å gjette koder, feilet, fikk hint, og prøvde igjen. Den brukte over 7.6 millioner tokens på å løse oppgavene, fordi den måtte "prate" seg gjennom logikken.
+- **Opus (Programmatic):** Skrev Python-script for å knekke kodene (f.eks. kalkulere Fibonacci-rekker eller modulo-aritmetikk). Den løste alt med under 670 000 tokens.
+
+Opus brukte altså under 10% av token-mengden til Sonnet. Selv om prisen per token er høyere for Opus, ble totalkostnaden for oppgaven drastisk lavere, og oppgaven ble løst raskere og mer presist. Dette viser at "dyrere" modeller nå kan være billigere i drift hvis de løser oppgaven på første forsøk ved hjelp av bedre verktøy.
+
+Se hele eksperimentet her: [Claude Opus 4.5 solves a puzzle game (YouTube)](https://www.youtube.com/watch?v=2MJDdzSXL74)
+
+## Hvorfor jeg har sluttet å bry meg om tallene
+
+Det er i møte med slike resultater at jeg kjenner jeg bryr meg fint lite om benchmarks. Om en modell scorer 70, 100 eller 80.9% (som Opus 4.5 faktisk scorer på SWE-bench Verified), blir bare abstrakte tall på et søylediagram for meg.
+
+I min hverdag handler det kun om effekt: Hastighet, kostnad og pålitelighet. Det Anthropic viser her, er et faktisk konkurransefortrinn som betyr noe. Konkurrentene kan gjerne være marginalt "smartere" på papiret, men hvis de må brenne av ti ganger så mange tokens og bruke ti ganger så lang tid på å komme frem til samme svar, har de tapt i mine øyne.
+
+## Det store bildet: Hvorfor dette er viktig nå
+
+Det er verdt å løfte blikket litt fra koden for å se hva som skjer i bakgrunnen her. Det er noen strukturelle endringer som gjør at Anthropic posisjonerer seg annerledes enn konkurrentene akkurat nå:
+
+### 1. "Cost of Intelligence" går ned
+
+Selv om vi ser modeller med høyere "sticker price" (som Opus 4.5), faller den faktiske kostnaden for å få utført komplekst arbeid. Som vi så i eksempelet over: En smart modell som bruker effektive verktøy er billigere enn en billig modell som roter seg bort i lange samtaler.
+
+### 2. Infrastruktur og partnerskap
+
+Anthropic opererer ikke i et vakuum. Deres tette samarbeid med Google gir dem tilgang til enorm regnekraft - rapportene sier de har sikret tilgang til over 1 million TPUs (Tensor Processing Units) i 2026. Dette er viktig fordi det garanterer at de har infrastrukturen til å skalere disse "tunge" agent-modellene i produksjon.
+
+### 3. Fra Chatbot til "Compute Engine"
+
+Vi ser en dreining hvor modellene går fra å være noe vi chatter med, til å bli en motor som utfører arbeid i bakgrunnen.
+
+- **Tool Search** løser problemet med "hva kan jeg gjøre?".
+- **Programmatic Calling** løser problemet med "hvordan gjør jeg det effektivt?".
+
+Dette er teknologien som ligger til grunn for verktøy som Claude Code. Når du sitter i terminalen din og ber Claude fikse en bug, er det nettopp denne evnen til å søke opp filer, forstå kontekst, og kjøre tester selvstendig som gjør at det tidvis oppleves helt magisk.
+
+## Oppsummert
+
+Claude Opus 4.5 er en imponerende modell, men det er verktøyene rundt modellen som gjør dette til en viktig utgivelse. For oss utviklere betyr dette at vi kan begynne å bygge systemer som er mer autonome, mer presise og - kanskje overraskende nok - billigere i drift på komplekse oppgaver.
+
+Spørsmålet er ikke lenger hvilken modell som er smartest på papiret, men hvilken modell som faktisk får jobben gjort. Med Opus 4.5 har Anthropic lagt listen for hva vi kan forvente av autonome agenter. Nå blir det spennende å se hvordan konkurrentene svarer.
+
+---
+
+## Kilder
+
+- Anthropic. (2025, 24. november). [Introducing advanced tool use on the Claude Developer Platform](https://www.anthropic.com/engineering/advanced-tool-use).
+- Anthropic. (2025, 24. november). [Introducing Claude Opus 4.5](https://www.anthropic.com/news/claude-opus-4-5).
+- Anthropic. (2025, 23. oktober). [Expanding our use of Google Cloud TPUs and Services](https://www.anthropic.com/news/expanding-our-use-of-google-cloud-tpus-and-services).
+- Anthropic. (u.d.). [Tool search tool - Claude Docs](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool).
+- Anthropic [YouTube]. (2025). [Claude Opus 4.5 solves a puzzle game](https://www.youtube.com/watch?v=2MJDdzSXL74).
+- Google Cloud Press Corner. (2025, 23. oktober). [Anthropic to Expand Use of Google Cloud TPUs and Services](https://www.googlecloudpresscorner.com/2025-10-23-Anthropic-to-Expand-Use-of-Google-Cloud-TPUs-and-Services).
