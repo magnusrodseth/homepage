@@ -9,4 +9,8 @@ export const navigation: NavItem[] = [
     title: "Blog",
     href: "/blog",
   },
+  {
+    title: "Presentations",
+    href: "https://presentations.magnusrodseth.com",
+  },
 ];

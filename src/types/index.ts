@@ -7,6 +7,7 @@ export type SiteConfig = {
   github: string;
   linkedIn: string;
   email: string;
+  presentations: string;
 };
 
 export type RouteProps = {

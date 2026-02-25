@@ -9,6 +9,7 @@ export const siteConfig: SiteConfig = {
   github: "https://github.com/magnusrodseth",
   linkedIn: "https://www.linkedin.com/in/magnus-rodseth/",
   email: "mailto:magnus.rodseth@gmail.com",
+  presentations: "https://presentations.magnusrodseth.com",
   keywords: [
     "software",
     "software engineer",
