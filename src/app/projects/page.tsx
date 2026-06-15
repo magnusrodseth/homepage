@@ -9,9 +9,10 @@ import { getReposWithPinned } from "@/lib/github";
 import { GitHubRepo } from "@/lib/data/types";
 import { env } from "@/env.mjs";
 import { ExpandableText } from "@/components/expandable-text";
+import { PROJECTS_PAGE } from "@/config/pages";
 
 export const metadata = {
-  title: "Projects",
+  title: PROJECTS_PAGE.title,
 };
 
 type ProjectItem = {
@@ -102,10 +103,8 @@ export default async function ProjectsPage() {
   return (
     <div className="mx-auto max-w-2xl">
       <div className="flex flex-col gap-y-2 mb-32">
-        <H2 className="animate-slide-enter">Projects</H2>
-        <Small className="animate-slide-enter">
-          A collection of professional work and open source projects.
-        </Small>
+        <H2 className="animate-slide-enter">{PROJECTS_PAGE.title}</H2>
+        <Small className="animate-slide-enter">{PROJECTS_PAGE.tagline}</Small>
       </div>
 
       {allProjects.length === 0 && (

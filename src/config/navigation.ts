@@ -1,16 +1,7 @@
 import { NavItem } from "../types";
+import { navPages, pageHref } from "@/config/pages";
 
-export const navigation: NavItem[] = [
-  {
-    title: "Projects",
-    href: "/projects",
-  },
-  {
-    title: "Blog",
-    href: "/blog",
-  },
-  {
-    title: "Presentations",
-    href: "https://presentations.magnusrodseth.com",
-  },
-];
+export const navigation: NavItem[] = navPages.map((page) => ({
+  title: page.title,
+  href: pageHref(page),
+}));

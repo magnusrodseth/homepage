@@ -1,125 +1,16 @@
-import fs from "fs";
-import path from "path";
 import { siteConfig } from "@/config/site";
-import { getBlogPostBySlug, getBlogPosts, getBlogSlugs } from "@/lib/blog";
-import { getAllExperiences } from "@/lib/data/experience";
-import { formatDate } from "@/lib/utils";
+import { getBlogSlugs } from "@/lib/blog";
+import {
+  renderHome,
+  renderBlogIndex,
+  renderBlogPost,
+  renderProjects,
+  renderDailyDrivers,
+} from "@/lib/agent-markdown";
 
 export const dynamic = "force-static";
 
 type Params = { params: Promise<{ path?: string[] }> };
-
-const HOMEPAGE_INDEX_MDX = path.join(
-  process.cwd(),
-  "src/content/pages/index.mdx"
-);
-
-function readHomepageBody(): string {
-  try {
-    return fs.readFileSync(HOMEPAGE_INDEX_MDX, "utf-8").trim();
-  } catch {
-    return siteConfig.description;
-  }
-}
-
-function renderHome(): string {
-  const body = readHomepageBody();
-  return [
-    `# ${siteConfig.name}`,
-    "",
-    siteConfig.description,
-    "",
-    body,
-    "",
-    "## Site map",
-    "",
-    `- [Blog](${siteConfig.url}/blog)`,
-    `- [Projects](${siteConfig.url}/projects)`,
-    `- [Presentations](${siteConfig.presentations})`,
-    "",
-    "## Contact",
-    "",
-    `- GitHub: ${siteConfig.github}`,
-    `- LinkedIn: ${siteConfig.linkedIn}`,
-    `- Email: ${siteConfig.email.replace(/^mailto:/, "")}`,
-    "",
-  ].join("\n");
-}
-
-function renderBlogIndex(): string {
-  const posts = getBlogPosts();
-  const lines = [
-    "# Blog",
-    "",
-    "Thoughts on software, AI, and building things.",
-    "",
-  ];
-  for (const post of posts) {
-    lines.push(
-      `- [${post.title}](${siteConfig.url}/blog/${post.slug}) — ${formatDate(post.date)}`
-    );
-    if (post.description) {
-      lines.push(`  ${post.description}`);
-    }
-  }
-  lines.push("");
-  return lines.join("\n");
-}
-
-function renderBlogPost(slug: string): string | null {
-  const post = getBlogPostBySlug(slug);
-  if (!post) return null;
-  return [
-    `# ${post.title}`,
-    "",
-    `Published: ${formatDate(post.date)}`,
-    "",
-    post.description ? `> ${post.description}` : "",
-    "",
-    post.content.trim(),
-    "",
-  ]
-    .filter((line, idx, arr) => !(line === "" && arr[idx - 1] === ""))
-    .join("\n");
-}
-
-function renderProjects(): string {
-  const experiences = getAllExperiences().filter(
-    (exp) =>
-      exp.type === "professional" ||
-      exp.type === "freelance" ||
-      exp.type === "internship"
-  );
-
-  const lines = [
-    "# Projects",
-    "",
-    "A collection of professional work and open source projects.",
-    "",
-    "## Professional experience",
-    "",
-  ];
-
-  for (const exp of experiences) {
-    const end = exp.endDate === "present" ? "present" : formatDate(exp.endDate);
-    lines.push(`### ${exp.role} at ${exp.company}`);
-    lines.push("");
-    lines.push(`${formatDate(exp.startDate)} – ${end} · ${exp.location}`);
-    lines.push("");
-    lines.push(exp.description);
-    if (exp.technologies?.length) {
-      lines.push("");
-      lines.push(`Tech: ${exp.technologies.join(", ")}`);
-    }
-    lines.push("");
-  }
-
-  lines.push(
-    `Open source projects are listed at ${siteConfig.github} and on the [projects page](${siteConfig.url}/projects).`
-  );
-  lines.push("");
-  return lines.join("\n");
-}
 
 function notFoundMarkdown(pathname: string): string {
   return [
@@ -150,6 +41,7 @@ export async function generateStaticParams() {
     { path: [] },
     { path: ["blog"] },
     { path: ["projects"] },
+    { path: ["daily-drivers"] },
     ...slugs.map((slug) => ({ path: ["blog", slug] })),
   ];
 }
@@ -174,6 +66,10 @@ export async function GET(_req: Request, { params }: Params): Promise<Response> 
 
   if (joined === "projects") {
     return markdownResponse(renderProjects());
+  }
+
+  if (joined === "daily-drivers") {
+    return markdownResponse(renderDailyDrivers());
   }
 
   return markdownResponse(notFoundMarkdown(`/${joined}`), 404);

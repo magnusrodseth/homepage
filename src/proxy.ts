@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { sitePages } from "@/config/pages";
 
-const MARKDOWN_PATHS = new Set([
-  "/",
-  "/blog",
-  "/projects",
-]);
+// Derived from the page registry: every page that exposes a Markdown view.
+const MARKDOWN_PATHS = new Set(
+  sitePages.filter((page) => page.markdown).map((page) => page.path)
+);
 
 function isMarkdownAcceptHeader(accept: string | null): boolean {
   if (!accept) return false;
@@ -37,6 +37,8 @@ export function proxy(req: NextRequest) {
   return res;
 }
 
+// Keep in sync with the `markdown` pages in src/config/pages.ts. Next requires
+// this matcher to be statically analyzable, so it cannot be derived at build.
 export const config = {
-  matcher: ["/", "/blog", "/blog/:slug", "/projects"],
+  matcher: ["/", "/blog", "/blog/:slug", "/projects", "/daily-drivers"],
 };

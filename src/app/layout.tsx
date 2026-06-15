@@ -42,6 +42,16 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
   manifest: "/site.webmanifest",
+  alternates: {
+    types: {
+      "application/rss+xml": [
+        { url: "/feed.xml", title: `${siteConfig.name} RSS feed` },
+      ],
+      "application/atom+xml": [
+        { url: "/atom.xml", title: `${siteConfig.name} Atom feed` },
+      ],
+    },
+  },
   appleWebApp: {
     title: "Magnus Rødseth",
   },

@@ -15,6 +15,16 @@ export function GET(): Response {
             type: "application/xml",
             title: "Site content index (sitemap)",
           },
+          {
+            href: `${baseUrl}/llms.txt`,
+            type: "text/plain",
+            title: "LLM-friendly site index (llms.txt)",
+          },
+          {
+            href: `${baseUrl}/llms-full.txt`,
+            type: "text/plain",
+            title: "Full site content for LLMs (llms-full.txt)",
+          },
         ],
         describedby: [
           {
@@ -28,6 +38,11 @@ export function GET(): Response {
             href: `${baseUrl}/`,
             type: "text/markdown",
             title: "Markdown representation (via Accept: text/markdown)",
+          },
+          {
+            href: `${baseUrl}/feed.xml`,
+            type: "application/rss+xml",
+            title: "Blog RSS feed",
           },
         ],
       },

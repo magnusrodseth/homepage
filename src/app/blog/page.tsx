@@ -5,9 +5,10 @@ import BackLink from "@/components/back-link";
 import { Icons } from "@/components/icons";
 import { Separator } from "@/components/ui/separator";
 import { getBlogPosts, BlogPostMeta } from "@/lib/blog";
+import { BLOG_PAGE } from "@/config/pages";
 
 export const metadata = {
-  title: "Blog",
+  title: BLOG_PAGE.title,
 };
 
 export default function BlogPage() {
@@ -32,10 +33,8 @@ export default function BlogPage() {
   return (
     <div className="mx-auto max-w-2xl">
       <div className="flex flex-col gap-y-2 mb-32">
-        <H2 className="animate-slide-enter">Blog</H2>
-        <Small className="animate-slide-enter">
-          Thoughts on software, AI, and building things.
-        </Small>
+        <H2 className="animate-slide-enter">{BLOG_PAGE.title}</H2>
+        <Small className="animate-slide-enter">{BLOG_PAGE.tagline}</Small>
       </div>
 
       {posts.length === 0 && (
