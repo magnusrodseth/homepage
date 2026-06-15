@@ -58,7 +58,7 @@ export function renderBlogIndex(): string {
   const lines = [renderHeading(BLOG_PAGE.title, BLOG_PAGE.tagline)];
   for (const post of posts) {
     lines.push(
-      `- [${post.title}](${siteConfig.url}/blog/${post.slug}) — ${formatDate(post.date)}`
+      `- [${post.title}](${siteConfig.url}/blog/${post.slug}): ${formatDate(post.date)}`
     );
     if (post.description) {
       lines.push(`  ${post.description}`);
