@@ -10,7 +10,7 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "ui:add": "pnpm dlx shadcn-ui@latest add"
+    "ui:add": "bunx shadcn@latest add"
   },
   "dependencies": {
     "@eslint/eslintrc": "^3.3.3",
@@ -28,36 +28,28 @@
     "@t3-oss/env-nextjs": "^0.7.1",
     "@types/mdx": "^2.0.13",
     "@vercel/analytics": "^1.1.1",
-    "@vercel/og": "^0.5.20",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
-    "date-fns": "^2.30.0",
     "embla-carousel-react": "^8.6.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "geist": "^1.2.0",
     "github-slugger": "^2.0.0",
-    "globby": "^16.1.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.562.0",
     "next": "^16.1.3",
     "next-mdx-remote": "^6.0.0",
-    "next-themes": "^0.2.1",
     "octokit": "^5.0.5",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-github-calendar": "^5.0.4",
-    "reading-time": "^1.5.0",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-pretty-code": "^0.14.1",
     "rehype-slug": "^5.1.0",
     "remark-gfm": "^4.0.1",
     "shiki": "^3.21.0",
-    "sonner": "^1.2.4",
     "tailwind-merge": "^2.1.0",
     "tailwindcss-animate": "^1.0.7",
     "typescript-eslint": "^8.53.0",
-    "typewriter-effect": "^2.21.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -70,5 +62,6 @@
     "postcss": "^8.4.32",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.3.3"
-  }
+  },
+  "packageManager": "bun@1.3.14"
 }

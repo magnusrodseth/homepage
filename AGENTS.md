@@ -9,9 +9,11 @@ Personal homepage for Magnus Rodseth. Next.js 16 + React 19 + Tailwind CSS 4 blo
 - **Tailwind CSS 4** with CSS variables
 - **TypeScript** (strict mode)
 - **shadcn/ui** (Radix primitives)
-- **@next/mdx** + rehype-pretty-code (shiki)
-- **Geist** font family
+- **@next/mdx** + rehype-pretty-code (shiki); plugin pipeline shared via `src/lib/mdx-plugins.mjs`
+- **Geist** font family (Sans for body, Mono for terminal-flavored accents)
 - **Node 22.x** required
+- Dark theme only: tokens live in `:root` in `globals.css`; there is no theme toggle
+- Builds use `--webpack`: Turbopack cannot serialize the MDX plugin options (function-valued rehype-pretty-code hooks)
 
 ## Commands
 
@@ -108,19 +110,20 @@ import { H1, H2, P, Muted, Small } from "@/components/ui/typography";
 
 ### Animations
 
-- `animate-slide-enter` - slide up + fade in (add `delay-300` etc. for stagger)
+- `animate-slide-enter` - slide up + fade in (0.4s)
+- Stagger with `stagger-<ms>` (e.g. `stagger-150`), a custom utility setting `animation-delay`. Tailwind's `delay-*` sets `transition-delay` and does NOT delay animations
 - `animate-fade-in` - simple fade
 - `hover-rise` - translateY on hover (custom Tailwind plugin)
+- `prefers-reduced-motion` is handled globally in `globals.css`; never add motion that bypasses it
 
 ### Environment Variables
 
 Add new env vars to `src/env.mjs` with Zod validation. Access via `import { env } from "@/env.mjs"`.
 
 Current env vars:
-- `GITHUB_TOKEN` - GitHub API access (optional)
+- `GITHUB_TOKEN` - GitHub API access (optional; repos, pinned repos, contribution calendar)
 - `GITHUB_USERNAME` - GitHub username (default: magnusrodseth)
 - `SPOTIFY_CLIENT_ID` / `SPOTIFY_CLIENT_SECRET` / `SPOTIFY_REFRESH_TOKEN` - Spotify API (optional)
-- `NEXT_PUBLIC_VERCEL_URL` - Deployment URL (optional)
 
 ### OG Images
 
@@ -144,13 +147,11 @@ Blog posts in `src/content/blog/*.mdx` with frontmatter:
 
 | Library | Purpose |
 |---------|---------|
-| `octokit` | GitHub REST + GraphQL API |
-| `next-themes` | Dark mode |
+| `octokit` | GitHub REST + GraphQL API (repos + contribution calendar, server-side) |
 | `embla-carousel-react` | Carousels |
-| `sonner` | Toast notifications |
-| `react-github-calendar` | GitHub contribution calendar |
-| `typewriter-effect` | Typing animations |
 | `lucide-react` | Icons |
+
+The GitHub contribution calendar is rendered server-side (`src/components/github-calendar.tsx` + `getContributionCalendar` in `src/lib/github.ts`); the navbar logo's typing effect is pure CSS (`.logo-type` in `globals.css`). Do not reintroduce client-side libraries for these: the old `react-github-calendar` caused production hydration errors (React #418) because its SSR output depends on render-time dates.
 
 ## Naming Conventions
 
