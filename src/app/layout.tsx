@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { siteConfig } from "@/config/site";
 import { GeistSans } from "geist/font/sans";
@@ -7,19 +6,16 @@ import { GeistMono } from "geist/font/mono";
 import { cn } from "@/lib/utils";
 import { SiteFooter } from "@/components/site-footer";
 import Navbar from "@/components/navigation/navbar";
-import { Toaster } from "sonner";
-import { ThemeProvider } from "@/providers/theme-provider";
 import GridBackground from "@/components/grid-background";
-
-const inter = Inter({ subsets: ["latin"] });
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: {
     default: siteConfig.name,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: siteConfig.keywords,
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -53,7 +49,7 @@ export const metadata: Metadata = {
     },
   },
   appleWebApp: {
-    title: "Magnus Rødseth",
+    title: siteConfig.name,
   },
 };
 
@@ -63,30 +59,37 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="no" className="dark" suppressHydrationWarning>
+    <html lang="en">
       <body
         className={cn(
           GeistSans.variable,
           GeistMono.variable,
-          inter.className,
+          GeistSans.className,
           "bg-background font-sans antialiased"
         )}
       >
-        <ThemeProvider attribute="class" forcedTheme="dark">
-          <Navbar />
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:ring-2 focus:ring-ring"
+        >
+          Skip to content
+        </a>
 
-          <GridBackground />
-          <div className="md:container">
-            <main className="flex-1 min-h-screen my-8 px-4 sm:px-6 lg:px-8">
-              {children}
-            </main>
+        <Navbar />
 
-            <SiteFooter />
-            <Toaster richColors />
+        <GridBackground />
+        <div className="md:container">
+          <main
+            id="main-content"
+            className="flex-1 min-h-screen my-8 px-4 sm:px-6 lg:px-8"
+          >
+            {children}
+          </main>
 
-            {/* <Analytics /> */}
-          </div>
-        </ThemeProvider>
+          <SiteFooter />
+        </div>
+
+        <Analytics />
       </body>
     </html>
   );

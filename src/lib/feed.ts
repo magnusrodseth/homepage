@@ -4,6 +4,12 @@ import { getBlogPosts } from "@/lib/blog";
 
 const FEED_DESCRIPTION = BLOG_PAGE.tagline;
 
+/** Channel language: the posts' shared language, or "en" for a mixed feed. */
+function feedLanguage(posts: { lang: string }[]): string {
+  const languages = Array.from(new Set(posts.map((post) => post.lang)));
+  return languages.length === 1 ? languages[0] : "en";
+}
+
 function escapeXml(input: string): string {
   return input
     .replace(/&/g, "&amp;")
@@ -46,7 +52,7 @@ export function buildRssFeed(): string {
     `    <title>${escapeXml(siteConfig.name)}</title>`,
     `    <link>${baseUrl}/blog</link>`,
     `    <description>${FEED_DESCRIPTION}</description>`,
-    "    <language>en</language>",
+    `    <language>${feedLanguage(posts)}</language>`,
     `    <lastBuildDate>${lastBuildDate}</lastBuildDate>`,
     `    <atom:link href="${baseUrl}/feed.xml" rel="self" type="application/rss+xml" />`,
     items,

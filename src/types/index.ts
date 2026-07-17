@@ -2,8 +2,6 @@ export type SiteConfig = {
   name: string;
   description: string;
   url: string;
-  keywords: string[];
-  ogImage: string;
   github: string;
   linkedIn: string;
   email: string;

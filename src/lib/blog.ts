@@ -1,12 +1,16 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { readingTimeInMinutes } from "@/lib/readingTime";
 
 export type BlogPostMeta = {
   slug: string;
   title: string;
   description: string;
   date: string;
+  /** BCP 47 language tag for the post body, e.g. "no" or "en". */
+  lang: string;
+  readingTimeMinutes: number;
 };
 
 export type BlogPost = BlogPostMeta & {
@@ -14,6 +18,7 @@ export type BlogPost = BlogPostMeta & {
 };
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
+const DEFAULT_POST_LANG = "en";
 
 export function getBlogSlugs(): string[] {
   const files = fs.readdirSync(BLOG_DIR);
@@ -37,6 +42,8 @@ export function getBlogPostBySlug(slug: string): BlogPost | null {
     title: data.title,
     description: data.description,
     date: data.date,
+    lang: data.lang ?? DEFAULT_POST_LANG,
+    readingTimeMinutes: readingTimeInMinutes(content),
     content,
   };
 }
@@ -54,6 +61,8 @@ export function getBlogPosts(): BlogPostMeta[] {
         title: post.title,
         description: post.description,
         date: post.date,
+        lang: post.lang,
+        readingTimeMinutes: post.readingTimeMinutes,
       };
     })
     .filter((post): post is BlogPostMeta => post !== null)
