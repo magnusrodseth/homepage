@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatDistanceToNow } from "date-fns";
 import { getRecentlyPlayedTracks } from "@/lib/spotify";
+import { formatRelativeTime } from "@/lib/utils";
 import { Muted, Small } from "@/components/ui/typography";
 
 const SPOTIFY_PROFILE_URL =
@@ -49,7 +49,7 @@ export async function SpotifyRecentTracks() {
             )}
           </div>
           <Small className="text-muted-foreground flex-shrink-0">
-            {formatDistanceToNow(new Date(track.playedAt), { addSuffix: true })}
+            {formatRelativeTime(track.playedAt)}
           </Small>
         </Link>
       ))}

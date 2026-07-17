@@ -1,4 +1,3 @@
-import { env } from "@/env.mjs";
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -28,13 +27,29 @@ export function formatDate(input: string | number): string {
   });
 }
 
-export const getUrl = () => {
-  let url =
-    env.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
-    "http://localhost:3000";
+export function formatRelativeTime(input: string | Date): string {
+  const date = new Date(input);
+  const deltaSeconds = Math.round((date.getTime() - Date.now()) / 1000);
 
-  // Make sure to include `https://` when not localhost.
-  url = url.includes("http") ? url : `https://${url}`;
+  const divisions: Array<[number, Intl.RelativeTimeFormatUnit]> = [
+    [60, "second"],
+    [60, "minute"],
+    [24, "hour"],
+    [7, "day"],
+    [4.34524, "week"],
+    [12, "month"],
+    [Number.POSITIVE_INFINITY, "year"],
+  ];
 
-  return url;
-};
+  const formatter = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+  let duration = deltaSeconds;
+
+  for (const [amount, unit] of divisions) {
+    if (Math.abs(duration) < amount) {
+      return formatter.format(Math.round(duration), unit);
+    }
+    duration /= amount;
+  }
+
+  return formatter.format(Math.round(duration), "year");
+}

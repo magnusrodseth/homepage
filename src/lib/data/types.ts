@@ -46,15 +46,6 @@ export type GitHubRepo = {
   archived: boolean;
 };
 
-export type SpotifyTrack = {
-  isPlaying: boolean;
-  title?: string;
-  artist?: string;
-  album?: string;
-  albumArt?: string;
-  songUrl?: string;
-};
-
 export type RecentTrack = {
   title: string;
   artist: string;
@@ -69,11 +60,3 @@ export type RecentTrack = {
   };
 };
 
-export type BlogPost = {
-  slug: string;
-  title: string;
-  description: string;
-  date: string;
-  published: boolean;
-  readingTime: number;
-};

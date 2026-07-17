@@ -25,13 +25,85 @@ function getOctokit() {
   });
 }
 
-export async function getUser(username: string) {
+export type ContributionDay = {
+  date: string;
+  count: number;
+  level: 0 | 1 | 2 | 3 | 4;
+};
+
+export type ContributionCalendar = {
+  total: number;
+  weeks: ContributionDay[][];
+};
+
+const CONTRIBUTION_LEVELS: Record<string, ContributionDay["level"]> = {
+  NONE: 0,
+  FIRST_QUARTILE: 1,
+  SECOND_QUARTILE: 2,
+  THIRD_QUARTILE: 3,
+  FOURTH_QUARTILE: 4,
+};
+
+export async function getContributionCalendar(
+  username: string,
+): Promise<ContributionCalendar | null> {
+  if (!process.env.GITHUB_TOKEN) {
+    console.warn("GITHUB_TOKEN not set, cannot fetch contribution calendar");
+    return null;
+  }
+
   try {
     const octokit = getOctokit();
-    const { data } = await octokit.rest.users.getByUsername({ username });
-    return data;
+    const { user } = await octokit.graphql<{
+      user: {
+        contributionsCollection: {
+          contributionCalendar: {
+            totalContributions: number;
+            weeks: Array<{
+              contributionDays: Array<{
+                date: string;
+                contributionCount: number;
+                contributionLevel: string;
+              }>;
+            }>;
+          };
+        };
+      };
+    }>(
+      `
+      query ($username: String!) {
+        user(login: $username) {
+          contributionsCollection {
+            contributionCalendar {
+              totalContributions
+              weeks {
+                contributionDays {
+                  date
+                  contributionCount
+                  contributionLevel
+                }
+              }
+            }
+          }
+        }
+      }
+    `,
+      { username },
+    );
+
+    const calendar = user.contributionsCollection.contributionCalendar;
+    return {
+      total: calendar.totalContributions,
+      weeks: calendar.weeks.map((week) =>
+        week.contributionDays.map((day) => ({
+          date: day.date,
+          count: day.contributionCount,
+          level: CONTRIBUTION_LEVELS[day.contributionLevel] ?? 0,
+        })),
+      ),
+    };
   } catch (error) {
-    console.error("Failed to fetch GitHub user:", error);
+    console.error("Failed to fetch contribution calendar:", error);
     return null;
   }
 }
