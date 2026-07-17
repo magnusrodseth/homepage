@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { cn, formatDate } from "@/lib/utils";
-import { H3, Large, Muted } from "@/components/ui/typography";
+import { H3, Muted } from "@/components/ui/typography";
 import { Icons } from "@/components/icons";
 import { ExpandableText } from "@/components/expandable-text";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -27,6 +27,8 @@ export type ProjectItem = {
   language?: string;
   isGitHub: boolean;
   category: ProjectCategory;
+  /** Shown in the default, curated "Selected" view. */
+  featured: boolean;
 };
 
 const CATEGORY_LABELS: Record<ProjectCategory, string> = {
@@ -63,12 +65,16 @@ function groupByYear(projects: ProjectItem[]): [string, ProjectItem[]][] {
 }
 
 export function ProjectsExplorer({ projects }: { projects: ProjectItem[] }) {
-  const [active, setActive] = useState<string>("all");
+  const hasFeatured = projects.some((project) => project.featured);
+  const [active, setActive] = useState<string>(
+    hasFeatured ? "selected" : "all"
+  );
 
   const availableCategories = CATEGORY_ORDER.filter((category) =>
     projects.some((project) => project.category === category)
   );
   const tabs: { value: string; label: string }[] = [
+    ...(hasFeatured ? [{ value: "selected", label: "Selected" }] : []),
     { value: "all", label: "All" },
     ...availableCategories.map((category) => ({
       value: category,
@@ -79,13 +85,15 @@ export function ProjectsExplorer({ projects }: { projects: ProjectItem[] }) {
   const filtered =
     active === "all"
       ? projects
-      : projects.filter((project) => project.category === active);
+      : active === "selected"
+        ? projects.filter((project) => project.featured)
+        : projects.filter((project) => project.category === active);
 
   const years = groupByYear(filtered);
 
   return (
     <div>
-      <Tabs value={active} onValueChange={setActive} className="mb-16">
+      <Tabs value={active} onValueChange={setActive} className="mb-8">
         <TabsList className="flex h-auto flex-wrap justify-start gap-2 bg-transparent p-0">
           {tabs.map((tab) => (
             <TabsTrigger
@@ -94,7 +102,7 @@ export function ProjectsExplorer({ projects }: { projects: ProjectItem[] }) {
               className={cn(
                 "animate-slide-enter rounded-full border border-border/50 bg-background/50 px-3 py-1 backdrop-blur-sm",
                 "text-muted-foreground transition-all hover:text-foreground",
-                "data-[state=active]:border-border data-[state=active]:bg-muted data-[state=active]:text-foreground data-[state=active]:shadow-none"
+                "data-[state=active]:border-primary/50 data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none"
               )}
             >
               {tab.label}
@@ -108,21 +116,22 @@ export function ProjectsExplorer({ projects }: { projects: ProjectItem[] }) {
           <span className="font-bold">Oops!</span> Nothing in this category yet.
         </Muted>
       ) : (
-        <div className="flex flex-col gap-y-32 pt-12">
+        <div className="flex flex-col gap-y-16 pt-12">
           {years.map(([year, yearProjects], index) => {
-            const delay = `${index * 0.2}s`;
+            const delay = `${index * 0.15}s`;
 
             return (
               <div key={year} className="flex flex-col relative">
                 <H3
+                  aria-hidden="true"
                   className={cn(
-                    "animate-slide-enter font-inter text-9xl",
+                    "animate-slide-enter font-sans text-9xl",
                     "text-transparent pointer-events-none select-none",
-                    "absolute -top-20 -left-6 md:-left-12"
+                    "absolute -top-14 -left-6 md:-left-12"
                   )}
                   style={{
                     animationDelay: delay,
-                    WebkitTextStroke: "1px var(--color-slate-800)",
+                    WebkitTextStroke: "1px var(--color-slate-600)",
                   }}
                 >
                   {year}
@@ -133,7 +142,7 @@ export function ProjectsExplorer({ projects }: { projects: ProjectItem[] }) {
                     <ProjectCard
                       key={project.id}
                       project={project}
-                      yearDelay={index * 0.2}
+                      yearDelay={index * 0.15}
                       cardIndex={cardIndex}
                     />
                   ))}
@@ -156,13 +165,15 @@ function ProjectCard({
   yearDelay: number;
   cardIndex: number;
 }) {
-  const delay = `${yearDelay + cardIndex * 0.08}s`;
+  const delay = `${yearDelay + cardIndex * 0.06}s`;
 
   const content = (
     <div className="flex flex-col gap-2">
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2 min-w-0">
-          <Large className="truncate">{project.title}</Large>
+          <span className="text-lg font-semibold text-foreground">
+            {project.title}
+          </span>
           {project.isGitHub && (
             <Icons.gitHub className="h-4 w-4 opacity-40 shrink-0" />
           )}
@@ -175,12 +186,12 @@ function ProjectCard({
       {project.description && project.description !== "No description" && (
         <ExpandableText
           text={project.description}
-          className="text-muted-foreground/70"
+          className="text-muted-foreground"
         />
       )}
 
       <div className="flex items-center flex-wrap gap-x-2 gap-y-1">
-        <Muted className="flex items-center gap-1">
+        <Muted className="flex items-center gap-1 font-mono text-xs">
           {formatDate(project.date)}
           {project.stars !== undefined && project.stars > 0 && (
             <>
@@ -211,7 +222,7 @@ function ProjectCard({
             </span>
           ))}
           {project.technologies.length > 5 && (
-            <span className="px-2 py-0.5 text-xs text-muted-foreground/50">
+            <span className="px-2 py-0.5 text-xs text-muted-foreground">
               +{project.technologies.length - 5}
             </span>
           )}
@@ -232,11 +243,11 @@ function ProjectCard({
       <Link
         className={cn(
           cardStyles,
-          "text-muted-foreground hover:text-foreground",
-          "hover:border-border hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+          "hover:border-primary/40 hover:shadow-[0_0_15px_hsl(var(--primary)/0.08)]"
         )}
         href={project.url}
         target="_blank"
+        rel="noopener noreferrer"
         style={{ animationDelay: delay }}
       >
         {content}
@@ -245,10 +256,7 @@ function ProjectCard({
   }
 
   return (
-    <div
-      className={cn(cardStyles, "text-muted-foreground")}
-      style={{ animationDelay: delay }}
-    >
+    <div className={cardStyles} style={{ animationDelay: delay }}>
       {content}
     </div>
   );

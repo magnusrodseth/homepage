@@ -2,7 +2,6 @@ const plugin = require("tailwindcss/plugin");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -21,7 +20,6 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-geist-sans)"],
         mono: ["var(--font-geist-mono)"],
-        inter: ["var(--font-inter)"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -95,7 +93,7 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "slide-enter": "slide-enter 1s both",
+        "slide-enter": "slide-enter 0.4s ease-out both",
         "fade-in": "fade-in 0.3s ease-out",
 
       },

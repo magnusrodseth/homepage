@@ -16,10 +16,13 @@ const NavigationLink = ({ item }: { item: NavItem }) => {
     <Link
       href={item.href}
       target={isExternalLink ? "_blank" : undefined}
+      rel={isExternalLink ? "noopener noreferrer" : undefined}
+      aria-current={active ? "page" : undefined}
       className={cn(
+        buttonVariants({ variant: "link", size: "sm" }),
         active
-          ? buttonVariants({ variant: "secondary", size: "sm" })
-          : buttonVariants({ variant: "link", size: "sm" })
+          ? "text-primary underline underline-offset-4"
+          : "text-muted-foreground hover:text-primary"
       )}
     >
       {item.title}

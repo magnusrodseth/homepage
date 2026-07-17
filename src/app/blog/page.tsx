@@ -1,14 +1,19 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { cn, formatDate } from "@/lib/utils";
-import { H2, H3, Large, Muted, Small } from "@/components/ui/typography";
+import { H1, H3, Muted, Small } from "@/components/ui/typography";
 import BackLink from "@/components/back-link";
 import { Icons } from "@/components/icons";
 import { Separator } from "@/components/ui/separator";
 import { getBlogPosts, BlogPostMeta } from "@/lib/blog";
 import { BLOG_PAGE } from "@/config/pages";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: BLOG_PAGE.title,
+  description: BLOG_PAGE.tagline,
+  alternates: {
+    canonical: BLOG_PAGE.path,
+  },
 };
 
 export default function BlogPage() {
@@ -32,9 +37,13 @@ export default function BlogPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="flex flex-col gap-y-2 mb-32">
-        <H2 className="animate-slide-enter">{BLOG_PAGE.title}</H2>
-        <Small className="animate-slide-enter">{BLOG_PAGE.tagline}</Small>
+      <div className="flex flex-col gap-y-2 mb-16">
+        <H1 className="animate-slide-enter text-3xl font-semibold">
+          {BLOG_PAGE.title}
+        </H1>
+        <Small className="animate-slide-enter text-muted-foreground">
+          {BLOG_PAGE.tagline}
+        </Small>
       </div>
 
       {posts.length === 0 && (
@@ -47,21 +56,22 @@ export default function BlogPage() {
       )}
 
       {posts.length > 0 && (
-        <div className="flex flex-col gap-y-32 mt-16">
+        <div className="flex flex-col gap-y-16 mt-12">
           {sortedYears.map((year, index) => {
-            const delay = `${index * 0.2}s`;
+            const delay = `${index * 0.15}s`;
 
             return (
               <div key={year} className="flex flex-col relative">
                 <H3
+                  aria-hidden="true"
                   className={cn(
-                    "animate-slide-enter font-inter text-9xl",
-                    "text-transparent",
-                    "absolute -top-20 -left-6 md:-left-12"
+                    "animate-slide-enter font-sans text-9xl",
+                    "text-transparent pointer-events-none select-none",
+                    "absolute -top-14 -left-6 md:-left-12"
                   )}
                   style={{
                     animationDelay: delay,
-                    WebkitTextStroke: "1px var(--color-slate-800)",
+                    WebkitTextStroke: "1px var(--color-slate-600)",
                   }}
                 >
                   {year}
@@ -72,7 +82,7 @@ export default function BlogPage() {
                     <PostCard
                       key={post.slug}
                       post={post}
-                      yearDelay={index * 0.2}
+                      yearDelay={index * 0.15}
                       cardIndex={cardIndex}
                     />
                   ))}
@@ -99,7 +109,7 @@ function PostCard({
   yearDelay: number;
   cardIndex: number;
 }) {
-  const delay = `${yearDelay + cardIndex * 0.08}s`;
+  const delay = `${yearDelay + cardIndex * 0.06}s`;
 
   return (
     <Link
@@ -109,24 +119,35 @@ function PostCard({
         "border border-border/50",
         "bg-background/50 backdrop-blur-sm",
         "animate-slide-enter transition-all duration-300",
-        "text-muted-foreground hover:text-foreground",
-        "hover:border-border hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+        "hover:border-primary/40 hover:shadow-[0_0_15px_hsl(var(--primary)/0.08)]"
       )}
       style={{ animationDelay: delay }}
     >
       <div className="flex flex-col gap-2">
         <div className="flex items-start justify-between gap-2">
-          <Large className="truncate min-w-0">{post.title}</Large>
+          <span className="text-lg font-semibold text-foreground min-w-0">
+            {post.title}
+          </span>
           <Icons.arrowUpRight className="h-4 w-4 opacity-30 shrink-0 mt-1" />
         </div>
 
         {post.description && (
-          <Small className="text-muted-foreground/70 line-clamp-2">
+          <Small className="text-muted-foreground line-clamp-2 leading-normal font-normal">
             {post.description}
           </Small>
         )}
 
-        <Muted>{formatDate(post.date)}</Muted>
+        <Muted className="font-mono text-xs flex items-center gap-2">
+          {formatDate(post.date)}
+          <Icons.dot className="inline h-3 w-3" />
+          {post.readingTimeMinutes} min read
+          {post.lang === "no" && (
+            <>
+              <Icons.dot className="inline h-3 w-3" />
+              norsk
+            </>
+          )}
+        </Muted>
       </div>
     </Link>
   );

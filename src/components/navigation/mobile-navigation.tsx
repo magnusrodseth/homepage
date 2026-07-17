@@ -3,7 +3,7 @@
 import { navigation } from "@/config/navigation";
 import { Button } from "../ui/button";
 import { Icons } from "../icons";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import NavigationLink from "./navigation-link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -28,6 +28,7 @@ const MobileNavigation = () => {
           </Button>
         </SheetTrigger>
         <SheetContent>
+          <SheetTitle className="sr-only">Navigation menu</SheetTitle>
           <div className="mt-16 flex flex-col items-center justify-center space-y-4">
             {navigation.map((item, index) => (
               <NavigationLink key={index} item={item} />

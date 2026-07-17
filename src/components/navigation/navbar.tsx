@@ -1,11 +1,10 @@
 import Link from "next/link";
 import DesktopNavigation from "./desktop-navigation";
 import MobileNavigation from "./mobile-navigation";
-import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import Logo from "../logo";
 
-const Navbar = async () => {
+const Navbar = () => {
   return (
     <div className={cn("w-full py-2")}>
       <header className="container z-40">
@@ -16,16 +15,17 @@ const Navbar = async () => {
               "hover:translate-x-1 duration-300 transition-all"
             )}
             href="/"
+            aria-label="Magnus Rødseth, home"
           >
             <div className="flex flex-col justify-center items-start">
               <Logo />
             </div>
           </Link>
 
-          <div>
+          <nav aria-label="Primary">
             <DesktopNavigation />
             <MobileNavigation />
-          </div>
+          </nav>
         </div>
       </header>
     </div>

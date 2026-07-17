@@ -1,4 +1,5 @@
-import { H2, Small } from "@/components/ui/typography";
+import { Metadata } from "next";
+import { H1, Small } from "@/components/ui/typography";
 import BackLink from "@/components/back-link";
 import { Separator } from "@/components/ui/separator";
 import { getAllExperiences, Experience } from "@/lib/data/experience";
@@ -11,8 +12,15 @@ import {
   type ProjectItem,
 } from "@/components/projects-explorer";
 
-export const metadata = {
+// Refresh the GitHub repo list hourly instead of freezing it at build time.
+export const revalidate = 3600;
+
+export const metadata: Metadata = {
   title: PROJECTS_PAGE.title,
+  description: PROJECTS_PAGE.tagline,
+  alternates: {
+    canonical: PROJECTS_PAGE.path,
+  },
 };
 
 function experienceToProject(exp: Experience): ProjectItem {
@@ -30,10 +38,11 @@ function experienceToProject(exp: Experience): ProjectItem {
     technologies: exp.technologies,
     isGitHub: false,
     category: exp.type,
+    featured: exp.type === "professional",
   };
 }
 
-function repoToProject(repo: GitHubRepo): ProjectItem {
+function repoToProject(repo: GitHubRepo, featured = false): ProjectItem {
   return {
     id: `gh-${repo.id}`,
     title: repo.name,
@@ -45,6 +54,7 @@ function repoToProject(repo: GitHubRepo): ProjectItem {
     language: repo.language || undefined,
     isGitHub: true,
     category: "open-source",
+    featured,
   };
 }
 
@@ -55,8 +65,11 @@ export default async function ProjectsPage() {
   let githubProjects: ProjectItem[] = [];
 
   try {
-    const { recent } = await getReposWithPinned(username);
-    githubProjects = recent.map(repoToProject);
+    const { pinned, recent } = await getReposWithPinned(username);
+    githubProjects = [
+      ...pinned.map((repo) => repoToProject(repo, true)),
+      ...recent.map((repo) => repoToProject(repo)),
+    ];
   } catch (error) {
     console.error("Failed to fetch GitHub repos:", error);
   }
@@ -69,9 +82,13 @@ export default async function ProjectsPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="flex flex-col gap-y-2 mb-32">
-        <H2 className="animate-slide-enter">{PROJECTS_PAGE.title}</H2>
-        <Small className="animate-slide-enter">{PROJECTS_PAGE.tagline}</Small>
+      <div className="flex flex-col gap-y-2 mb-16">
+        <H1 className="animate-slide-enter text-3xl font-semibold">
+          {PROJECTS_PAGE.title}
+        </H1>
+        <Small className="animate-slide-enter text-muted-foreground">
+          {PROJECTS_PAGE.tagline}
+        </Small>
       </div>
 
       <ProjectsExplorer projects={allProjects} />

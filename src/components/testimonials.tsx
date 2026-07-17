@@ -16,7 +16,7 @@ export function Testimonials() {
   const testimonials = getAllTestimonials();
 
   return (
-    <section className="mt-16 animate-slide-enter delay-500">
+    <section className="mt-16 animate-slide-enter stagger-450">
       <H3 className="mb-6 text-xl">What others say</H3>
 
       <Carousel className="w-full max-w-3xl mx-auto" opts={{ loop: true }}>
@@ -43,7 +43,8 @@ export function Testimonials() {
                         <Link
                           href={testimonial.author.companyUrl}
                           target="_blank"
-                          className="hover:text-foreground transition-colors"
+                          rel="noopener noreferrer"
+                          className="hover:text-primary transition-colors"
                         >
                           {testimonial.author.company}
                         </Link>
@@ -57,8 +58,8 @@ export function Testimonials() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="-left-3 md:-left-12" />
+        <CarouselNext className="-right-3 md:-right-12" />
       </Carousel>
     </section>
   );

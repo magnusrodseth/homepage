@@ -45,7 +45,7 @@ export function ExpandableText({
             e.stopPropagation();
             setIsExpanded(!isExpanded);
           }}
-          className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors self-start"
+          className="text-xs text-muted-foreground hover:text-primary transition-colors self-start"
         >
           {isExpanded ? "Show less" : "Read more"}
         </button>

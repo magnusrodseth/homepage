@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
 
 export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
   className?: string;

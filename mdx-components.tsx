@@ -24,7 +24,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <H1
         className={cn(
           "mt-2 scroll-m-20 text-4xl font-bold tracking-tight",
-          "animate-slide-enter delay-300",
+          "animate-slide-enter stagger-150",
           className
         )}
         {...props}
@@ -32,19 +32,19 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     h2: ({ className, ...props }: HTMLElementProps) => (
       <H2
-        className={cn("mb-0", "animate-slide-enter delay-300", className)}
+        className={cn("mb-0", "animate-slide-enter stagger-150", className)}
         {...props}
       />
     ),
     h3: ({ className, ...props }: HTMLElementProps) => (
       <H3
-        className={cn("animate-slide-enter delay-300", className)}
+        className={cn("animate-slide-enter stagger-150", className)}
         {...props}
       />
     ),
     h4: ({ className, ...props }: HTMLElementProps) => (
       <H4
-        className={cn("animate-slide-enter delay-300", className)}
+        className={cn("animate-slide-enter stagger-150", className)}
         {...props}
       />
     ),
@@ -52,7 +52,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <H4
         className={cn(
           "mt-8 scroll-m-20 text-lg font-semibold tracking-tight",
-          "animate-slide-enter delay-300",
+          "animate-slide-enter stagger-150",
           className
         )}
         {...props}
@@ -62,7 +62,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <H4
         className={cn(
           "mt-8 scroll-m-20 text-base font-semibold tracking-tight",
-          "animate-slide-enter delay-300",
+          "animate-slide-enter stagger-150",
           className
         )}
         {...props}
@@ -81,10 +81,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         <Link
           href={href ?? ""}
           target={!isInternal ? "_blank" : undefined}
+          rel={!isInternal ? "noopener noreferrer" : undefined}
           className={cn(
             !isAnchor && "font-medium underline underline-offset-4",
             isAnchor && "no-underline hover:text-primary/80 transition-colors",
-            "animate-slide-enter delay-300",
+            "animate-slide-enter stagger-150",
             className
           )}
           {...props}
@@ -95,7 +96,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     },
     p: ({ className, ...props }: HTMLElementProps) => (
       <P
-        className={cn("animate-slide-enter delay-300", className)}
+        className={cn("animate-slide-enter stagger-150", className)}
         {...props}
       />
     ),
@@ -103,7 +104,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <ul
         className={cn(
           "my-6 ml-6 list-disc",
-          "animate-slide-enter delay-300",
+          "animate-slide-enter stagger-150",
           className
         )}
         {...props}
@@ -113,7 +114,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <ol
         className={cn(
           "my-6 ml-6 list-decimal",
-          "animate-slide-enter delay-300",
+          "animate-slide-enter stagger-150",
           className
         )}
         {...props}
@@ -121,13 +122,13 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     li: ({ className, ...props }: HTMLElementProps) => (
       <li
-        className={cn("mt-2", "animate-slide-enter delay-300", className)}
+        className={cn("mt-2", "animate-slide-enter stagger-150", className)}
         {...props}
       />
     ),
     blockquote: ({ className, ...props }: HTMLElementProps) => (
       <Blockquote
-        className={cn("animate-slide-enter delay-300", className)}
+        className={cn("animate-slide-enter stagger-150", className)}
         {...props}
       />
     ),
@@ -161,14 +162,14 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         />
       </div>
     ),
-    hr: () => <Separator className="my-6 animate-slide-enter delay-300" />,
+    hr: () => <Separator className="my-6 animate-slide-enter stagger-150" />,
     table: ({
       className,
       ...props
     }: React.HTMLAttributes<HTMLTableElement>) => (
       <div className="my-6 w-full overflow-y-auto">
         <table
-          className={cn("w-full", "animate-slide-enter delay-300", className)}
+          className={cn("w-full", "animate-slide-enter stagger-150", className)}
           {...props}
         />
       </div>
@@ -180,7 +181,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <tr
         className={cn(
           "m-0 border-t p-0 even:bg-muted",
-          "animate-slide-enter delay-300",
+          "animate-slide-enter stagger-150",
           className
         )}
         {...props}
@@ -190,7 +191,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <th
         className={cn(
           "border px-4 py-2 text-left font-bold [[align=center]]:text-center [[align=right]]:text-right",
-          "animate-slide-enter delay-300",
+          "animate-slide-enter stagger-150",
           className
         )}
         {...props}
@@ -200,7 +201,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <td
         className={cn(
           "border px-4 py-2 text-left [[align=center]]:text-center [[align=right]]:text-right",
-          "animate-slide-enter delay-300",
+          "animate-slide-enter stagger-150",
           className
         )}
         {...props}
@@ -213,7 +214,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <code
         className={cn(
           "relative text-primary/80 px-[0.3rem] py-[0.2rem] font-mono text-sm",
-          "animate-slide-enter delay-300",
+          "animate-slide-enter stagger-150",
           className
         )}
         {...props}

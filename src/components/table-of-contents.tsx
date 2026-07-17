@@ -40,7 +40,7 @@ function TOCLinks({
               "block py-1 transition-colors hover:text-foreground",
               depth === 3 && "pl-4",
               activeId === slug
-                ? "text-foreground font-medium"
+                ? "text-primary font-medium"
                 : "text-muted-foreground"
             )}
           >
