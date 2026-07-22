@@ -96,6 +96,11 @@ export async function GitHubContributions() {
           More
         </span>
       </div>
+
+      <p className="mt-2 text-xs text-muted-foreground">
+        Client work in private organizations is only partially counted here due
+        to their access policies.
+      </p>
     </div>
   );
 }
