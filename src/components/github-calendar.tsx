@@ -98,8 +98,9 @@ export async function GitHubContributions() {
       </div>
 
       <p className="mt-2 text-xs text-muted-foreground">
-        Client work in private organizations is only partially counted here due
-        to their access policies.
+        Client work in private organizations is not counted here due to their
+        access policies. What remains is my own work across public and private
+        repositories.
       </p>
     </div>
   );
