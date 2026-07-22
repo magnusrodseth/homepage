@@ -13,28 +13,33 @@ async function getAccessToken(): Promise<string | null> {
 
   const basic = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 
-  const response = await fetch(SPOTIFY_TOKEN_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${basic}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token: refreshToken,
-    }),
-    // Spotify access tokens live 3600s; refresh well within that window.
-    // `no-store` here would opt every consuming page out of static rendering.
-    next: { revalidate: 3000 },
-  });
+  try {
+    const response = await fetch(SPOTIFY_TOKEN_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${basic}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        grant_type: "refresh_token",
+        refresh_token: refreshToken,
+      }),
+      // Spotify access tokens live 3600s; refresh well within that window.
+      // `no-store` here would opt every consuming page out of static rendering.
+      next: { revalidate: 3000 },
+    });
 
-  if (!response.ok) {
-    console.error("Failed to refresh Spotify token:", response.statusText);
+    if (!response.ok) {
+      console.error("Failed to refresh Spotify token:", response.statusText);
+      return null;
+    }
+
+    const data = await response.json();
+    return data.access_token;
+  } catch (error) {
+    console.error("Failed to refresh Spotify token:", error);
     return null;
   }
-
-  const data = await response.json();
-  return data.access_token;
 }
 
 type SpotifyContext = {
