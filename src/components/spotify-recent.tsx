@@ -1,14 +1,34 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getRecentlyPlayedTracks } from "@/lib/spotify";
+import { RecentTrack } from "@/lib/data/types";
 import { formatRelativeTime } from "@/lib/utils";
 import { Muted, Small } from "@/components/ui/typography";
 
 const SPOTIFY_PROFILE_URL =
   "https://open.spotify.com/user/e4iw89apt9lhvh86de541bo36";
 
-export async function SpotifyRecentTracks() {
-  const tracks = await getRecentlyPlayedTracks(5);
+export function SpotifyRecentTracks() {
+  const [tracks, setTracks] = useState<RecentTrack[] | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetch("/api/spotify/recent", { signal: controller.signal })
+      .then((response) => (response.ok ? response.json() : []))
+      .then((data: RecentTrack[]) => setTracks(data))
+      .catch(() => {
+        if (!controller.signal.aborted) setTracks([]);
+      });
+
+    return () => controller.abort();
+  }, []);
+
+  if (tracks === null) {
+    return <SpotifySkeleton />;
+  }
 
   if (tracks.length === 0) {
     return (
@@ -63,6 +83,22 @@ export async function SpotifyRecentTracks() {
         <SpotifyIcon className="w-4 h-4" />
         View profile on Spotify
       </Link>
+    </div>
+  );
+}
+
+function SpotifySkeleton() {
+  return (
+    <div className="space-y-3" aria-hidden>
+      {Array.from({ length: 5 }).map((_, index) => (
+        <div key={index} className="flex items-center gap-3 p-2 -mx-2">
+          <div className="h-12 w-12 rounded-md bg-muted animate-pulse flex-shrink-0" />
+          <div className="min-w-0 flex-1 space-y-2">
+            <div className="h-3.5 w-2/5 rounded bg-muted animate-pulse" />
+            <div className="h-3 w-1/4 rounded bg-muted animate-pulse" />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

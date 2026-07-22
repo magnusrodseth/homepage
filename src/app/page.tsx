@@ -13,7 +13,8 @@ import { SpotifyRecentTracks } from "@/components/spotify-recent";
 import { getBlogPosts } from "@/lib/blog";
 import { Icons } from "@/components/icons";
 
-// The Spotify/GitHub activity data revalidates; everything else is static.
+// The GitHub activity data revalidates; Spotify is fetched client-side
+// (see /api/spotify/recent). Everything else is static.
 export const revalidate = 60;
 
 export const metadata: Metadata = {
