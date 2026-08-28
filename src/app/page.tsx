@@ -119,11 +119,16 @@ export default function Home() {
         </div>
       </div>
 
-      <section aria-labelledby="about-heading" className="mt-4 mdx">
-        <h2 id="about-heading" className="sr-only">
-          About {siteConfig.name}
-        </h2>
-        <IndexContent />
+      <section aria-labelledby="about-heading" className="mt-4">
+        <H2
+          id="about-heading"
+          className="animate-slide-enter stagger-200 mb-4 pb-0 text-xl"
+        >
+          About
+        </H2>
+        <div className="mdx">
+          <IndexContent />
+        </div>
       </section>
 
       <div className="flex justify-start items-center gap-x-4 py-8 animate-slide-enter stagger-300">
