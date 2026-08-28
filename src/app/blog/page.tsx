@@ -78,7 +78,7 @@ export default function BlogPage() {
                 </H3>
 
                 {/* Top padding keeps most of the year digits above the first card. */}
-                <div className="flex flex-col gap-y-4 pt-16">
+                <div className="flex flex-col gap-y-4 pt-10">
                   {postsByYear[year].map((post, cardIndex) => (
                     <PostCard
                       key={post.slug}

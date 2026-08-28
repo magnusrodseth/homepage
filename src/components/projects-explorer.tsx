@@ -137,7 +137,7 @@ export function ProjectsExplorer({ projects }: { projects: ProjectItem[] }) {
                   {year}
                 </H3>
 
-                <div className="flex flex-col gap-y-4 pt-16">
+                <div className="flex flex-col gap-y-4 pt-10">
                   {yearProjects.map((project, cardIndex) => (
                     <ProjectCard
                       key={project.id}
