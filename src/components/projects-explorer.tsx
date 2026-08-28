@@ -127,7 +127,7 @@ export function ProjectsExplorer({ projects }: { projects: ProjectItem[] }) {
                   className={cn(
                     "animate-slide-enter font-sans text-9xl",
                     "text-transparent pointer-events-none select-none",
-                    "absolute -top-14 -left-6 md:-left-12"
+                    "absolute -top-10 -left-6 md:-left-12"
                   )}
                   style={{
                     animationDelay: delay,
@@ -137,7 +137,7 @@ export function ProjectsExplorer({ projects }: { projects: ProjectItem[] }) {
                   {year}
                 </H3>
 
-                <div className="flex flex-col gap-y-4">
+                <div className="flex flex-col gap-y-4 pt-16">
                   {yearProjects.map((project, cardIndex) => (
                     <ProjectCard
                       key={project.id}
