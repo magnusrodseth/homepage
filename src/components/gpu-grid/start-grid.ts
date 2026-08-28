@@ -6,15 +6,26 @@ const OFFSCREEN: [number, number] = [-10, -10];
 const FPS = 30;
 /** Pointer easing per frame; lower is smoother. */
 const POINTER_LERP = 0.05;
+/** Calm easing per frame, so route changes fade rather than jump. */
+const CALM_LERP = 0.04;
+/** Drift speed while reading, as a fraction of the normal speed. */
+const CALM_SPEED = 0.08;
+
+export type GridHandle = {
+  /** 0 = normal, 1 = reading mode (slower, fainter, pointer nearly inert). */
+  setCalm(value: number): void;
+  stop(): void;
+};
 
 /**
- * Starts the WebGPU grid on `canvas`. Resolves once the first frame is
+ * Starts the WebGPU background on `canvas`. Resolves once the first frame is
  * scheduled, rejects when WebGPU is unavailable (`VGPU-RING1-UNSUPPORTED`)
- * or the device fails. The returned function tears everything down.
+ * or the device fails. `stop()` on the handle tears everything down.
  */
 export async function startGrid(
-  canvas: HTMLCanvasElement
-): Promise<() => void> {
+  canvas: HTMLCanvasElement,
+  options: { calm?: number } = {}
+): Promise<GridHandle> {
   const gpu = await init({ powerPreference: "low-power" });
 
   const canvasSurface = surface(gpu, canvas, {
@@ -30,6 +41,7 @@ export async function startGrid(
         dpr: canvasSurface.dpr,
         size: [canvasSurface.size[0], canvasSurface.size[1]],
         pointer: OFFSCREEN,
+        calm: options.calm ?? 0,
       },
     },
   });
@@ -41,6 +53,11 @@ export async function startGrid(
   const time = clock(gpu);
   const target: [number, number] = [...OFFSCREEN];
   const pointer: [number, number] = [...OFFSCREEN];
+  let calmTarget = options.calm ?? 0;
+  let calm = calmTarget;
+  // Drift phase in seconds; advanced slower while calm so a route change
+  // changes speed without the field jumping.
+  let phase = 0;
 
   const onPointerMove = (event: PointerEvent) => {
     target[0] = event.clientX / window.innerWidth;
@@ -56,7 +73,9 @@ export async function startGrid(
   const tick = () => {
     pointer[0] += (target[0] - pointer[0]) * POINTER_LERP;
     pointer[1] += (target[1] - pointer[1]) * POINTER_LERP;
-    grid.set({ params: { time: time.time, pointer } });
+    calm += (calmTarget - calm) * CALM_LERP;
+    phase += time.deltaTime * (1 - calm * (1 - CALM_SPEED));
+    grid.set({ params: { time: phase, pointer, calm } });
   };
 
   const start = () => {
@@ -86,13 +105,18 @@ export async function startGrid(
 
   start();
 
-  return () => {
-    stop();
-    window.removeEventListener("pointermove", onPointerMove);
-    document.removeEventListener("pointerleave", onPointerLeave);
-    document.removeEventListener("visibilitychange", onVisibilityChange);
-    unsubscribeResize();
-    canvasSurface.dispose();
-    gpu.dispose();
+  return {
+    setCalm(value) {
+      calmTarget = Math.min(1, Math.max(0, value));
+    },
+    stop() {
+      stop();
+      window.removeEventListener("pointermove", onPointerMove);
+      document.removeEventListener("pointerleave", onPointerLeave);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      unsubscribeResize();
+      canvasSurface.dispose();
+      gpu.dispose();
+    },
   };
 }

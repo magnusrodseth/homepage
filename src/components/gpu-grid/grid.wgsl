@@ -7,10 +7,11 @@
 import { fbmSimplex3d } from "@vgpu/wgsl-std/noise/simplex";
 
 struct Params {
-  time: f32,
+  time: f32,     // drift phase, advanced by the loop at a route-dependent speed
   dpr: f32,
   size: vec2f,
   pointer: vec2f,
+  calm: f32,     // 0 on normal pages, 1 while reading a post
 }
 
 @group(0) @binding(0) var<uniform> params: Params;
@@ -21,6 +22,9 @@ const LINE_HIGH = vec3f(0.78, 0.82, 1.0);      // lavender, near indigo-200
 const LINE_ALPHA: f32 = 0.24;
 const MASK_FLOOR: f32 = 0.28;
 const SPOT_RADIUS: f32 = 0.42;
+// Reading mode (calm = 1): fraction of the normal line alpha and pointer bump.
+const CALM_ALPHA: f32 = 0.45;
+const CALM_BUMP: f32 = 0.2;
 const BUMP_HEIGHT: f32 = 0.16;   // in height-field units; higher = more contours bunch around the pointer
 
 @fragment fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
@@ -33,7 +37,8 @@ const BUMP_HEIGHT: f32 = 0.16;   // in height-field units; higher = more contour
   let toPointer = (uv - params.pointer) * vec2f(aspect, 1.0);
   let bump = exp(-dot(toPointer, toPointer) / (2.0 * SPOT_RADIUS * SPOT_RADIUS));
 
-  let h = fbmSimplex3d(vec3f(q * 1.6, params.time * 0.035), 4, 2.17, 0.5) * 0.5 + 0.5 + bump * BUMP_HEIGHT;
+  let bumpHeight = BUMP_HEIGHT * mix(1.0, CALM_BUMP, params.calm);
+  let h = fbmSimplex3d(vec3f(q * 1.6, params.time * 0.035), 4, 2.17, 0.5) * 0.5 + 0.5 + bump * bumpHeight;
 
   // Anti-aliased iso-lines: distance to the nearest level in screen space.
   let level = h * LEVELS;
@@ -45,6 +50,8 @@ const BUMP_HEIGHT: f32 = 0.16;   // in height-field units; higher = more contour
   let index = select(0.7, 1.0, fract(floor(level) / 4.0) < 0.01);
 
   let color = mix(LINE_LOW, LINE_HIGH, h);
-  let alpha = line * index * LINE_ALPHA * mask * (0.85 + 0.3 * bump);
+  let lineAlpha = LINE_ALPHA * mix(1.0, CALM_ALPHA, params.calm);
+  let pointerBoost = 0.3 * bump * (1.0 - params.calm);
+  let alpha = line * index * lineAlpha * mask * (0.85 + pointerBoost);
   return vec4f(color * alpha, alpha);
 }

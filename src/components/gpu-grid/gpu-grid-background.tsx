@@ -1,8 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import GridBackground from "@/components/grid-background";
 import { cn } from "@/lib/utils";
+import type { GridHandle } from "./start-grid";
+
+/** Reading a post: the background goes nearly still and much fainter. */
+function calmFor(pathname: string): number {
+  return /^\/blog\/[^/]+/.test(pathname) ? 1 : 0;
+}
 
 /** Run `fn` when the browser is idle so the hero image keeps LCP. */
 function whenIdle(fn: () => void): () => void {
@@ -21,7 +28,13 @@ function whenIdle(fn: () => void): () => void {
  */
 export function GpuGridBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const handleRef = useRef<GridHandle | null>(null);
   const [ready, setReady] = useState(false);
+  const calm = calmFor(usePathname());
+
+  useEffect(() => {
+    handleRef.current?.setCalm(calm);
+  }, [calm]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -30,15 +43,16 @@ export function GpuGridBackground() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let disposed = false;
-    let dispose: (() => void) | undefined;
 
     const cancelIdle = whenIdle(() => {
       // Dynamic import keeps vgpu and the shader out of the initial bundle.
       import("./start-grid")
-        .then(({ startGrid }) => startGrid(canvas))
-        .then((stop) => {
-          if (disposed) return stop();
-          dispose = stop;
+        .then(({ startGrid }) =>
+          startGrid(canvas, { calm: calmFor(window.location.pathname) })
+        )
+        .then((handle) => {
+          if (disposed) return handle.stop();
+          handleRef.current = handle;
           setReady(true);
         })
         .catch((error: unknown) => {
@@ -50,7 +64,8 @@ export function GpuGridBackground() {
     return () => {
       disposed = true;
       cancelIdle();
-      dispose?.();
+      handleRef.current?.stop();
+      handleRef.current = null;
     };
   }, []);
 
