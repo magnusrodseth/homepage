@@ -67,7 +67,7 @@ export default function BlogPage() {
                   className={cn(
                     "animate-slide-enter font-sans text-9xl",
                     "text-transparent pointer-events-none select-none",
-                    "absolute -top-14 -left-6 md:-left-12"
+                    "absolute -top-10 -left-6 md:-left-12"
                   )}
                   style={{
                     animationDelay: delay,
@@ -77,7 +77,8 @@ export default function BlogPage() {
                   {year}
                 </H3>
 
-                <div className="flex flex-col gap-y-4">
+                {/* Top padding keeps most of the year digits above the first card. */}
+                <div className="flex flex-col gap-y-4 pt-16">
                   {postsByYear[year].map((post, cardIndex) => (
                     <PostCard
                       key={post.slug}
