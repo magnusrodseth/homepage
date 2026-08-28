@@ -61,6 +61,33 @@ export const DAILY_DRIVERS_PAGE: SitePage = {
   markdown: true,
 };
 
+export const ABOUT_PAGE: SitePage = {
+  path: "/about",
+  title: "About",
+  tagline: "Who I am, what I work on, and what I write about.",
+  nav: false,
+  sitemap: true,
+  markdown: true,
+};
+
+export const CONTACT_PAGE: SitePage = {
+  path: "/contact",
+  title: "Contact",
+  tagline: "How to reach me, and what I am usually up for.",
+  nav: false,
+  sitemap: true,
+  markdown: true,
+};
+
+export const PRIVACY_PAGE: SitePage = {
+  path: "/privacy",
+  title: "Privacy",
+  tagline: "What this site collects, and what it does not.",
+  nav: false,
+  sitemap: true,
+  markdown: true,
+};
+
 export const PRESENTATIONS_PAGE: SitePage = {
   path: siteConfig.presentations,
   title: "Presentations",
@@ -76,6 +103,9 @@ export const sitePages: SitePage[] = [
   PROJECTS_PAGE,
   BLOG_PAGE,
   DAILY_DRIVERS_PAGE,
+  ABOUT_PAGE,
+  CONTACT_PAGE,
+  PRIVACY_PAGE,
   PRESENTATIONS_PAGE,
 ];
 

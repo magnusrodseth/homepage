@@ -8,6 +8,7 @@ import {
   HOME_PAGE,
   pageHref,
   sitePages,
+  type SitePage,
 } from "@/config/pages";
 import { getBlogPostBySlug, getBlogPosts, POST_SOURCES } from "@/lib/blog";
 import { getAllExperiences } from "@/lib/data/experience";
@@ -123,11 +124,15 @@ export function renderProjects(): string {
   return lines.join("\n");
 }
 
+/**
+ * Any page whose whole body is one MDX file under src/content/pages. The file
+ * is plain Markdown, so it can be served as-is.
+ */
+export function renderStaticPage(page: SitePage, filename: string): string {
+  const body = readPageBody(filename, page.tagline);
+  return [renderHeading(page.title, page.tagline), body, ""].join("\n");
+}
+
 export function renderDailyDrivers(): string {
-  const body = readPageBody("daily-drivers.mdx", DAILY_DRIVERS_PAGE.tagline);
-  return [
-    renderHeading(DAILY_DRIVERS_PAGE.title, DAILY_DRIVERS_PAGE.tagline),
-    body,
-    "",
-  ].join("\n");
+  return renderStaticPage(DAILY_DRIVERS_PAGE, "daily-drivers.mdx");
 }

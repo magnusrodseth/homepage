@@ -4,6 +4,7 @@ import { apiError } from "@/lib/api-error";
 
 // Request-time only: Vercel's build network cannot reach accounts.spotify.com,
 // so the homepage stays static and this route fills the section in the browser.
+// Called from src/components/spotify-recent.tsx; keep the paths in step.
 export async function GET() {
   try {
     const tracks = await getRecentlyPlayedTracks(5);

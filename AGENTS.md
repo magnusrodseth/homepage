@@ -205,12 +205,34 @@ propagates.
 
 | Path | What |
 |------|------|
-| `/llms.txt`, `/llms-full.txt` | Index and full-text, llmstxt.org |
+| `/llms.txt`, `/llms-full.txt` | Index and full-text, llmstxt.org. `llms.txt` carries the "when to use this site" section |
 | `/md/**.md` | Prebuilt Markdown twin of every page |
 | `/openapi.json` | OpenAPI 3.1 description of every endpoint |
+| `/api/v1/posts`, `/api/v1/posts/{slug}` | The blog as JSON; the single-post response includes the Markdown body |
+| `/api/mcp` | MCP server, Streamable HTTP, stateless and unauthenticated |
+| `/.well-known/mcp` | MCP descriptor (also `/.well-known/mcp.json`) |
 | `/.well-known/api-catalog` | RFC 9727 linkset |
 | `/.well-known/agent-skills/index.json` | Agent skills discovery index |
 | `/sitemap.xml`, `/feed.xml`, `/atom.xml`, `/rss.xml` | Crawler feeds |
+
+**JSON endpoints are versioned under `/api/v1/`.** Within a version, changes
+are additive only; a breaking change takes a new prefix and the old one keeps
+answering for six months behind `Deprecation` / `Sunset` headers. That promise
+is written into `info.description` in `src/app/openapi.json/route.ts`, so
+change it there if the policy changes.
+
+The MCP server's tools and instructions live in `src/lib/mcp.ts`, shared by the
+JSON-RPC endpoint and the descriptor so the two cannot disagree. It is
+deliberately stateless: no session id, no SSE stream, `application/json`
+responses only, which is what lets it run as an ordinary serverless function.
+A bad tool argument comes back as `isError: true` inside the result rather than
+a JSON-RPC error, so the model can read what went wrong and retry.
+
+`/about`, `/contact` and `/privacy` are not decoration: agents check them to
+judge whether a site is a real, attributable source. Keep them accurate. The
+privacy page describes what actually happens, including that `next/image`
+re-serves Spotify album art from this domain so the browser never contacts
+Spotify.
 
 **The Markdown twins are static files, and that is load-bearing.** Next
 replaces `Vary` on every App Router response with its own

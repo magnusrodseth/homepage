@@ -16,7 +16,7 @@ export function SpotifyRecentTracks() {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch("/api/spotify/recent", { signal: controller.signal })
+    fetch("/api/v1/spotify/recent", { signal: controller.signal })
       .then((response) => (response.ok ? response.json() : []))
       .then((data: RecentTrack[]) => setTracks(data))
       .catch(() => {

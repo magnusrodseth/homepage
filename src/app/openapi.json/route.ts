@@ -29,9 +29,11 @@ export function GET(): Response {
       version: "1.0.0",
       summary: "Machine-readable representations of a personal site and blog.",
       description: [
-        "Read-only, unauthenticated, no rate limit.",
+        "Read-only and unauthenticated. No API key, no quota, no rate limit; call it as often as you need.",
         "",
-        "Every page also answers `Accept: text/markdown` with a Markdown twin of itself; the same content is reachable at the `/md/...` paths below. Start at `/llms.txt` for an index.",
+        "**Versioning.** JSON endpoints live under `/api/v1/`. Within a version, changes are additive only: new fields may appear, existing fields keep their name, type and meaning. A breaking change gets a new prefix (`/api/v2/`). A retired version keeps answering for at least six months, sending `Deprecation` and `Sunset` headers (RFC 9745 and RFC 8594) on every response for that whole window, so an agent learns of the retirement from the response itself.",
+        "",
+        "**Other representations.** Every page also answers `Accept: text/markdown` with a Markdown twin of itself, reachable directly at the `/md/...` paths below. Start at `/llms.txt` for an index of everything.",
       ].join("\n"),
       contact: {
         name: siteConfig.name,
@@ -130,7 +132,55 @@ export function GET(): Response {
           responses: { "200": markdownResponse("Daily drivers page content.") },
         },
       },
-      "/api/spotify/recent": {
+      "/api/v1/posts": {
+        get: {
+          tags: ["api"],
+          operationId: "listPosts",
+          summary: "Every blog post, newest first.",
+          description:
+            "The blog index as JSON. Each entry links to the HTML page, the Markdown twin, and the single-post JSON.",
+          responses: {
+            "200": {
+              description: "Every published post.",
+              content: {
+                "application/json": {
+                  schema: { $ref: "#/components/schemas/PostList" },
+                },
+              },
+            },
+          },
+        },
+      },
+      "/api/v1/posts/{slug}": {
+        get: {
+          tags: ["api"],
+          operationId: "getPost",
+          summary: "One blog post, body included.",
+          description:
+            "`content` is the post's Markdown source, the same text `/md/blog/{slug}.md` serves.",
+          parameters: [
+            {
+              name: "slug",
+              in: "path",
+              required: true,
+              description: "Post slug, as returned by listPosts.",
+              schema: { type: "string", pattern: "^[a-z0-9-]+$" },
+            },
+          ],
+          responses: {
+            "200": {
+              description: "The post and its Markdown body.",
+              content: {
+                "application/json": {
+                  schema: { $ref: "#/components/schemas/Post" },
+                },
+              },
+            },
+            "404": ERROR_RESPONSE,
+          },
+        },
+      },
+      "/api/v1/spotify/recent": {
         get: {
           tags: ["api"],
           operationId: "getRecentSpotifyTracks",
@@ -212,6 +262,73 @@ export function GET(): Response {
           },
         },
       },
+      "/.well-known/mcp": {
+        get: {
+          tags: ["discovery"],
+          operationId: "getMcpDescriptor",
+          summary: "MCP server descriptor.",
+          description:
+            "Names the Streamable HTTP endpoint and the tools it exposes. Also served at /.well-known/mcp.json.",
+          responses: {
+            "200": {
+              description: "Server descriptor.",
+              content: { "application/json": { schema: { type: "object" } } },
+            },
+          },
+        },
+      },
+      "/api/mcp": {
+        get: {
+          tags: ["api"],
+          operationId: "getMcpEndpointInfo",
+          summary: "What the MCP endpoint is, for anyone opening it in a browser.",
+          description:
+            "The transport offers no server-to-client stream, so GET returns the descriptor instead of an SSE channel.",
+          responses: {
+            "200": {
+              description: "Server descriptor.",
+              content: { "application/json": { schema: { type: "object" } } },
+            },
+          },
+        },
+        post: {
+          tags: ["api"],
+          operationId: "callMcp",
+          summary: "MCP over Streamable HTTP (JSON-RPC 2.0).",
+          description: [
+            "Stateless and unauthenticated. Supports `initialize`, `ping`, `tools/list` and `tools/call`.",
+            "Tools: `list_posts`, `search_posts`, `get_post`, `get_page`. All read-only.",
+            "Responses are `application/json`; there is no SSE stream and no session id.",
+          ].join(" "),
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/JsonRpcRequest" },
+              },
+            },
+          },
+          responses: {
+            "200": {
+              description: "JSON-RPC response.",
+              content: {
+                "application/json": {
+                  schema: { $ref: "#/components/schemas/JsonRpcResponse" },
+                },
+              },
+            },
+            "202": { description: "Notification accepted; no body." },
+            "400": {
+              description: "Malformed JSON-RPC.",
+              content: {
+                "application/json": {
+                  schema: { $ref: "#/components/schemas/JsonRpcResponse" },
+                },
+              },
+            },
+          },
+        },
+      },
       "/.well-known/agent-skills/index.json": {
         get: {
           tags: ["discovery"],
@@ -248,6 +365,123 @@ export function GET(): Response {
                   description: "What the caller should do next.",
                 },
                 documentation: { type: "string", format: "uri" },
+              },
+            },
+          },
+        },
+        OriginalPublication: {
+          type: ["object", "null"],
+          description:
+            "Where the post first ran, when it is a republication. Null for posts written for this site.",
+          required: ["name", "url"],
+          properties: {
+            name: { type: "string" },
+            url: { type: "string", format: "uri" },
+          },
+        },
+        PostSummary: {
+          type: "object",
+          required: [
+            "slug",
+            "title",
+            "description",
+            "date",
+            "language",
+            "readingTimeMinutes",
+            "url",
+            "markdownUrl",
+            "jsonUrl",
+            "originalPublication",
+          ],
+          properties: {
+            slug: { type: "string", pattern: "^[a-z0-9-]+$" },
+            title: { type: "string" },
+            description: { type: "string" },
+            date: { type: "string", format: "date" },
+            language: {
+              type: "string",
+              description: "BCP 47 tag for the body, e.g. \"no\" or \"en\".",
+            },
+            readingTimeMinutes: { type: "integer", minimum: 1 },
+            url: { type: "string", format: "uri" },
+            markdownUrl: { type: "string", format: "uri" },
+            jsonUrl: { type: "string", format: "uri" },
+            originalPublication: {
+              $ref: "#/components/schemas/OriginalPublication",
+            },
+          },
+        },
+        PostList: {
+          type: "object",
+          required: ["count", "posts"],
+          properties: {
+            count: { type: "integer", minimum: 0 },
+            posts: {
+              type: "array",
+              items: { $ref: "#/components/schemas/PostSummary" },
+            },
+          },
+        },
+        Post: {
+          type: "object",
+          required: [
+            "slug",
+            "title",
+            "description",
+            "date",
+            "language",
+            "readingTimeMinutes",
+            "url",
+            "markdownUrl",
+            "originalPublication",
+            "contentFormat",
+            "content",
+          ],
+          properties: {
+            slug: { type: "string", pattern: "^[a-z0-9-]+$" },
+            title: { type: "string" },
+            description: { type: "string" },
+            date: { type: "string", format: "date" },
+            language: { type: "string" },
+            readingTimeMinutes: { type: "integer", minimum: 1 },
+            url: { type: "string", format: "uri" },
+            markdownUrl: { type: "string", format: "uri" },
+            originalPublication: {
+              $ref: "#/components/schemas/OriginalPublication",
+            },
+            contentFormat: { type: "string", const: "text/markdown" },
+            content: {
+              type: "string",
+              description: "The post body, as Markdown.",
+            },
+          },
+        },
+        JsonRpcRequest: {
+          type: "object",
+          required: ["jsonrpc", "method"],
+          properties: {
+            jsonrpc: { type: "string", const: "2.0" },
+            id: { type: ["string", "integer", "null"] },
+            method: {
+              type: "string",
+              enum: ["initialize", "ping", "tools/list", "tools/call"],
+            },
+            params: { type: "object", additionalProperties: true },
+          },
+        },
+        JsonRpcResponse: {
+          type: "object",
+          required: ["jsonrpc", "id"],
+          properties: {
+            jsonrpc: { type: "string", const: "2.0" },
+            id: { type: ["string", "integer", "null"] },
+            result: { type: "object", additionalProperties: true },
+            error: {
+              type: "object",
+              required: ["code", "message"],
+              properties: {
+                code: { type: "integer" },
+                message: { type: "string" },
               },
             },
           },

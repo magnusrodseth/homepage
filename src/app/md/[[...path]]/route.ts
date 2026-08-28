@@ -5,8 +5,22 @@ import {
   renderBlogIndex,
   renderBlogPost,
   renderProjects,
-  renderDailyDrivers,
+  renderStaticPage,
 } from "@/lib/agent-markdown";
+import {
+  ABOUT_PAGE,
+  CONTACT_PAGE,
+  DAILY_DRIVERS_PAGE,
+  PRIVACY_PAGE,
+} from "@/config/pages";
+
+/** Pages whose body is a single MDX file, keyed by their path segment. */
+const STATIC_PAGES = {
+  "daily-drivers": [DAILY_DRIVERS_PAGE, "daily-drivers.mdx"],
+  about: [ABOUT_PAGE, "about.mdx"],
+  contact: [CONTACT_PAGE, "contact.mdx"],
+  privacy: [PRIVACY_PAGE, "privacy.mdx"],
+} as const;
 
 export const dynamic = "force-static";
 
@@ -54,7 +68,7 @@ export async function generateStaticParams() {
     { path: [] },
     { path: ["blog"] },
     { path: ["projects"] },
-    { path: ["daily-drivers"] },
+    ...Object.keys(STATIC_PAGES).map((segment) => ({ path: [segment] })),
     ...slugs.map((slug) => ({ path: ["blog", slug] })),
   ];
 }
@@ -81,8 +95,9 @@ export async function GET(_req: Request, { params }: Params): Promise<Response> 
     return markdownResponse(renderProjects());
   }
 
-  if (joined === "daily-drivers") {
-    return markdownResponse(renderDailyDrivers());
+  if (joined in STATIC_PAGES) {
+    const [page, filename] = STATIC_PAGES[joined as keyof typeof STATIC_PAGES];
+    return markdownResponse(renderStaticPage(page, filename));
   }
 
   return markdownResponse(notFoundMarkdown(`/${joined}`), 404);

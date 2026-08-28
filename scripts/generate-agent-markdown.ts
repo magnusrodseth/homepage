@@ -18,9 +18,15 @@ import {
   renderBlogIndex,
   renderBlogPost,
   renderProjects,
-  renderDailyDrivers,
+  renderStaticPage,
 } from "@/lib/agent-markdown";
 import { getBlogSlugs } from "@/lib/blog";
+import {
+  ABOUT_PAGE,
+  CONTACT_PAGE,
+  DAILY_DRIVERS_PAGE,
+  PRIVACY_PAGE,
+} from "@/config/pages";
 
 const OUT_DIR = path.join(process.cwd(), "public/md");
 const ROUTES_FILE = path.join(process.cwd(), "src/lib/markdown-routes.generated.ts");
@@ -36,7 +42,19 @@ fs.rmSync(OUT_DIR, { recursive: true, force: true });
 write("index.md", renderHome());
 write("blog.md", renderBlogIndex());
 write("projects.md", renderProjects());
-write("daily-drivers.md", renderDailyDrivers());
+
+// Pages whose body is a single MDX file. Keep in step with the `markdown`
+// pages in src/config/pages.ts and the /md route handler.
+const staticPages = [
+  [DAILY_DRIVERS_PAGE, "daily-drivers.mdx"],
+  [ABOUT_PAGE, "about.mdx"],
+  [CONTACT_PAGE, "contact.mdx"],
+  [PRIVACY_PAGE, "privacy.mdx"],
+] as const;
+
+for (const [page, filename] of staticPages) {
+  write(`${page.path.replace(/^\//, "")}.md`, renderStaticPage(page, filename));
+}
 
 const slugs = getBlogSlugs().sort();
 for (const slug of slugs) {
@@ -57,5 +75,5 @@ ${slugs.map((slug) => `  ${JSON.stringify(slug)},`).join("\n")}
 );
 
 console.log(
-  `Wrote ${slugs.length + 4} markdown files to public/md and ${slugs.length} slugs to markdown-routes.generated.ts`
+  `Wrote ${slugs.length + 3 + staticPages.length} markdown files to public/md and ${slugs.length} slugs to markdown-routes.generated.ts`
 );

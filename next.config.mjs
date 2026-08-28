@@ -5,6 +5,7 @@ const AGENT_LINK_HEADER = [
   '</.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json"',
   '</.well-known/agent-skills/index.json>; rel="describedby"; type="application/json"',
   '</sitemap.xml>; rel="sitemap"; type="application/xml"',
+  '</.well-known/mcp>; rel="service-desc"; type="application/json"',
 ].join(", ");
 
 /** @type {import('next').NextConfig} */
@@ -51,6 +52,14 @@ const nextConfig = {
       {
         source: "/.well-known/agent-skills/index.json",
         destination: "/well-known/agent-skills",
+      },
+      {
+        source: "/.well-known/mcp",
+        destination: "/well-known/mcp",
+      },
+      {
+        source: "/.well-known/mcp.json",
+        destination: "/well-known/mcp",
       },
     ];
   },

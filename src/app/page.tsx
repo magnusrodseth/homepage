@@ -26,14 +26,54 @@ export const metadata: Metadata = {
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": `${siteConfig.url}/#person`,
   name: siteConfig.name,
+  givenName: "Magnus",
+  familyName: "Rødseth",
+  description: siteConfig.description,
   url: siteConfig.url,
+  mainEntityOfPage: siteConfig.url,
   image: `${siteConfig.url}/profile-picture.jpg`,
   jobTitle: "Full-stack Developer",
+  email: siteConfig.email,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Oslo",
+    addressCountry: "NO",
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "Professional enquiries",
+    email: siteConfig.email.replace(/^mailto:/, ""),
+    url: siteConfig.linkedIn,
+    availableLanguage: ["Norwegian", "English"],
+  },
+  knowsLanguage: ["no", "en"],
+  knowsAbout: [
+    "AI agents",
+    "Agentic software development",
+    "Model Context Protocol",
+    "Context engineering",
+    "Large language models",
+    "TypeScript",
+    "Next.js",
+    "Rust",
+  ],
   worksFor: {
     "@type": "Organization",
     name: "Capra Consulting",
     url: "https://capraconsulting.no/",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Oslo",
+      addressCountry: "NO",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "Customer service",
+      email: "post@capraconsulting.no",
+      url: "https://capraconsulting.no/kontakt-oss",
+    },
   },
   alumniOf: {
     "@type": "CollegeOrUniversity",
@@ -79,9 +119,12 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mt-4 mdx">
+      <section aria-labelledby="about-heading" className="mt-4 mdx">
+        <h2 id="about-heading" className="sr-only">
+          About {siteConfig.name}
+        </h2>
         <IndexContent />
-      </div>
+      </section>
 
       <div className="flex justify-start items-center gap-x-4 py-8 animate-slide-enter stagger-300">
         <Muted>
