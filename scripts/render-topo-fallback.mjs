@@ -1,8 +1,13 @@
 // Renders the topo background's height field headlessly with vgpu, traces the
-// same contour levels the shader draws, and writes them as an SVG that the
-// page shows before WebGPU is ready (and forever on browsers without it).
+// same contour levels the shader draws, and writes them as SVGs that the page
+// shows before WebGPU is ready (and forever on browsers without it).
 //
 //   bun run background:fallback
+//
+// One file per theme: the stroke colours are baked into the markup, and an SVG
+// behind a CSS url() is isolated, so neither currentColor nor a custom
+// property reaches inside it. `.topo-fallback` in globals.css picks between
+// them, so only the matching file is ever fetched.
 //
 // Re-run whenever the field expression, LEVELS, or the line colours in
 // src/components/gpu-grid/grid.wgsl change.
@@ -13,10 +18,21 @@ import { init, effect, target } from "vgpu/node";
 
 // Mirror of the shader constants.
 const LEVELS = 14;
-const LINE_LOW = [0.506, 0.549, 0.973];
-const LINE_HIGH = [0.78, 0.82, 1.0];
-const LINE_ALPHA = 0.24;
 const BASE_BOOST = 0.85; // (0.85 + pointerBoost) with the pointer off-screen
+const THEMES = [
+  {
+    file: "topo-fallback.svg",
+    lineLow: [0.506, 0.549, 0.973],
+    lineHigh: [0.78, 0.82, 1.0],
+    lineAlpha: 0.14,
+  },
+  {
+    file: "topo-fallback-light.svg",
+    lineLow: [0.192, 0.18, 0.573],
+    lineHigh: [0.31, 0.275, 0.898],
+    lineAlpha: 0.17,
+  },
+];
 
 // Field is sampled in units of viewport height; cover up to 2.8:1 viewports.
 const UNITS_H = 100;
@@ -132,14 +148,12 @@ function simplify(points, tol) {
 
 const toUnits = (p) => [p[0] / PX_PER_UNIT, p[1] / PX_PER_UNIT];
 const fmt = (n) => (Math.round(n * 10) / 10).toString();
-const rgb = (t) => LINE_LOW.map((lo, i) => Math.round((lo + (LINE_HIGH[i] - lo) * t) * 255));
 
-const groups = [];
+// Trace once; every theme reuses the same geometry and only recolours it.
+const levels = [];
 let points = 0;
 for (let k = 1; k < LEVELS; k++) {
   const iso = k / LEVELS;
-  const isIndex = k % 4 === 0;
-  const alpha = LINE_ALPHA * BASE_BOOST * (isIndex ? 1 : 0.7);
   const d = trace(iso)
     .map((line) => simplify(line.map(toUnits), SIMPLIFY_TOLERANCE))
     .filter((line) => line.length > 1)
@@ -149,20 +163,28 @@ for (let k = 1; k < LEVELS; k++) {
       return `M${fmt(first[0])} ${fmt(first[1])}L${rest.map((p) => `${fmt(p[0])} ${fmt(p[1])}`).join(" ")}`;
     })
     .join("");
-  const [r, g, b] = rgb(iso);
-  // vector-effect does not inherit, so it goes on every path: 1 CSS px lines
-  // at any viewport size, like the shader's screen-space lines.
-  groups.push(
-    `<path vector-effect="non-scaling-stroke" stroke="rgb(${r},${g},${b})" stroke-opacity="${alpha.toFixed(3)}" d="${d}"/>`
-  );
+  levels.push({ iso, isIndex: k % 4 === 0, d });
 }
 
-const svg =
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${ASPECT * UNITS_H} ${UNITS_H}" preserveAspectRatio="xMinYMin slice">` +
-  `<g fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round">` +
-  groups.join("") +
-  `</g></svg>`;
+for (const theme of THEMES) {
+  const rgb = (t) =>
+    theme.lineLow.map((lo, i) => Math.round((lo + (theme.lineHigh[i] - lo) * t) * 255));
 
-const out = new URL("../public/topo-fallback.svg", import.meta.url).pathname;
-writeFileSync(out, svg);
-console.log(`wrote ${out}: ${(svg.length / 1024).toFixed(0)} KB, ${points} points, ${LEVELS - 1} levels, field ${W}x${H}`);
+  const groups = levels.map(({ iso, isIndex, d }) => {
+    const alpha = theme.lineAlpha * BASE_BOOST * (isIndex ? 1 : 0.7);
+    const [r, g, b] = rgb(iso);
+    // vector-effect does not inherit, so it goes on every path: 1 CSS px lines
+    // at any viewport size, like the shader's screen-space lines.
+    return `<path vector-effect="non-scaling-stroke" stroke="rgb(${r},${g},${b})" stroke-opacity="${alpha.toFixed(3)}" d="${d}"/>`;
+  });
+
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${ASPECT * UNITS_H} ${UNITS_H}" preserveAspectRatio="xMinYMin slice">` +
+    `<g fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round">` +
+    groups.join("") +
+    `</g></svg>`;
+
+  const out = new URL(`../public/${theme.file}`, import.meta.url).pathname;
+  writeFileSync(out, svg);
+  console.log(`wrote ${out}: ${(svg.length / 1024).toFixed(0)} KB, ${points} points, ${LEVELS - 1} levels, field ${W}x${H}`);
+}

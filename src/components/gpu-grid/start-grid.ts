@@ -8,12 +8,16 @@ const FPS = 30;
 const POINTER_LERP = 0.05;
 /** Calm easing per frame, so route changes fade rather than jump. */
 const CALM_LERP = 0.04;
+/** Theme easing per frame; the contours recolour rather than snap. */
+const DARK_LERP = 0.08;
 /** Drift speed while reading, as a fraction of the normal speed. */
 const CALM_SPEED = 0.08;
 
 export type GridHandle = {
   /** 0 = normal, 1 = reading mode (slower, fainter, pointer nearly inert). */
   setCalm(value: number): void;
+  /** 0 = light theme line colours, 1 = dark. */
+  setDark(value: number): void;
   stop(): void;
 };
 
@@ -24,7 +28,7 @@ export type GridHandle = {
  */
 export async function startGrid(
   canvas: HTMLCanvasElement,
-  options: { calm?: number } = {}
+  options: { calm?: number; dark?: number } = {}
 ): Promise<GridHandle> {
   const gpu = await init({ powerPreference: "low-power" });
 
@@ -42,6 +46,7 @@ export async function startGrid(
         size: [canvasSurface.size[0], canvasSurface.size[1]],
         pointer: OFFSCREEN,
         calm: options.calm ?? 0,
+        dark: options.dark ?? 1,
       },
     },
   });
@@ -55,6 +60,10 @@ export async function startGrid(
   const pointer: [number, number] = [...OFFSCREEN];
   let calmTarget = options.calm ?? 0;
   let calm = calmTarget;
+  let darkTarget = options.dark ?? 1;
+  // Start at the target so the first frame is already the right theme; only
+  // later toggles ease.
+  let dark = darkTarget;
   // Drift phase in seconds; advanced slower while calm so a route change
   // changes speed without the field jumping.
   let phase = 0;
@@ -74,8 +83,9 @@ export async function startGrid(
     pointer[0] += (target[0] - pointer[0]) * POINTER_LERP;
     pointer[1] += (target[1] - pointer[1]) * POINTER_LERP;
     calm += (calmTarget - calm) * CALM_LERP;
+    dark += (darkTarget - dark) * DARK_LERP;
     phase += time.deltaTime * (1 - calm * (1 - CALM_SPEED));
-    grid.set({ params: { time: phase, pointer, calm } });
+    grid.set({ params: { time: phase, pointer, calm, dark } });
   };
 
   const start = () => {
@@ -108,6 +118,9 @@ export async function startGrid(
   return {
     setCalm(value) {
       calmTarget = Math.min(1, Math.max(0, value));
+    },
+    setDark(value) {
+      darkTarget = Math.min(1, Math.max(0, value));
     },
     stop() {
       stop();

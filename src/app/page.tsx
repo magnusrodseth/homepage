@@ -61,7 +61,10 @@ export default function Home() {
           <H1
             className={cn(
               "animate-slide-enter stagger-100 uppercase text-4xl sm:text-5xl font-extrabold tracking-tight -mt-1",
-              "bg-linear-to-r from-indigo-100 to-indigo-400 text-transparent bg-clip-text"
+              // The gradient runs light-to-mid on dark and dark-to-mid on light, so
+              // the name keeps its contrast against either background.
+              "bg-linear-to-r text-transparent bg-clip-text",
+              "from-indigo-700 to-indigo-400 dark:from-indigo-100 dark:to-indigo-400"
             )}
           >
             {siteConfig.name}

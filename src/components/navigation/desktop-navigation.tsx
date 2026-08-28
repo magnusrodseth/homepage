@@ -2,6 +2,7 @@ import NavigationLink from "./navigation-link";
 import { navigation } from "@/config/navigation";
 import { Separator } from "../ui/separator";
 import Socials from "../socials";
+import { ThemeToggle } from "../theme-toggle";
 
 const DesktopNavigation = () => {
   return (
@@ -13,6 +14,10 @@ const DesktopNavigation = () => {
       <Separator orientation="vertical" className="h-6" />
 
       <Socials />
+
+      <Separator orientation="vertical" className="h-6" />
+
+      <ThemeToggle />
     </div>
   );
 };

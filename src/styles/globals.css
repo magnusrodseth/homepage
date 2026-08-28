@@ -3,6 +3,14 @@
 @config '../../tailwind.config.ts';
 
 /*
+  Dark mode is class-based, not `prefers-color-scheme`: next-themes puts
+  `.dark` on <html> so a visitor can override their OS setting. `:where()`
+  keeps the variant at zero specificity and matches <html> itself as well as
+  its descendants.
+*/
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
   looks the same as it did with Tailwind CSS v3.
@@ -21,10 +29,36 @@
 }
 
 @layer base {
-  /* The site ships a single dark theme. */
+  /*
+    Light is the default token set; `.dark` overrides it. next-themes writes
+    the class before first paint, so there is no flash either way.
+    `color-scheme` is set by next-themes (`enableColorScheme`), which is what
+    themes form controls and scrollbars.
+  */
   :root {
-    color-scheme: dark;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 243 75% 59%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 243 75% 59%;
+    --radius: 0.5rem;
+  }
 
+  .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
@@ -111,4 +145,76 @@
 
 .mdx video {
   @apply mx-auto block shadow-md hover:shadow-lg transition-all duration-300 rounded-lg max-w-full my-4;
+}
+
+/*
+  Dual shiki themes.
+
+  rehype-pretty-code is configured with { light, dark }, so shiki sets
+  `defaultColor: false`: every token span carries both palettes as
+  `--shiki-light` / `--shiki-dark` custom properties instead of a baked-in
+  `color`, and <code> gets `data-theme="github-light github-dark"`. The
+  selectors match those names with `~=`; the documented `*=" "` idiom for
+  "dual-theme" crashes Next's CSS minifier on the single-space value.
+
+  Only the foreground is taken from shiki. The block background stays
+  `bg-muted` (see InlineCode, which mdx-components maps <pre> onto), which is
+  already a theme token. Keep the names in step with src/lib/mdx-plugins.mjs.
+*/
+[data-theme~="github-light"] span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style, inherit);
+  font-weight: var(--shiki-light-font-weight, inherit);
+  text-decoration: var(--shiki-light-text-decoration, inherit);
+}
+
+.dark [data-theme~="github-dark"] span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style, inherit);
+  font-weight: var(--shiki-dark-font-weight, inherit);
+  text-decoration: var(--shiki-dark-text-decoration, inherit);
+}
+
+/*
+  Theme transition (AnimatedThemeToggler).
+
+  The toggler animates `clip-path` on ::view-transition-new(root), so the
+  default cross-fade has to be off or it washes the reveal out. The group
+  duration is scoped behind the data-attribute the toggler sets for the
+  length of one toggle, so route view-transitions keep their own timing.
+*/
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-magicui-theme-vt="active"]::view-transition-group(root) {
+  animation-duration: var(--magicui-theme-toggle-vt-duration);
+}
+
+/* Firefox paints the new snapshot unclipped between the snapshot and the
+   ready.then() animation; pinning the collapsed clip-path in CSS covers it. */
+html[data-magicui-theme-vt="active"]::view-transition-new(root) {
+  clip-path: var(--magicui-theme-vt-clip-from);
+}
+
+/*
+  Static background placeholder for the WebGPU topo shader.
+
+  Two traced SVGs rather than one: the contour colours are baked into the
+  file, and an SVG loaded through url() is isolated, so neither `currentColor`
+  nor a CSS variable reaches inside it. As a background-image only the
+  matching one is ever fetched. Regenerate both with `bun run
+  background:fallback` whenever the shader's field or line colours change.
+*/
+.topo-fallback {
+  background-image: url("/topo-fallback-light.svg");
+  background-position: top left;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.dark .topo-fallback {
+  background-image: url("/topo-fallback.svg");
 }

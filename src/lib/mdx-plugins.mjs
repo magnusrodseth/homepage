@@ -24,7 +24,13 @@ export const mdxPlugins = {
     [
       rehypePrettyCode,
       {
-        theme: "github-dark",
+        // Two themes: shiki emits both palettes as --shiki-light-*/--shiki-dark-*
+        // custom properties and a space-separated `data-theme` on <code>.
+        // src/styles/mdx.css picks between them off the `.dark` class.
+        theme: {
+          light: "github-light",
+          dark: "github-dark",
+        },
         onVisitLine(node) {
           if (node.children.length === 0) {
             node.children = [{ type: "text", value: " " }];

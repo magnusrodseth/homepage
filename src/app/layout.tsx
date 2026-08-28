@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/site-footer";
 import Navbar from "@/components/navigation/navbar";
 import { GpuGridBackground } from "@/components/gpu-grid/gpu-grid-background";
 import { Analytics } from "@vercel/analytics/react";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -59,7 +60,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           GeistSans.variable,
@@ -68,26 +69,28 @@ export default function RootLayout({
           "bg-background font-sans antialiased"
         )}
       >
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:ring-2 focus:ring-ring"
-        >
-          Skip to content
-        </a>
-
-        <Navbar />
-
-        <GpuGridBackground />
-        <div className="md:container">
-          <main
-            id="main-content"
-            className="flex-1 min-h-screen my-8 px-4 sm:px-6 lg:px-8"
+        <ThemeProvider>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:ring-2 focus:ring-ring"
           >
-            {children}
-          </main>
+            Skip to content
+          </a>
 
-          <SiteFooter />
-        </div>
+          <Navbar />
+
+          <GpuGridBackground />
+          <div className="md:container">
+            <main
+              id="main-content"
+              className="flex-1 min-h-screen my-8 px-4 sm:px-6 lg:px-8"
+            >
+              {children}
+            </main>
+
+            <SiteFooter />
+          </div>
+        </ThemeProvider>
 
         <Analytics />
       </body>

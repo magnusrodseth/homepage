@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Separator } from "../ui/separator";
 import Socials from "../socials";
+import { ThemeToggle } from "../theme-toggle";
 
 const MobileNavigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,6 +38,10 @@ const MobileNavigation = () => {
             <Separator className="w-1/2" />
 
             <Socials />
+
+            <Separator className="w-1/2" />
+
+            <ThemeToggle />
           </div>
         </SheetContent>
       </Sheet>

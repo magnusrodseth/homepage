@@ -2,12 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import type { GridHandle } from "./start-grid";
 
 /** Reading a post: the background goes nearly still and much fainter. */
 function calmFor(pathname: string): number {
   return /^\/blog\/[^/]+/.test(pathname) ? 1 : 0;
+}
+
+/** The shader's `dark` uniform: 1 on the dark theme, 0 on light. */
+function darkFor(resolvedTheme: string | undefined): number {
+  return resolvedTheme === "light" ? 0 : 1;
 }
 
 /** Run `fn` when the browser is idle so the hero image keeps LCP. */
@@ -26,11 +32,17 @@ const FADE_MS = 1000;
 /**
  * The site background: topographic contours.
  *
- * Server-renders a static SVG traced from the shader's own height field
- * (public/topo-fallback.svg, see scripts/render-topo-fallback.mjs), then
+ * Server-renders a static SVG traced from the shader's own height field, then
  * fades the live WebGPU version in over it when the browser supports it and
  * the visitor has not asked for reduced motion. Because both start from the
  * same field, the hand-over is invisible. Any failure leaves the SVG in place.
+ *
+ * The SVG is a CSS `background-image` (`.topo-fallback` in globals.css), not
+ * an <img>: an SVG behind url() is isolated, so its baked-in contour colours
+ * cannot be restyled from the page, and there is one traced file per theme.
+ * As a background only the matching one is ever fetched, and the class swap
+ * happens at first paint rather than after hydration. Regenerate both with
+ * `bun run background:fallback`.
  *
  * Both layers are `fixed -z-10 pointer-events-none`: a positioned element
  * with a negative z-index stays behind the page even while its opacity
@@ -43,10 +55,16 @@ export function GpuGridBackground() {
   const [ready, setReady] = useState(false);
   const [fallbackHidden, setFallbackHidden] = useState(false);
   const calm = calmFor(usePathname());
+  const { resolvedTheme } = useTheme();
+  const dark = darkFor(resolvedTheme);
 
   useEffect(() => {
     handleRef.current?.setCalm(calm);
   }, [calm]);
+
+  useEffect(() => {
+    handleRef.current?.setDark(dark);
+  }, [dark]);
 
   // Drop the static layer once the canvas has fully faded in over it.
   useEffect(() => {
@@ -67,7 +85,13 @@ export function GpuGridBackground() {
       // Dynamic import keeps vgpu and the shader out of the initial bundle.
       import("./start-grid")
         .then(({ startGrid }) =>
-          startGrid(canvas, { calm: calmFor(window.location.pathname) })
+          startGrid(canvas, {
+            calm: calmFor(window.location.pathname),
+            // Read the live class rather than `dark` from the closure: this
+            // effect deliberately runs once, so the closure would pin the
+            // first render's theme.
+            dark: document.documentElement.classList.contains("dark") ? 1 : 0,
+          })
         )
         .then((handle) => {
           if (disposed) return handle.stop();
@@ -90,18 +114,13 @@ export function GpuGridBackground() {
 
   return (
     <>
-      {/* The shader applies the same top-right radial mask (floor 0.28) and
-          the same calm dimming (0.45) in WGSL; mirror both here. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/topo-fallback.svg"
-        alt=""
+      {/* The contours are deliberately flat across the frame: no vignette, no
+          corner hotspot. The shader mirrors the same calm dimming (0.45). */}
+      <div
         aria-hidden="true"
-        draggable={false}
-        fetchPriority="low"
         className={cn(
+          "topo-fallback",
           "pointer-events-none fixed inset-0 -z-10 h-full w-full select-none",
-          "mask-[radial-gradient(100%_100%_at_top_right,white,rgb(255_255_255/0.28))]",
           "transition-opacity duration-500",
           fallbackHidden ? "opacity-0" : calm ? "opacity-45" : "opacity-100"
         )}

@@ -12,7 +12,10 @@ Personal homepage for Magnus Rodseth. Next.js 16 + React 19 + Tailwind CSS 4 blo
 - **@next/mdx** + rehype-pretty-code (shiki); plugin pipeline shared via `src/lib/mdx-plugins.mjs`
 - **Geist** font family (Sans for body, Mono for terminal-flavored accents)
 - **Node 22.x** required
-- Dark theme only: tokens live in `:root` in `globals.css`; there is no theme toggle
+- Light and dark themes, defaulting to the visitor's OS setting (`next-themes`,
+  `defaultTheme="system"`). Light tokens live in `:root` and dark ones in
+  `.dark` in `globals.css`; `<html>` carries `suppressHydrationWarning` because
+  next-themes writes the class from a blocking script before first paint
 - Builds use `--webpack`: Turbopack cannot serialize the MDX plugin options (function-valued rehype-pretty-code hooks)
 
 ## Commands
@@ -97,6 +100,29 @@ import { cn } from "@/lib/utils";
 <div className={cn("flex gap-2", isActive && "bg-primary", className)} />
 ```
 
+### Theming
+
+Both themes must work. Reach for the semantic tokens (`bg-background`,
+`text-muted-foreground`, `border-border`, `text-primary`) rather than a palette
+shade: a token is already correct in both themes, a `bg-slate-900` is not. When
+a raw shade is genuinely the right call, pair it with a `dark:` variant.
+
+- `dark` is a class variant, declared once as `@custom-variant dark (&:where(.dark, .dark *))` in `globals.css`. `tailwind.config.ts` has no `darkMode` key on purpose; adding one would be a second source of truth
+- Code blocks use two shiki themes (`github-light` / `github-dark`, set in `src/lib/mdx-plugins.mjs`). Tokens carry both palettes as `--shiki-light` / `--shiki-dark`, and `globals.css` picks between them. The block background stays `bg-muted`
+- The theme toggle is `src/components/theme-toggle.tsx`, which drives the MagicUI `AnimatedThemeToggler` from `useTheme()`. It renders a same-sized placeholder until mounted, because the server cannot know the OS preference
+- `src/styles/mdx.css` is dead: nothing imports it, and its `[data-rehype-pretty-code-fragment]` selectors predate rehype-pretty-code 0.14's `-figure`. Put MDX CSS in `globals.css`
+- Next's CSS minifier crashes on an attribute selector whose value is a single space, so the documented `code[data-theme*=" "]` idiom is spelled `[data-theme~="github-light"]` instead
+
+### Background
+
+`src/components/gpu-grid/` renders topographic contours: a WebGPU shader
+(`grid.wgsl`) over a traced SVG that shows until the shader is ready and stays
+forever without WebGPU.
+
+- Line colours and alphas are per-theme constants in `grid.wgsl`, selected by a `dark` uniform the component eases on toggle. `scripts/render-topo-fallback.mjs` mirrors those constants; change them together and re-run `bun run background:fallback`
+- The alphas are flat across the frame. A radial mask used to brighten the top-right corner, which pulled the eye there
+- There is one traced SVG per theme, applied as a CSS `background-image` via `.topo-fallback`. An SVG behind `url()` is isolated, so its baked-in stroke colours cannot be restyled from the page; as a background only the matching file is fetched, and the swap happens at first paint
+
 ### Typography Components
 
 Use from `@/components/ui/typography` instead of raw HTML:
@@ -141,7 +167,7 @@ export default async function Image() {
 
 Blog posts in `src/content/blog/*.mdx` with frontmatter:
 - Processed with remark-gfm, rehype-slug, rehype-autolink-headings, rehype-pretty-code
-- Code highlighting via shiki (github-dark theme)
+- Code highlighting via shiki, dual theme (`github-light` / `github-dark`)
 
 ## Key Libraries
 
@@ -150,6 +176,7 @@ Blog posts in `src/content/blog/*.mdx` with frontmatter:
 | `octokit` | GitHub REST + GraphQL API (repos + contribution calendar, server-side) |
 | `embla-carousel-react` | Carousels |
 | `lucide-react` | Icons |
+| `next-themes` | Light/dark theme with a system default |
 
 The GitHub contribution calendar is rendered server-side (`src/components/github-calendar.tsx` + `getContributionCalendar` in `src/lib/github.ts`); the navbar logo's typing effect is pure CSS (`.logo-type` in `globals.css`). Do not reintroduce client-side libraries for these: the old `react-github-calendar` caused production hydration errors (React #418) because its SSR output depends on render-time dates.
 

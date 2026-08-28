@@ -14,7 +14,7 @@ export function ProfileImage({ src, alt }: ProfileImageProps) {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="animate-slide-enter overflow-hidden rounded-2xl w-full aspect-square cursor-pointer shadow-xl shadow-indigo-500/10 ring-1 ring-white/10"
+          className="animate-slide-enter overflow-hidden rounded-2xl w-full aspect-square cursor-pointer shadow-xl shadow-primary/10 ring-1 ring-foreground/10"
           aria-label={`View ${alt}`}
         >
           <Image
