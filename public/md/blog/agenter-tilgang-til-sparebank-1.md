@@ -5,7 +5,7 @@ Originally published at Kode24: https://www.kode24.no/artikkel/magnus-gir-agente
 
 > Jeg skrev ingenting av koden for hånd. Jeg ga agenten kontekst, verktøy og én BankID-innlogging, og fikk en publisert Rust-CLI tilbake før lunsj.
 
-![Magnus Rødseth sitter med laptopen og kobler nettbanken til en KI-agent](/blog/agenter-tilgang-til-sparebank-1/banner.webp)
+![Magnus Rødseth sitter med laptopen og kobler nettbanken til en KI-agent](https://www.magnusrodseth.com/blog/agenter-tilgang-til-sparebank-1/banner.webp)
 _Jeg kobla nettbanken min til en KI-agent for å slippe å gå gjennom økonomien min manuelt. Foto: Privat / kode24._
 
 Jeg brukte en halvtime på oppsett. Halvannen til to timer senere lå det en publisert pakke på crates.io og et ferdig repo jeg bare kunne dele. Jeg skrev ingenting av koden for hånd selv.
@@ -20,7 +20,7 @@ Problemet var at agenten ikke kunne se banktallene mine. Jeg måtte enten grave 
 
 SpareBank 1 har et personlig bank-API for utviklere. Så det jeg egentlig trengte var en liten CLI som agenten kunne kjøre: hente kontoer og transaksjoner, og gjøre overføringer mellom mine egne kontoer.
 
-![Terminalvindu som viser hjelpeteksten til sb1, med kommandoene login, accounts, transactions, transfer og summary](/blog/agenter-tilgang-til-sparebank-1/sb1-help.webp)
+![Terminalvindu som viser hjelpeteksten til sb1, med kommandoene login, accounts, transactions, transfer og summary](https://www.magnusrodseth.com/blog/agenter-tilgang-til-sparebank-1/sb1-help.webp)
 _`sb1 help`: hele overflaten agenten har å forholde seg til. Skjermdump / Magnus Rødseth._
 
 ## Hvordan så eksperimentet ut?
@@ -65,7 +65,7 @@ Cash flow (internal transfers excluded)
   monthly avg: in kr *****, out kr *****
 ```
 
-![Søkeresultatet på skills.sh for magnusrodseth/sparebank1-cli, med skillene sparebank1-transfers, sparebank1-accounts og sparebank1-shared](/blog/agenter-tilgang-til-sparebank-1/skills.webp)
+![Søkeresultatet på skills.sh for magnusrodseth/sparebank1-cli, med skillene sparebank1-transfers, sparebank1-accounts og sparebank1-shared](https://www.magnusrodseth.com/blog/agenter-tilgang-til-sparebank-1/skills.webp)
 _De tre SpareBank 1-skillene. Skjermdump / Magnus Rødseth._
 
 Apropos "skills": jeg distribuerer dem gjennom [skills.sh](https://skills.sh), et åpent register for slike agent-ferdigheter. Har du en `skills/`-mappe i repoet ditt, kan hvem som helst hente dem inn i sin egen agent med én kommando:

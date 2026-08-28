@@ -5,7 +5,7 @@ Originally published at Capra Consulting: https://capraconsulting.no/vare-histor
 
 > Agenter er ikke-deterministiske. Tradisjonelle tester alene er ikke nok. Her er testpyramiden, verktøyene og strategiene du trenger.
 
-![En hjerne omkranset av et forstørrelsesglass, en sjekkliste, et søylediagram og et gjentakelsessymbol](/blog/testing-og-evaluering-av-agenter/banner.png)
+![En hjerne omkranset av et forstørrelsesglass, en sjekkliste, et søylediagram og et gjentakelsessymbol](https://www.magnusrodseth.com/blog/testing-og-evaluering-av-agenter/banner.png)
 _Evaluering av agenter er en løkke, ikke en engangstest. Kilde: Google Nano Banana Pro._
 
 ## Innledning
@@ -20,7 +20,7 @@ Tradisjonelle enhetstester fanger ikke denne typen feil. Agenter er ikke-determi
 
 Det finnes en [testpyramide spesielt designet for AI-agenter](https://engineering.block.xyz/blog/testing-pyramid-for-ai-agents) som bygger _på toppen_ av din eksisterende testinfrastruktur. Den har fire lag:
 
-![Testpyramide for agenter](/blog/testing-og-evaluering-av-agenter/test-pyramid.webp)
+![Testpyramide for agenter](https://www.magnusrodseth.com/blog/testing-og-evaluering-av-agenter/test-pyramid.webp)
 _Testpyramiden for agenter: fire lag som supplerer tradisjonelle tester. Kilde: Basert på Block Engineering._
 
 **Lag 1: Deterministiske tester.** Enhetstester med mock-providers. Rask, gratis, forutsigbare.
@@ -52,10 +52,10 @@ mlflow.config.enable_async_logging(True)  # Non-blocking in production
 
 Hvert verktøykall, LLM-invokasjon og retrieval-operasjon blir et span i et trace-tre:
 
-![MLflow traces-oversikt](/blog/testing-og-evaluering-av-agenter/mlflow-traces-overview.png)
+![MLflow traces-oversikt](https://www.magnusrodseth.com/blog/testing-og-evaluering-av-agenter/mlflow-traces-overview.png)
 _Traces-oversikten i MLflow: Hvert spørsmål fra brukeren er et trace med request, response, tokentall og responstid. Kilde: MLflow._
 
-![Et utvidet trace i MLflow](/blog/testing-og-evaluering-av-agenter/mlflow-trace-expanded.png)
+![Et utvidet trace i MLflow](https://www.magnusrodseth.com/blog/testing-og-evaluering-av-agenter/mlflow-trace-expanded.png)
 _Et utvidet trace viser hvert steg agenten tok: validering, intensjonsklassifisering, retrieval av dokumenter, og responsgenering. Kilde: MLflow._
 
 Første gang vi åpnet dette UIet etter å ha kjørt tester på produksjonsdata, var det flere ting som overrasket. For det første: den semantiske søkestrategien vår fungerte faktisk. Vi hadde designet en tilpasset retrieval-tilnærming, og tracene viste at den scoret høyt mot metrikkverdiene våre med ekte brukerdata. Det var en bekreftelse vi ikke hadde fått uten observabilitet.
@@ -108,7 +108,7 @@ results = mlflow.genai.evaluate(
 )
 ```
 
-![Evalueringsresultater i MLflow](/blog/testing-og-evaluering-av-agenter/mlflow-evaluation-results.png)
+![Evalueringsresultater i MLflow](https://www.magnusrodseth.com/blog/testing-og-evaluering-av-agenter/mlflow-evaluation-results.png)
 _Evalueringsresultater: Groundedness, helpfulness og retrieval relevance per testtilfelle. Du kan sammenligne på tvers av promptversjoner og modeller. Kilde: MLflow._
 
 ## Offline, online og svinghjulet
@@ -117,7 +117,7 @@ Evaluering er ikke noe du gjør én gang. Hamel Husain, som blant annet ledet te
 
 **Offline evaluering** kjører agenten mot kuraterte datasett med kjente forventninger etter hver promptendring. **Online evaluering** scorer produksjonstrafikk asynkront ved å sample tracer og overvåke trender. Begge mater det Anthropic kaller [eval-svinghjulet](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents):
 
-![Eval-svinghjulet](/blog/testing-og-evaluering-av-agenter/eval-flywheel.webp)
+![Eval-svinghjulet](https://www.magnusrodseth.com/blog/testing-og-evaluering-av-agenter/eval-flywheel.webp)
 _Eval-svinghjulet: En kontinuerlig syklus der feilanalyse driver nye evalueringer, som driver bedre prompter, som overvåkes i produksjon. Kilde: Basert på Anthropic._
 
 Vi har allerede sett verdien av dette i praksis. Ved å analysere produksjonstracer oppdaget vi hvilke temaer brukerne spør mest om, og like viktig: hva de _forventer_ at agenten kan gjøre, men som den ikke støtter ennå. Mønsteret er gjenkjennelig: brukeren spør om et tema, får et svar, og følger opp med "kan du gjøre det for meg?" Når agenten ikke kan det, og det skjer i volum, har vi et tydelig signal om hva som bør prioriteres å støttes som neste funksjonalitet i agenten til produktet.

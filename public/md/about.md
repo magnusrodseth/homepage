@@ -14,7 +14,7 @@ I hold a Master's degree in Computer Science from the [Norwegian University of S
 
 I build and sell [Eden Stack](https://eden-stack.com), a production-ready monorepo for AI-native SaaS. Smaller things end up on [GitHub](https://github.com/magnusrodseth): most recently `sparebank1-cli`, a Rust CLI that gives an AI agent read access to my own bank data, which an agent wrote almost end to end while I was at work.
 
-A [full list of projects and work history](/projects) lives on this site, and the [tools I actually use every day](/daily-drivers) are listed too, kept honest rather than aspirational.
+A [full list of projects and work history](https://www.magnusrodseth.com/projects) lives on this site, and the [tools I actually use every day](https://www.magnusrodseth.com/daily-drivers) are listed too, kept honest rather than aspirational.
 
 ## What I write about
 
@@ -22,8 +22,8 @@ I write about agentic software development, mostly in Norwegian: how to prepare 
 
 Posts are experience reports, not documentation. They are dated and I do not revise them as models change, so read the date before you trust a benchmark or a price in one. Several first ran at [Capra Consulting](https://capraconsulting.no/vare-historier) or [Kode24](https://www.kode24.no/); those say so at the top and link back to the original.
 
-Everything is at [/blog](/blog), and there is a [feed](/feed.xml) if you would rather not check back.
+Everything is at [/blog](https://www.magnusrodseth.com/blog), and there is a [feed](https://www.magnusrodseth.com/feed.xml) if you would rather not check back.
 
 ## For agents
 
-This site publishes a machine-readable copy of itself. Start at [llms.txt](/llms.txt) for an index, or append `Accept: text/markdown` to any page URL to get that page as Markdown. [openapi.json](/openapi.json) describes every endpoint; the blog is available as JSON at `/api/v1/posts`. No key and no rate limit.
+This site publishes a machine-readable copy of itself. Start at [llms.txt](https://www.magnusrodseth.com/llms.txt) for an index, or append `Accept: text/markdown` to any page URL to get that page as Markdown. [openapi.json](https://www.magnusrodseth.com/openapi.json) describes every endpoint; the blog is available as JSON at `/api/v1/posts`. No key and no rate limit.

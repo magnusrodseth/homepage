@@ -13,7 +13,7 @@ I gresk mytologi ble Sisyphus dømt til å rulle en enorm steinblokk opp et fjel
 
 I min terminal er **Sisyphus** noe annet. Han er hovedpersonen i min utviklingshverdag, men steinen han ruller er konteksten, tankerekken og koden som kontinuerlig skapes og forbedres. Og i motsetning til myten, når vi faktisk toppen. Hver gang.
 
-![Sisyphus ruller steinen opp fjellet.](/blog/sisyphus-oh-my-opencode/sisyphus.webp)
+![Sisyphus ruller steinen opp fjellet.](https://www.magnusrodseth.com/blog/sisyphus-oh-my-opencode/sisyphus.webp)
 
 _Sisyphus i sin evige kamp med steinblokken. I agentisk utvikling ruller vi steinen helt opp til toppen. Kilde: Britannica._
 
@@ -23,7 +23,7 @@ Før vi dykker ned i min konfigurasjon, la oss snakke om plattformen. Hvorfor ve
 
 For det første er brukeropplevelsen (UI/UX) i en egen liga. Det er "snappy", responsivt og fritt for den irriterende skjerm-flickeringen som plager mange andre terminal-baserte verktøy (eksempelvis Claude Code). Det føles ut som godt håndverk.
 
-![OpenCode-grensesnittet i aksjon.](/blog/sisyphus-oh-my-opencode/opencode.png)
+![OpenCode-grensesnittet i aksjon.](https://www.magnusrodseth.com/blog/sisyphus-oh-my-opencode/opencode.png)
 _OpenCode-grensesnittet viser agentisk chat, bakgrunnsprosesser, TODO-liste og MCP-tilkoblinger. Kilde: [Github](https://github.com/code-yeongyu/oh-my-opencode)._
 
 Men den virkelige styrken ligger i friheten. OpenCode er **leverandøruavhengig** (provider agnostic). Du låses ikke til én leverandør. Personlig bruker jeg hovedsakelig Claude-abonnementet mitt, men du kan enkelt bytte til OpenAI, Gemini eller en annen modell du foretrekker. Du kan til og med konfigurere enkelte subagenter til å bruke forskjellige modeller - noe som åpner for veldig fine kostnadskontroller og morsomme arbeidsflyter. Og med Ollama-integrasjon kan du kjøre _lokale_ modeller som `qwen3-coder` eller `glm-4.7` direkte på din egen maskin, noe Claude Code nå også støtter. Har du en kraftig maskin, kan du oppnå imponerende resultater helt uten skykostnader.
@@ -65,7 +65,7 @@ Librarian har tilgang til kraftige MCP-verktøy som gjør den overlegen til trad
 **Rolle:** Speideren.
 Når vi trenger å finne hvor en funksjon er kodebasen, sender vi Explore. Denne agenten er optimalisert for _retrieval_ og mønstergjenkjenning.
 
-![Sisyphus orkestrerer et team av spesialiserte agenter.](/blog/sisyphus-oh-my-opencode/sisyphus-agents.jpeg)
+![Sisyphus orkestrerer et team av spesialiserte agenter.](https://www.magnusrodseth.com/blog/sisyphus-oh-my-opencode/sisyphus-agents.jpeg)
 _Sisyphus (dirigenten) i midten, med sine spesialiserte agenter: Librarian, Explore, UI/UX Engineer og Oracle. Kilde: Google Nano Banana Pro._
 
 ### "Batteries Included": Fra installasjon til produksjon

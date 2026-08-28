@@ -5,7 +5,7 @@ Originally published at Capra Consulting: https://capraconsulting.no/vare-histor
 
 > Det fundamentale paradigmeskiftet fra prompt engineering til context engineering og agentiske arbeidsflyter.
 
-![En AI-agent bryter gjennom muren av statiske chat-bobler og tekst, inn i en verden av kode, filer og verktøy.](/blog/fra-system-prompts-til-agentiske-arbeidsflyter/banner.jpeg)
+![En AI-agent bryter gjennom muren av statiske chat-bobler og tekst, inn i en verden av kode, filer og verktøy.](https://www.magnusrodseth.com/blog/fra-system-prompts-til-agentiske-arbeidsflyter/banner.jpeg)
 _Fra statiske prompts til dynamiske agenter som handler i den virkelige verden. Kilde: Google Nano Banana Pro._
 
 ## Innledning
@@ -28,7 +28,7 @@ Etter hvert som vi prøver å bygge mer komplekse applikasjoner, støter vi på 
 
 I tillegg mangler en tradisjonell prompt-basert tilnærming både tilstand (state) og kontrollflyt. Modellen har ingen innebygd evne til å huske hva den gjorde for tre steg siden uten at vi sender hele historikken tilbake, noe som fører til det vi kaller context rot, der viktig informasjon drukner i irrelevant støy. Uten tilgang til verktøykall forblir modellen innelåst i sitt eget tekstunivers. Den kan foreslå hvordan du refaktorerer en funksjon, men den kan ikke selvstendig lese de relevante filene, gjøre endringene og verifisere at koden fortsatt fungerer. For å komme dit trenger vi noe mer enn bare bedre setningsoppbygging; vi trenger systemdesign.
 
-![Kalibrering av system prompts](/blog/fra-system-prompts-til-agentiske-arbeidsflyter/system-prompt.webp)
+![Kalibrering av system prompts](https://www.magnusrodseth.com/blog/fra-system-prompts-til-agentiske-arbeidsflyter/system-prompt.webp)
 _En god system prompt finner balansen mellom for spesifikk (rigid if-else logikk) og for vag (abstrakte prinsipper). Kilde: Anthropic._
 
 ## Context Engineering: Det nye paradigmet
@@ -37,12 +37,12 @@ Det er her vi møter begrepet context engineering. Mens prompt engineering handl
 
 Kjerneprinsippet i context engineering er å finne det minst mulige settet med high-signal tokens som maksimerer sannsynligheten for at modellen tar riktig beslutning. Det handler ikke om å dytte så mye informasjon som mulig inn i modellen, men om å være en nådeløs redaktør av agentens virkelighet.
 
-![Prompt engineering vs context engineering](/blog/fra-system-prompts-til-agentiske-arbeidsflyter/prompt-engineering-vs-context-engineering.webp)
+![Prompt engineering vs context engineering](https://www.magnusrodseth.com/blog/fra-system-prompts-til-agentiske-arbeidsflyter/prompt-engineering-vs-context-engineering.webp)
 _Prompt engineering er en diskret oppgave: du skriver én prompt. Context engineering er en kontinuerlig prosess der du kuraterer kontekst ved hver inference. Kilde: Anthropic._
 
 Når vi bygger agenter som skal operere over lengre tidshorisonter (såkalt long-horizon tasks) må vi ta i bruk mer avanserte strategier. Dette inkluderer teknikker som compaction, der vi kontinuerlig oppsummerer samtalen og reinitierer agenten med et destillert sammendrag når vi nærmer oss kontekstgrensen. Vi ser også fremveksten av sub-agent architectures, der en overordnet agent delegerer spesialiserte oppgaver til mindre agenter med rene, fokuserte kontekstvinduer. Dette forhindrer at modellen blir overveldet og sikrer at den alltid har den mest relevante informasjonen tilgjengelig for den spesifikke oppgaven den løser akkurat nå.
 
-![Sub-agent arkitektur](/blog/fra-system-prompts-til-agentiske-arbeidsflyter/subagents.png)
+![Sub-agent arkitektur](https://www.magnusrodseth.com/blog/fra-system-prompts-til-agentiske-arbeidsflyter/subagents.png)
 _En hovedagent koordinerer arbeidet ved å delegere spesialiserte oppgaver til sub-agenter, som hver opererer med fokusert kontekst. Kilde: Anthropic._
 
 ## OODA-loopen: Agentens hjerne
@@ -65,7 +65,7 @@ Denne syklusen gjentas helt til målet er nådd. Det som skiller en agent fra en
 
 Når hvert steg i "Act"-fasen gir ny informasjon som observeres i neste runde, ser vi disse pilarene i praksis.
 
-![Agent-løkken](/blog/fra-system-prompts-til-agentiske-arbeidsflyter/agents.webp)
+![Agent-løkken](https://www.magnusrodseth.com/blog/fra-system-prompts-til-agentiske-arbeidsflyter/agents.webp)
 _En agent opererer i en kontinuerlig løkke: den utfører handlinger mot miljøet, mottar feedback, og bestemmer neste steg, helt til oppgaven er fullført. Kilde: Anthropic._
 
 ## Produksjonsvirkeligheten: Enkle mønstre vinner

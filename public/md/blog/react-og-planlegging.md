@@ -5,12 +5,12 @@ Originally published at Capra Consulting: https://capraconsulting.no/vare-histor
 
 > Lær hvordan ReAct-mønsteret kombinerer resonnering og handling for å la AI-agenter løse komplekse oppgaver steg for steg.
 
-![En hjerne omkranset av et øye, et tannhjul, en tankeboble og et puslespill, bundet sammen av piler i en løkke](/blog/react-og-planlegging/banner.png)
+![En hjerne omkranset av et øye, et tannhjul, en tankeboble og et puslespill, bundet sammen av piler i en løkke](https://www.magnusrodseth.com/blog/react-og-planlegging/banner.png)
 _ReAct-løkken: observere, resonnere, handle, og så observere igjen. Kilde: Google Nano Banana Pro._
 
 ## Innledning
 
-I de forrige innleggene har vi etablert hvordan [agentiske arbeidsflyter](/blog/fra-system-prompts-til-agentiske-arbeidsflyter) skiller seg fra tradisjonelle chatbots, hvordan [MCP](/blog/model-context-protocol) kobler agenter til omverdenen, og hvordan CLI-agenter gir oss kraftige verktøy i terminalen. Men vi har ennå ikke besvart et fundamentalt spørsmål: Hvordan _tenker_ egentlig en agent?
+I de forrige innleggene har vi etablert hvordan [agentiske arbeidsflyter](https://www.magnusrodseth.com/blog/fra-system-prompts-til-agentiske-arbeidsflyter) skiller seg fra tradisjonelle chatbots, hvordan [MCP](https://www.magnusrodseth.com/blog/model-context-protocol) kobler agenter til omverdenen, og hvordan CLI-agenter gir oss kraftige verktøy i terminalen. Men vi har ennå ikke besvart et fundamentalt spørsmål: Hvordan _tenker_ egentlig en agent?
 
 Ved veldig naivt bruk av AI-verktøy i dag opplever mange at modellen "skyter fra hofta". Den gir et svar uten å vise arbeidet sitt, og resultatet blir ofte upresist eller direkte feil. Problemet er at LLM-er uten struktur mangler en mekanisme for å bryte ned komplekse oppgaver. De prøver å løse alt i ett steg.
 
@@ -28,7 +28,7 @@ ReAct ble introdusert av [Yao et al. i 2022](https://arxiv.org/abs/2210.03629), 
 
 Denne syklusen gjentas til agenten har nok informasjon til å gi et endelig svar, eller utilstrekkelig informasjon og må be brukeren om mer kontekst før den kan fortsette.
 
-![ReAct-loop](/blog/react-og-planlegging/react-loop.png)
+![ReAct-loop](https://www.magnusrodseth.com/blog/react-og-planlegging/react-loop.png)
 _ReAct-mønsteret: Agenten alternerer mellom tanke, handling og observasjon i en iterativ syklus. Kilde: Yao et al., 2022._
 
 Hvorfor fungerer dette bedre enn ren resonnering? Forskjellen ligger i tilbakemeldingssløyfen. **[Chain-of-Thought](https://arxiv.org/abs/2201.11903)** (CoT), en annen teknikk, lar modellen tenke steg-for-steg, men den kan bare resonnere basert på det den allerede "vet". Uten tilgang til verktøy risikerer den å hallusinere fakta. ReAct løser dette (så fremt den har tilgang på gode verktøy) ved å la modellen _sjekke_ antakelsene sine mot virkeligheten gjennom handlinger.
@@ -43,7 +43,7 @@ Men det hadde jeg **ikke**.
 
 Det jeg hadde bygget var en sofistikert _pipeline_, en lineær flyt fra input til output. Brukerens spørsmål gikk inn, kontekst ble hentet, et svar ble generert, ferdig. Hvis svaret var utilstrekkelig eller basert på feil kontekst, var det ingen mekanisme for å prøve igjen med en annen strategi. Chatboten kunne ikke _resonere_ om hva den manglet.
 
-![Chatbot vs. agent](/blog/react-og-planlegging/chatbot-vs-agent.png)
+![Chatbot vs. agent](https://www.magnusrodseth.com/blog/react-og-planlegging/chatbot-vs-agent.png)
 _Forskjellen mellom en pipeline-chatbot (lineær flyt) og en agentisk chatbot (iterativ ReAct-loop). Pipelinen gir ett svar basert på ett forsøk, mens agenten kan resonere, handle, og justere kursen._
 
 Det som manglet var selve ReAct-loopen, den iterative syklusen der agenten resonnerer, velger et verktøy, observerer resultatet, og bestemmer neste steg. Og like viktig: _granulære, komponerbare verktøy_ som agenten faktisk kan bruke til å utforske og handle.
@@ -145,7 +145,7 @@ En naturlig utvidelse av ReAct er [Reflexion](https://arxiv.org/abs/2303.11366),
 
 Arkitekturen består av tre komponenter: en **Actor** som genererer handlinger, en **Evaluator** som scorer resultatet, og en **Self-Reflection**-modul som produserer verbal feedback. Denne feedbacken lagres i et episodisk minne og brukes som kontekst i neste forsøk.
 
-![Reflexion-arkitektur](/blog/react-og-planlegging/reflexion.png)
+![Reflexion-arkitektur](https://www.magnusrodseth.com/blog/react-og-planlegging/reflexion.png)
 _Reflexion-syklusen: Agenten prøver, evaluerer resultatet, reflekterer over hva som gikk galt, og bruker den refleksjonen i neste forsøk._
 
 I praksis er dette mønsteret du gjenkjenner når en CI-pipeline feiler og agenten din leser feilmeldingen, resonnerer over årsaken, og prøver en annen tilnærming. Det er ikke bare retry; det er retry _med selvrefleksjon_.
@@ -164,7 +164,7 @@ Når bør du bruke hva? Her er en rask oversikt:
 
 Tree-of-Thoughts er verdt å nevne for oppgaver der lineær tenkning ikke holder. Ved å utforske flere resonneringsstier parallelt og evaluere dem, kan modellen oppnå bedre resultater på kreative oppgaver, men til en høyere kostnad i API-kall.
 
-![Sammenligning av resonneringstilnærminger](/blog/react-og-planlegging/reasoning-approaches.png)
+![Sammenligning av resonneringstilnærminger](https://www.magnusrodseth.com/blog/react-og-planlegging/reasoning-approaches.png)
 _Fire tilnærminger til resonnering: Standard prompting (direkte svar), Chain-of-Thought (lineær tankerekke), ReAct (tanke + handling + observasjon), og Tree-of-Thoughts (forgrenet utforskning). Kilde: Basert på Yao et al., 2022._
 
 ## Praktiske tips og vanlige feil

@@ -29,7 +29,7 @@ function renderHeading(title: string, tagline: string): string {
 }
 
 export function renderHome(): string {
-  const body = readPageBody("index.mdx", siteConfig.description);
+  const body = absolutize(readPageBody("index.mdx", siteConfig.description));
   const siteMap = sitePages
     .filter((page) => page !== HOME_PAGE)
     .map((page) => `- [${page.title}](${pageHref(page)})`);
@@ -69,6 +69,17 @@ export function renderBlogIndex(): string {
   return lines.join("\n");
 }
 
+/**
+ * Rewrites root-relative Markdown targets to absolute URLs.
+ *
+ * The Markdown twin is meant to be fetched on its own, so an agent that reads
+ * `![alt](/blog/x/diagram.png)` has no base to resolve it against. Links are
+ * treated the same way, so a cross-reference between posts stays followable.
+ */
+function absolutize(markdown: string): string {
+  return markdown.replace(/(\]\()(\/[^)\s]*)/g, `$1${siteConfig.url}$2`);
+}
+
 export function renderBlogPost(slug: string): string | null {
   const post = getBlogPostBySlug(slug);
   if (!post) return null;
@@ -82,7 +93,7 @@ export function renderBlogPost(slug: string): string | null {
     "",
     post.description ? `> ${post.description}` : "",
     "",
-    post.content.trim(),
+    absolutize(post.content.trim()),
     "",
   ]
     .filter((line, idx, arr) => !(line === "" && arr[idx - 1] === ""))
@@ -129,7 +140,7 @@ export function renderProjects(): string {
  * is plain Markdown, so it can be served as-is.
  */
 export function renderStaticPage(page: SitePage, filename: string): string {
-  const body = readPageBody(filename, page.tagline);
+  const body = absolutize(readPageBody(filename, page.tagline));
   return [renderHeading(page.title, page.tagline), body, ""].join("\n");
 }
 

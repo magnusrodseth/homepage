@@ -5,7 +5,7 @@ Originally published at Capra Consulting: https://capraconsulting.no/vare-histor
 
 > Lær hvordan MCP fungerer som en 'USB-C for AI', standardiserer tilkoblingen mellom LLM-er og dine data, og hvorfor det er viktigere enn proprietære verktøykall.
 
-![En AI-agent-brikke koblet med USB-C-kabler til Slack, PostgreSQL, Notion, Teams og Office-verktøy](/blog/model-context-protocol/banner.jpeg)
+![En AI-agent-brikke koblet med USB-C-kabler til Slack, PostgreSQL, Notion, Teams og Office-verktøy](https://www.magnusrodseth.com/blog/model-context-protocol/banner.jpeg)
 _MCP fungerer som en «USB-C for AI»: en universell standard som kobler AI-agenter til verktøyene og dataene du bruker hver dag. Kilde: Google Nano Banana Pro._
 
 ## Innledning
@@ -36,7 +36,7 @@ Protokollen definerer tre hovedprimitiver som gir modellen tilgang til verden ut
 2. **Tools:** Funksjoner modellen kan utføre. Dette er handlinger som krever godkjenning, som å opprette en PR, kjøre en SQL-spørring eller sende en melding. Dette tilsvarer tradisjonelle verktøykall.
 3. **Prompts:** Forhåndsdefinerte maler som hjelper brukeren å bruke serveren effektivt. Dette kan være en spesialisert prompt for å analysere en database-tabell eller feilsøke en loggfil.
 
-![MCP Arkitektur](/blog/model-context-protocol/mcp.png)
+![MCP Arkitektur](https://www.magnusrodseth.com/blog/model-context-protocol/mcp.png)
 _MCP-arkitekturen kobler AI-klienter (som Claude eller IDE-er) til datakilder gjennom en standardisert protokoll, uavhengig av hvilken modell som brukes i bunnen. Kilde: Anthropic._
 
 Det viktige her er ikke teknologien i seg selv (JSON-RPC er gammelt nytt), men **standardiseringen**. Fordi protokollen er lik på tvers av alle verktøy, kan en utvikler bygge _én_ MCP-server for sitt interne API, og den vil umiddelbart fungere i Claude Desktop, Cursor, Zed, og alle andre verktøy som støtter standarden, uten noen tilpasning.

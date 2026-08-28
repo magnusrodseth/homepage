@@ -21,7 +21,7 @@ Hvis du har forsøkt å gi en LLM tilgang til mange verktøy samtidig - enten de
 
 Løsningen Anthropic nå ruller ut minner mye om lazy loading: I stedet for å laste alle verktøyene inn i konteksten ved oppstart, gir du modellen et "søke-verktøy". Når Claude innser at den trenger å gjøre noe den ikke har verktøy for i minnet (f.eks. "sjekk deployment-status" eller "sjekk været"), søker den i katalogen, og laster kun inn definisjonen for det relevante verktøyet der og da.
 
-![Forskjellen mellom tradisjonell approach og Tool Search - ubrukte verktøysdefinisjoner spiser opp store deler av kontekstvinduet. Med Tool Search lastes kun det nødvendige.](/blog/context-usage.png)
+![Forskjellen mellom tradisjonell approach og Tool Search - ubrukte verktøysdefinisjoner spiser opp store deler av kontekstvinduet. Med Tool Search lastes kun det nødvendige.](https://www.magnusrodseth.com/blog/context-usage.png)
 
 Dette betyr at du i teorien kan ha tusenvis av tilgjengelige verktøy i systemet ditt, uten at det påvirker ytelsen eller prisen på hver enkelt request på en drastisk måte.
 
@@ -41,7 +41,7 @@ Dette skaper mye latency. Med Programmatic Tool Calling kan Claude i stedet skri
 - **Færre hallusinasjoner:** LLM-er sliter ofte med presis matte og logikk. Python er perfekt til det. Ved å la modellen skrive koden for å løse problemet, i stedet for å "tenke" seg frem til svaret, øker presisjonen.
 - **Effektivitet:** Du bytter ut ti frem-og-tilbake kall med 1 eksekvering.
 
-![Flytdiagrammet viser forskjellen: I stedet for å gå frem og tilbake til brukeren, kjører Claude en indre loop med Python-kode i en sikker container før det endelige svaret leveres.](/blog/programmatic-tool-calling.png)
+![Flytdiagrammet viser forskjellen: I stedet for å gå frem og tilbake til brukeren, kjører Claude en indre loop med Python-kode i en sikker container før det endelige svaret leveres.](https://www.magnusrodseth.com/blog/programmatic-tool-calling.png)
 
 ## Beviset: "The Puzzle Room Challenge"
 
@@ -50,7 +50,7 @@ Teori er vel og bra, men Anthropic kjørte et interessant eksperiment for å vis
 - Sonnet 4.5 med tradisjonell tool calling.
 - Opus 4.5 med programmatic tool calling.
 
-![Til venstre ser vi Sonnet 4.5 som sliter med høy token-bruk ved bruk av tradisjonelle verktøy. Til høyre har Opus 4.5 løst problemet programmatisk med en brøkdel av ressursene.](/blog/sonnet-vs-opus.png)
+![Til venstre ser vi Sonnet 4.5 som sliter med høy token-bruk ved bruk av tradisjonelle verktøy. Til høyre har Opus 4.5 løst problemet programmatisk med en brøkdel av ressursene.](https://www.magnusrodseth.com/blog/sonnet-vs-opus.png)
 
 Resultatet var en tankevekker:
 

@@ -8,7 +8,7 @@ I work as a full-stack developer at [Capra Consulting](https://capraconsulting.n
 
 I hold a Master's degree in Computer Science from the [Norwegian University of Science and Technology (NTNU)](https://www.ntnu.edu/), specializing in Software Systems.
 
-Outside of programming, I enjoy hanging out with friends, exercising, and watching movies. You can find a [list of all my projects here](/projects), or check out my [presentations](https://presentations.magnusrodseth.com).
+Outside of programming, I enjoy hanging out with friends, exercising, and watching movies. You can find a [list of all my projects here](https://www.magnusrodseth.com/projects), or check out my [presentations](https://presentations.magnusrodseth.com).
 
 ## Site map
 

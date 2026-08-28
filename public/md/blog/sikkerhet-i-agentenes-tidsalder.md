@@ -5,7 +5,7 @@ Originally published at Capra Consulting: https://capraconsulting.no/vare-histor
 
 > AI-agenter har tilgang til terminalen, e-post og filsystemet ditt. Prompt injection er bare starten. Her er det fulle trusselbildet og forsvarslinjene.
 
-![En AI-agent holder en laptop med teksten «Prompt Injection»](/blog/sikkerhet-i-agentenes-tidsalder/banner.jpeg)
+![En AI-agent holder en laptop med teksten «Prompt Injection»](https://www.magnusrodseth.com/blog/sikkerhet-i-agentenes-tidsalder/banner.jpeg)
 _Prompt injection: Når agenten din leser noe den ikke burde stole på. Kilde: Google Nano Banana Pro._
 
 ## Innledning
@@ -26,7 +26,7 @@ Systemprompt, brukerinstruksjoner og eksternt innhold blandes sammen til én lan
 
 Og det stopper ikke ved data. Selv det agenten behandler som _instruksjoner_ (verktøydefinisjoner, MCP-konfigurasjoner, meldinger fra andre agenter) kan være kompromittert. Det er ikke bare upålitelig data som er problemet, men også potensielt upålitelige instruksjoner.
 
-![Instruksjoner og upålitelig data blandes i en trakt og mates inn i en AI-hjerne](/blog/sikkerhet-i-agentenes-tidsalder/instruction-vs-untrusted-data.jpeg)
+![Instruksjoner og upålitelig data blandes i en trakt og mates inn i en AI-hjerne](https://www.magnusrodseth.com/blog/sikkerhet-i-agentenes-tidsalder/instruction-vs-untrusted-data.jpeg)
 _Instruksjoner og ekstern data havner i samme trakt. Modellen kan ikke skille dem. Kilde: Google Nano Banana Pro._
 
 Det er en treffende parallell til Morris-ormen fra 1988: Tidlige datamaskiner var sårbare nettopp fordi instruksjoner og data delte samme minneområde. Det tok tiår å løse. AI-agenter har det samme problemet, bare i ny innpakning.
@@ -39,7 +39,7 @@ Simon Willison bruker en modell han kaller [**The Lethal Trifecta**](https://sim
 2. **Eksponering for upålitelig innhold**: nettsider, e-poster, dokumenter utenfra.
 3. **En vei ut (eksfiltrering)**: muligheten til å sende data videre via HTTP-kall, e-post eller filer.
 
-![The Lethal Trifecta: Private Data, Untrusted Content og Exfiltration danner en faretrekant](/blog/sikkerhet-i-agentenes-tidsalder/triangle.jpeg)
+![The Lethal Trifecta: Private Data, Untrusted Content og Exfiltration danner en faretrekant](https://www.magnusrodseth.com/blog/sikkerhet-i-agentenes-tidsalder/triangle.jpeg)
 _Når alle tre møtes, oppstår den dødelige trioen. Kilde: Google Nano Banana Pro._
 
 Her er det ubehagelige: **Dette er standardoppsettet for de fleste _nyttige_ agenter.** Bruker du en kodeassistent med tilgang til terminalen, filsystemet og nettsøk? Da har du krysset av for alle tre.
@@ -65,7 +65,7 @@ Sannsynligheten for at en agent _ikke_ blir kompromittert etter N interaksjoner 
 
 Forskningsartikkelen ["The Attacker Moves Second" (2025)](https://arxiv.org/abs/2510.09023) bekrefter bildet: De testet 12 publiserte forsvar med adaptive angrep og **brøt alle 12 med over 90 % suksessrate**. OpenAIs leder for _Preparedness_ sa det rett ut: _«Prompt injection is unlikely to ever be fully 'solved'.»_
 
-![En AI-agent jobber trygt inne i en sandkasse mens ondsinnede angrep preller av](/blog/sikkerhet-i-agentenes-tidsalder/sandbox.jpeg)
+![En AI-agent jobber trygt inne i en sandkasse mens ondsinnede angrep preller av](https://www.magnusrodseth.com/blog/sikkerhet-i-agentenes-tidsalder/sandbox.jpeg)
 _Sandboxing: Agenten jobber fritt, men innenfor trygge rammer. Kilde: Google Nano Banana Pro._
 
 ## Trusselbildet er bredere enn prompt injection

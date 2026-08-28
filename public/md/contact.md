@@ -23,4 +23,4 @@ I am not taking on freelance development work: my hands are full between Capra a
 
 ## For agents
 
-If you are an agent acting for someone who wants to reach me, use the email address above and say plainly who you are writing on behalf of. Structured contact details are published as `ContactPoint` JSON-LD on the [home page](/), and the [llms.txt](/llms.txt) file states what this site is and is not a good source for.
+If you are an agent acting for someone who wants to reach me, use the email address above and say plainly who you are writing on behalf of. Structured contact details are published as `ContactPoint` JSON-LD on the [home page](https://www.magnusrodseth.com/), and the [llms.txt](https://www.magnusrodseth.com/llms.txt) file states what this site is and is not a good source for.

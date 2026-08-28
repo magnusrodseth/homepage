@@ -5,7 +5,7 @@ Originally published at Capra Consulting: https://capraconsulting.no/vare-histor
 
 > AI-kodeprisene har skiftet og synliggjort hva inferens egentlig koster. Det relevante spørsmålet er ikke hvordan du kutter token-forbruket, men hvordan du får mer ut av tokenene du bruker.
 
-![Et iskremstativ med skiltet "FØRSTE GRATIS"](/blog/forste-dose-er-gratis/banner.jpeg)
+![Et iskremstativ med skiltet "FØRSTE GRATIS"](https://www.magnusrodseth.com/blog/forste-dose-er-gratis/banner.jpeg)
 _Den første dosen er alltid på huset. Resten betaler vi for. Kilde: OpenAI gpt-image-2._
 
 ## Innledning
@@ -32,7 +32,7 @@ Historien om selskapet som går tom for tokens før måneden er over er en av ma
 
 Pris per token faller, mens samlet forbruk eksploderer. Det er ingen motsetning. Agenter er vesentlig dyrere å kjøre enn en chat som varer i noen få samtalerunder.
 
-![Et isfjell der den synlige toppen er bitteliten mot den enorme massen under vann](/blog/forste-dose-er-gratis/pris-vs-forbruk.webp)
+![Et isfjell der den synlige toppen er bitteliten mot den enorme massen under vann](https://www.magnusrodseth.com/blog/forste-dose-er-gratis/pris-vs-forbruk.webp)
 _Det synlige prisfallet er bare toppen. Forbruksveksten under overflaten er den som styrer regningen. Kilde: OpenAI gpt-image-2._
 
 I det norske selskapet jeg nevnte innledningsvis ble ekstra budsjett lagt til og brukt opp samme dag, ifølge intern kommunikasjon. Ledelsen innførte derfor en månedlig cap per lisensiert bruker inntil videre. En ansatt påpekte at beløpet var altfor lavt, at de ville gå tomme innen midten av måneden selv om folk var bevisste på token-bruken, og at et realistisk budsjett lå nærmere fire til fem ganger høyere. Hva er poenget med å fortelle deg dette, tenker du kanskje?
@@ -67,7 +67,7 @@ En nyttig måte å se det på er at hver modell har en horisont: en oppgavelengd
 
 Her ligger også svaret på hvorfor man ikke bare kan "ha en billigere agent". Forbedringene konsentreres i toppmodellene, og avstanden mellom en dyr og en billig agent vokser nettopp langs denne horisonten. En billigere modell betyr derfor ikke bare litt lavere kvalitet per kall; den har en kortere horisont og treffer pålitelighetsstupet tidligere på akkurat den samme oppgaven. Og hver kjøring som detter utfor koster nye tokens i tillegg til menneskelig tid for å rydde opp. Det er her prinsippet om å avdekke feil tidlig, kjent fra testing og sikkerhet, blir avgjørende når du setter sammen agentiske flyter, et poeng jeg kommer tilbake til lenger ned.
 
-![En rad dominobrikker som detter, der den siste brikken så vidt står igjen](/blog/forste-dose-er-gratis/komposisjonsfeil.webp)
+![En rad dominobrikker som detter, der den siste brikken så vidt står igjen](https://www.magnusrodseth.com/blog/forste-dose-er-gratis/komposisjonsfeil.webp)
 _Risikoen ganges, den legger seg ikke sammen. Jo lengre kjeden, desto før treffer en svak modell pålitelighetsstupet. Kilde: OpenAI gpt-image-2._
 
 ### De to største spakene
@@ -120,7 +120,7 @@ Tokens er ikke en kostnadslinje, de er en _innsatsfaktor_, altså en ressurs som
 
 Den relevante KPI-en er altså ikke "kroner brukt på tokens", men **beslutningskapasitet per token**: hvor mange velinformerte valg du klarer å produsere per krone forbrukt i inferens.
 
-![En figur i silhuett omgitt av flere transparente ekko-versjoner av seg selv](/blog/forste-dose-er-gratis/beslutningskapasitet.webp)
+![En figur i silhuett omgitt av flere transparente ekko-versjoner av seg selv](https://www.magnusrodseth.com/blog/forste-dose-er-gratis/beslutningskapasitet.webp)
 _Det er ikke flere timer i døgnet, men flere hypoteser per time. Beslutningskapasitet er den nye flaskehalsen. Kilde: OpenAI gpt-image-2._
 
 ## Det dette innlegget ikke handler om

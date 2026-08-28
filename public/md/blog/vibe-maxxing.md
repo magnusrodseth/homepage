@@ -9,7 +9,7 @@ Se for deg dette scenariet: Du lener deg tilbake med kaffekoppen, mens en ivrig,
 
 I dette innlegget skal vi se på konseptet jeg har valgt å kalle "Vibe-Maxxing" i utviklersammenheng. Kort forklart handler det om å systematisk optimalisere arbeidsflyten for å oppnå ett hovedmål: **Maksimere kvaliteten på AI-generert kode og minimere tiden du bruker på manuell tasting.**
 
-![Vibe-Maxxing](/blog/vibe-maxxing/cover_image.png)
+![Vibe-Maxxing](https://www.magnusrodseth.com/blog/vibe-maxxing/cover_image.png)
 
 > NB: Erfaringene her er basert på arbeid i Greenfield-prosjekter med små team og moderne kodebaser (hovedsakelig TypeScript/Next.js). Din situasjon kan variere, men prinsippene er forhåpentligvis nokså generelle.
 
@@ -56,7 +56,7 @@ Du trenger ikke det dyreste bedriftsabonnementet for å få dette til å flyte. 
 | **Windsurf** (Gratisversjon) | IDE med AI-integrasjon. |
 | **SuperWhisper** (Gratis/Lokalt) | Dette er den hemmelige ingrediensen. SuperWhisper lar deg snakke direkte til AI-en med lokal transkribering på Mac-en din. Mer om dette senere. |
 
-![Claude Code, Windsurf og SuperWhisper](/blog/vibe-maxxing/claude-windsurf-superwhisper.png)
+![Claude Code, Windsurf og SuperWhisper](https://www.magnusrodseth.com/blog/vibe-maxxing/claude-windsurf-superwhisper.png)
 
 ## Arbeidsflyten: Planlegging vs. Gjennomføring
 
@@ -78,7 +78,7 @@ Nøkkelen til suksess her er struktur: Be eksplisitt om at planen deles inn i **
 
 Når planen er lagt og dere er enige om retningen, skrur du på "auto-edit". Her får agenten lov til å skrive og endre filer selv. Din jobb er å overvåke og ta stikkprøver av kritisk forretningslogikk.
 
-![Plan, Edit, Review](/blog/vibe-maxxing/plan-edit-review.jpeg)
+![Plan, Edit, Review](https://www.magnusrodseth.com/blog/vibe-maxxing/plan-edit-review.jpeg)
 
 > Fra håndverker til arkitekt: I denne loopen er jobben din å definere "hva" (Plan Mode) og verifisere "hvordan" (Review), mens AI-en tar seg av gjennomføringen.
 
@@ -88,7 +88,7 @@ Det høres kanskje rart ut å snakke til datamaskinen din, men her ligger det en
 
 SuperWhisper transkriberer tankene dine lokalt, og du kan lime en perfekt formulert, detaljert instruks rett inn i terminalen. Det gir AI-en en dybde i konteksten som er vanskelig å oppnå via tastaturet.
 
-![SuperWhisper](/blog/vibe-maxxing/superwhisper.png)
+![SuperWhisper](https://www.magnusrodseth.com/blog/vibe-maxxing/superwhisper.png)
 
 ## Trygge omgivelser gir maksimal autonomi
 
@@ -170,7 +170,7 @@ Dette har gitt opphav til fenomenet **Slopsquatting**. Ondsinnede aktører overv
 
 **Motgift:** Aldri kjør `npm install` (eller tilsvarende) blindt på en pakke du ikke kjenner. Sjekk alltid at pakken er legitim, vedlikeholdt og har en historikk. Behandle all AI-generert kode som "untrusted input" frem til du har verifisert den.
 
-![Package Hallucination](/blog/vibe-maxxing/package-malicious.jpeg)
+![Package Hallucination](https://www.magnusrodseth.com/blog/vibe-maxxing/package-malicious.jpeg)
 
 Den ivrige assistenten vi møtte innledningsvis vil deg bare vel, men den vet ikke bedre. Uten dine kritiske øyne leverer den gjerne ondsinnede pakker og sikkerhetshull med et stort smil – rett og slett fordi den ikke forstår konsekvensene.
 

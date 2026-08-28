@@ -5,7 +5,7 @@ Originally published at Capra Consulting: https://capraconsulting.no/vare-histor
 
 > Lær hvordan Spec-Driven Development transformerer måten vi kommuniserer med AI-agenter, ved å skrive spesifikasjoner som fungerer for både mennesker og maskiner.
 
-![Banner](/blog/spec-driven-development/banner.png)
+![Banner](https://www.magnusrodseth.com/blog/spec-driven-development/banner.png)
 
 ## Innledning
 
@@ -43,7 +43,7 @@ Böckeler identifiserer tre nivåer:
 
 For de fleste team er **spec-first** et naturlig startpunkt, mens **spec-anchored** gir størst verdi for komplekse features. Spec-as-source er fortsatt noe eksperimentelt, men jeg legger stadig merke til flere og flere utviklere som avlaster mye av kodeskriving til dagens flaggskipmodeller.
 
-![Tre nivåer av SDD](/blog/spec-driven-development/spec-first-vs-spec-anchored-vs-spec-only.png)
+![Tre nivåer av SDD](https://www.magnusrodseth.com/blog/spec-driven-development/spec-first-vs-spec-anchored-vs-spec-only.png)
 _De tre nivåene av Spec-Driven Development: Spec-first (engangsspesifikasjon), Spec-anchored (vedlikeholdt over tid), og Spec-as-source (spesifikasjonen er kildefilen). Kilde: Basert på Birgitta Böckeler, martinfowler.com._
 
 ## Fra vibe coding til orkestrator
@@ -74,7 +74,7 @@ En god SDD-spesifikasjon bygger på fem pilarer:
 
 **5. Definition of Done:** Objektive kriterier som kan verifiseres automatisk.
 
-![De fem pilarene i SDD](/blog/spec-driven-development/pillars.png)
+![De fem pilarene i SDD](https://www.magnusrodseth.com/blog/spec-driven-development/pillars.png)
 _De fem pilarene i en god SDD-spesifikasjon: Context (prosjektkontekst), Requirements (spesifikke krav), Constraints (begrensninger), Examples (input/output-eksempler), og Definition of Done (ferdigkriterier)._
 
 La oss se forskjellen i praksis.
@@ -162,7 +162,7 @@ gh issue create \
 # Eller la agenten gjøre det direkte etter plan-fasen
 ```
 
-![SDD med GitHub Issues](/blog/spec-driven-development/sdd-github-issues.png)
+![SDD med GitHub Issues](https://www.magnusrodseth.com/blog/spec-driven-development/sdd-github-issues.png)
 _Spec-Driven Development med prosjektsporing: Specen lever som et issue i prosjektstyringsverktøyet, der teamet kan kommentere, revidere, og planlegge. Når implementeringen starter, peker agenten til issuet og har all kontekst den trenger._
 
 ### Hvorfor dette fungerer

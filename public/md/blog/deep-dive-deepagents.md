@@ -5,7 +5,7 @@ Originally published at Capra Consulting: https://capraconsulting.no/vare-histor
 
 > En grundig gjennomgang av deepagents, LangChains 'batteries included'-løsning for komplekse AI-agenter med innebygd planlegging, filsystem og subagenter.
 
-![Banner: En hjerne i sele klatrer opp en fjellvegg, mens en uutstyrt hjerne står igjen på bakken](/blog/deep-dive-deepagents/banner.png)
+![Banner: En hjerne i sele klatrer opp en fjellvegg, mens en uutstyrt hjerne står igjen på bakken](https://www.magnusrodseth.com/blog/deep-dive-deepagents/banner.png)
 
 ## Innledning
 
@@ -25,14 +25,14 @@ Tenk på en fjellklatrer. Klatreren selv er sterk og kompetent (det er modellen 
 
 Det er akkurat det en **agent harness** gjør for en språkmodell. Når frontiermodellene fra de store labene allerede er ekstremt kapable, er det ikke modellen som er differensiatoren i agentiske arbeidsflyter. Det er _selen rundt den_: verktøyene, planleggingen, minnet, og kontekststyringen du instrumenterer modellen med. Som [Harrison Chase skriver](https://blog.langchain.com/deep-agents/): det er denne selen som skiller en kapabel digital medarbeider fra en som faller av fjellveggen.
 
-![Sele-metafor: Modell + Harness = Agent](/blog/deep-dive-deepagents/model-plus-harness.png)
+![Sele-metafor: Modell + Harness = Agent](https://www.magnusrodseth.com/blog/deep-dive-deepagents/model-plus-harness.png)
 _En agent er mer enn bare modellen. Harness-en (selen) instrumenterer modellen med verktøy, planlegging, minne og kontekststyring, og gjør den til en kapabel digital medarbeider. Kilde: Basert på [The Anatomy of an Agent Harness](https://blog.langchain.com/the-anatomy-of-an-agent-harness/)._
 
 LangChain-økosystemet består av tre distinkte lag. Nederst har du **[LangChain](https://docs.langchain.com/oss/python/langchain/overview)** som _framework_: abstraksjoner og en mental modell for å bygge med LLM-er. Over det ligger **[LangGraph](https://docs.langchain.com/oss/python/langgraph/overview)** som _runtime_: varig utførelse, streaming, persistens og human-in-the-loop. Øverst sitter **[deepagents](https://docs.langchain.com/oss/python/deepagents/overview)** som _harness_: alt fra de to lagene under, pluss forhåndskonfigurerte prompts, filsystem, planlegging og subagenter.
 
 Et **framework** gir deg byggeklossene. En **runtime** gir deg infrastrukturen for produksjon. En **harness** tar deg fra null til fungerende agent med ett funksjonskall. Vil du forstå mer om runtime-laget, se innlegget om LangGraph.
 
-![Framework, Runtime, Harness hierarki](/blog/deep-dive-deepagents/framework-runtime-harness.png)
+![Framework, Runtime, Harness hierarki](https://www.magnusrodseth.com/blog/deep-dive-deepagents/framework-runtime-harness.png)
 _LangChain-økosystemets tre lag: Framework (LangChain) gir abstraksjoner, Runtime (LangGraph) gir infrastruktur for produksjon, og Harness (deepagents) pakker alt sammen med forhåndskonfigurerte verktøy. Kilde: Basert på [LangChain Blog](https://blog.langchain.com/agent-frameworks-runtimes-and-harnesses-oh-my/)._
 
 ## Innebygde verktøy
@@ -67,7 +67,7 @@ Komplekse oppgaver krever en plan. Agenten kan bryte ned flerstegs problemer med
 }
 ```
 
-Gjenkjenner du mønsteret? Det er det samme vi så i [ReAct-løkken](/blog/react-og-planlegging): tenk, planlegg, handle, observer, gjenta.
+Gjenkjenner du mønsteret? Det er det samme vi så i [ReAct-løkken](https://www.magnusrodseth.com/blog/react-og-planlegging): tenk, planlegg, handle, observer, gjenta.
 
 ### Automatisk kontekststyring
 
@@ -106,7 +106,7 @@ agent = create_deep_agent(
 
 Subagenten utfører kanskje ti websøk, men hovedagenten mottar kun én oppsummering. Konteksten forblir ren.
 
-![Subagent kontekstisolasjon](/blog/deep-dive-deepagents/subagent-context-isolation.png)
+![Subagent kontekstisolasjon](https://www.magnusrodseth.com/blog/deep-dive-deepagents/subagent-context-isolation.png)
 _Kontekstisolasjon med subagenter: Hovedagenten (ren kontekst) delegerer oppgaver til subagenten (fylt kontekst fra mange verktøykall), og mottar kun et komprimert resultat tilbake. Kilde: Basert på [deepagents-dokumentasjonen](https://docs.langchain.com/oss/python/deepagents/overview)._
 
 I tillegg til egendefinerte subagenter har du alltid tilgang til en **general-purpose** subagent. Den har samme instruksjoner og verktøy som hovedagenten, men opererer i isolert kontekst: perfekt for kontekstisolasjon uten spesialisert oppførsel.
@@ -161,7 +161,7 @@ Men to ting ble raskt tydelige. For det første tok det altfor lang tid. Vi viss
 
 Så vi skrev det om. I stedet for en fullverdig deep agent brukte vi regex-basert mønstergjenkjenning på tvers av dokument-chunks (ikke semantisk søk engang!), matet alt inn i en modell, og lot den produsere strukturert output. Resultatet var en raskere, billigere, og faktisk _mer nøyaktig_ pipeline for den ustrukturerte dataen vi jobbet med.
 
-![Deepagents-pipeline vs. strukturert output-pipeline](/blog/deep-dive-deepagents/pipeline-comparison.png)
+![Deepagents-pipeline vs. strukturert output-pipeline](https://www.magnusrodseth.com/blog/deep-dive-deepagents/pipeline-comparison.png)
 _To tilnærminger til samme problem: Deep agent-pipelinen (venstre) med full planlegging og kontekststyring vs. den forenklede pipelinen (høyre) med regex og strukturert output. Noen ganger er den enklere veien både raskere, billigere og mer nøyaktig. Kilde: Egenutviklet._
 
 Denne erfaringen lærte meg noe viktig. Det er fristende å kaste en kraftig sele og en kapabel modell på ethvert problem, i visshet om at den _kan_ løse det. Men [som Anthropic selv skriver](https://www.anthropic.com/engineering/building-effective-agents): start enkelt, og legg til kompleksitet kun når det er nødvendig. En agent harness er et kraftig verktøy for oppgaver som _krever_ flerstegs resonnering, planlegging og konteksthåndtering. For oppgaver som kan løses med et enkelt modellkall og god prompt-design, er den overkill.
