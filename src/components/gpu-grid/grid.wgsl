@@ -18,8 +18,8 @@ struct Params {
 const LEVELS: f32 = 14.0;
 const LINE_LOW = vec3f(0.506, 0.549, 0.973);   // #818cf8, --primary
 const LINE_HIGH = vec3f(0.78, 0.82, 1.0);      // lavender, near indigo-200
-const LINE_ALPHA: f32 = 0.45;
-const MASK_FLOOR: f32 = 0.45;
+const LINE_ALPHA: f32 = 0.32;
+const MASK_FLOOR: f32 = 0.35;
 const SPOT_RADIUS: f32 = 0.3;
 
 @fragment fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
