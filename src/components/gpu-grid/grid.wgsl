@@ -18,9 +18,10 @@ struct Params {
 const LEVELS: f32 = 14.0;
 const LINE_LOW = vec3f(0.506, 0.549, 0.973);   // #818cf8, --primary
 const LINE_HIGH = vec3f(0.78, 0.82, 1.0);      // lavender, near indigo-200
-const LINE_ALPHA: f32 = 0.32;
-const MASK_FLOOR: f32 = 0.35;
-const SPOT_RADIUS: f32 = 0.3;
+const LINE_ALPHA: f32 = 0.24;
+const MASK_FLOOR: f32 = 0.28;
+const SPOT_RADIUS: f32 = 0.42;
+const BUMP_HEIGHT: f32 = 0.16;   // in height-field units; higher = more contours bunch around the pointer
 
 @fragment fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let aspect = params.size.x / params.size.y;
@@ -32,7 +33,7 @@ const SPOT_RADIUS: f32 = 0.3;
   let toPointer = (uv - params.pointer) * vec2f(aspect, 1.0);
   let bump = exp(-dot(toPointer, toPointer) / (2.0 * SPOT_RADIUS * SPOT_RADIUS));
 
-  let h = fbmSimplex3d(vec3f(q * 1.6, params.time * 0.035), 4, 2.17, 0.5) * 0.5 + 0.5 + bump * 0.45;
+  let h = fbmSimplex3d(vec3f(q * 1.6, params.time * 0.035), 4, 2.17, 0.5) * 0.5 + 0.5 + bump * BUMP_HEIGHT;
 
   // Anti-aliased iso-lines: distance to the nearest level in screen space.
   let level = h * LEVELS;
@@ -44,6 +45,6 @@ const SPOT_RADIUS: f32 = 0.3;
   let index = select(0.7, 1.0, fract(floor(level) / 4.0) < 0.01);
 
   let color = mix(LINE_LOW, LINE_HIGH, h);
-  let alpha = line * index * LINE_ALPHA * mask * (0.7 + 0.6 * bump);
+  let alpha = line * index * LINE_ALPHA * mask * (0.85 + 0.3 * bump);
   return vec4f(color * alpha, alpha);
 }

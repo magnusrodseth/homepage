@@ -5,7 +5,7 @@ import gridShader from "./grid.wgsl";
 const OFFSCREEN: [number, number] = [-10, -10];
 const FPS = 30;
 /** Pointer easing per frame; lower is smoother. */
-const POINTER_LERP = 0.12;
+const POINTER_LERP = 0.05;
 
 /**
  * Starts the WebGPU grid on `canvas`. Resolves once the first frame is
