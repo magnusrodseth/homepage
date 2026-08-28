@@ -10,7 +10,8 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "ui:add": "bunx shadcn@latest add"
+    "ui:add": "bunx shadcn@latest add",
+    "background:fallback": "node scripts/render-topo-fallback.mjs"
   },
   "dependencies": {
     "@eslint/eslintrc": "^3.3.3",

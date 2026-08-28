@@ -38,7 +38,7 @@ const BUMP_HEIGHT: f32 = 0.16;   // in height-field units; higher = more contour
   let bump = exp(-dot(toPointer, toPointer) / (2.0 * SPOT_RADIUS * SPOT_RADIUS));
 
   let bumpHeight = BUMP_HEIGHT * mix(1.0, CALM_BUMP, params.calm);
-  let h = fbmSimplex3d(vec3f(q * 1.6, params.time * 0.035), 4, 2.17, 0.5) * 0.5 + 0.5 + bump * bumpHeight;
+  let h = fbmSimplex3d(vec3f(q * 1.6, params.time * 0.012), 4, 2.17, 0.5) * 0.5 + 0.5 + bump * bumpHeight;
 
   // Anti-aliased iso-lines: distance to the nearest level in screen space.
   let level = h * LEVELS;

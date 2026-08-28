@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import GridBackground from "@/components/grid-background";
 import { cn } from "@/lib/utils";
 import type { GridHandle } from "./start-grid";
 
@@ -21,20 +20,40 @@ function whenIdle(fn: () => void): () => void {
   return () => window.clearTimeout(id);
 }
 
+/** Matches the canvas fade-in duration below. */
+const FADE_MS = 1000;
+
 /**
- * The site background. Server-renders the static SVG grid, then upgrades to
- * the WebGPU shader when the browser supports it and the visitor has not
- * asked for reduced motion. Any failure leaves the SVG in place.
+ * The site background: topographic contours.
+ *
+ * Server-renders a static SVG traced from the shader's own height field
+ * (public/topo-fallback.svg, see scripts/render-topo-fallback.mjs), then
+ * fades the live WebGPU version in over it when the browser supports it and
+ * the visitor has not asked for reduced motion. Because both start from the
+ * same field, the hand-over is invisible. Any failure leaves the SVG in place.
+ *
+ * Both layers are `fixed -z-10 pointer-events-none`: a positioned element
+ * with a negative z-index stays behind the page even while its opacity
+ * animates. Do not wrap them in a non-positioned element with opacity; that
+ * creates a stacking context above the navbar that swallows clicks.
  */
 export function GpuGridBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const handleRef = useRef<GridHandle | null>(null);
   const [ready, setReady] = useState(false);
+  const [fallbackHidden, setFallbackHidden] = useState(false);
   const calm = calmFor(usePathname());
 
   useEffect(() => {
     handleRef.current?.setCalm(calm);
   }, [calm]);
+
+  // Drop the static layer once the canvas has fully faded in over it.
+  useEffect(() => {
+    if (!ready) return;
+    const id = window.setTimeout(() => setFallbackHidden(true), FADE_MS + 100);
+    return () => window.clearTimeout(id);
+  }, [ready]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -69,12 +88,24 @@ export function GpuGridBackground() {
     };
   }, []);
 
-  // The SVG is unmounted rather than faded: an opacity wrapper would create a
-  // stacking context, cancel the SVG's negative z-index, and leave an
-  // invisible element on top of the navbar that swallows every click.
   return (
     <>
-      {!ready && <GridBackground />}
+      {/* The shader applies the same top-right radial mask (floor 0.28) and
+          the same calm dimming (0.45) in WGSL; mirror both here. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/topo-fallback.svg"
+        alt=""
+        aria-hidden="true"
+        draggable={false}
+        fetchPriority="low"
+        className={cn(
+          "pointer-events-none fixed inset-0 -z-10 h-full w-full select-none",
+          "mask-[radial-gradient(100%_100%_at_top_right,white,rgb(255_255_255/0.28))]",
+          "transition-opacity duration-500",
+          fallbackHidden ? "opacity-0" : calm ? "opacity-45" : "opacity-100"
+        )}
+      />
       <canvas
         ref={canvasRef}
         aria-hidden="true"
