@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 
-import { getBlogPostBySlug, getBlogSlugs } from "@/lib/blog";
+import { getBlogPostBySlug, getBlogSlugs, POST_SOURCES } from "@/lib/blog";
 import { extractHeadings } from "@/lib/mdx";
 import { mdxRemoteOptions } from "@/lib/mdx-plugins.mjs";
 import { siteConfig } from "@/config/site";
@@ -11,6 +11,7 @@ import { H1, Muted } from "@/components/ui/typography";
 import { Separator } from "@/components/ui/separator";
 import BackLink from "@/components/back-link";
 import { TableOfContents } from "@/components/table-of-contents";
+import { OriginalSource } from "@/components/original-source";
 import { Icons } from "@/components/icons";
 import { useMDXComponents } from "../../../../mdx-components";
 
@@ -93,6 +94,12 @@ export default async function BlogPostPage({ params }: Props) {
       name: siteConfig.name,
       url: siteConfig.url,
     },
+    ...(post.source && post.sourceUrl
+      ? {
+          isBasedOn: post.sourceUrl,
+          publisher: { "@type": "Organization", name: POST_SOURCES[post.source] },
+        }
+      : {}),
   };
 
   return (
@@ -112,7 +119,16 @@ export default async function BlogPostPage({ params }: Props) {
                 <Icons.dot className="inline h-3 w-3" />
                 {post.readingTimeMinutes} min read
               </Muted>
+
             </header>
+
+            {post.source && post.sourceUrl && (
+              <OriginalSource
+                source={post.source}
+                url={post.sourceUrl}
+                className="animate-slide-enter stagger-150 mb-8"
+              />
+            )}
 
             <div className="mdx animate-slide-enter stagger-200">
               <MDXRemote

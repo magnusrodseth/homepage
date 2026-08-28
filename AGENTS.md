@@ -27,7 +27,7 @@ bun lint             # ESLint (flat config, typescript-eslint)
 bunx shadcn@latest add <component>  # Add shadcn/ui components
 ```
 
-No test suite. Verify changes with `bun lint`.
+No test suite. Verify changes with `bun lint` and `bun run build`.
 
 ## Project Structure
 
@@ -165,9 +165,77 @@ export default async function Image() {
 
 ### MDX Content
 
-Blog posts in `src/content/blog/*.mdx` with frontmatter:
-- Processed with remark-gfm, rehype-slug, rehype-autolink-headings, rehype-pretty-code
+Blog posts live in `src/content/blog/*.mdx`. Frontmatter: `title`,
+`description`, `lang`, `date`, and optionally `source` + `sourceUrl` for a post
+that first ran elsewhere (`capra` or `kode24`, keyed in `POST_SOURCES` in
+`src/lib/blog.ts`). The pair drives `<OriginalSource>` above the article and the
+`isBasedOn` field in the BlogPosting JSON-LD; never hand-write the "originally
+published at" sentence in an MDX file.
+
+- Processed with remark-gfm, `remarkFigures`, rehype-slug,
+  rehype-autolink-headings, rehype-pretty-code
 - Code highlighting via shiki, dual theme (`github-light` / `github-dark`)
+
+**Keep post bodies plain Markdown.** `/md/blog/<slug>.md` serves the body
+verbatim to agents, so JSX in a post becomes noise there. The two things that
+would otherwise need JSX are handled by `src/lib/remark-figures.mjs` instead:
+
+- An `![alt](src)` followed by a `_caption_` line (same paragraph or the next
+  one) becomes a real `<figure>` / `<figcaption>`
+- Every image is stamped with its intrinsic size, read from `public/` at build
+  time with `image-size`, so `next/image` reserves the right box
+
+`mdx-components.tsx` maps `img` onto `ZoomableImage` (click to open full
+screen, Escape or backdrop to close, focus returns to the thumbnail). Its
+`figure` mapping must keep skipping code blocks: rehype-pretty-code wraps every
+snippet in its own `<figure data-rehype-pretty-code-figure>`.
+
+Code blocks: `pre` owns the frame (`bg-muted`, border, vertical padding) and
+`code` is a grid whose `[data-line]` rows carry the horizontal padding, so a
+highlighted line spans the full width. `code` renders the inline pill only when
+`data-language` is absent; mapping `pre` onto the inline `InlineCode` (as it was
+until 28.08.2026) nested `<code>` inside `<code>` and drew a second background
+inside every block.
+
+## Agent-facing surface
+
+The site serves a machine-readable twin of itself. Everything below is derived
+from `src/config/pages.ts` and `src/lib/blog.ts`; add a page there and it
+propagates.
+
+| Path | What |
+|------|------|
+| `/llms.txt`, `/llms-full.txt` | Index and full-text, llmstxt.org |
+| `/md/**.md` | Prebuilt Markdown twin of every page |
+| `/openapi.json` | OpenAPI 3.1 description of every endpoint |
+| `/.well-known/api-catalog` | RFC 9727 linkset |
+| `/.well-known/agent-skills/index.json` | Agent skills discovery index |
+| `/sitemap.xml`, `/feed.xml`, `/atom.xml`, `/rss.xml` | Crawler feeds |
+
+**The Markdown twins are static files, and that is load-bearing.** Next
+replaces `Vary` on every App Router response with its own
+`rsc, next-router-state-tree, ...`, discarding whatever `headers()` in
+`next.config.mjs` set. Content negotiation needs `Vary: Accept` or a CDN can
+serve the HTML variant to an agent asking for Markdown. A response served from
+`public/` never reaches that code, so `scripts/generate-agent-markdown.ts`
+writes `public/md/**.md` before `next build` (it is the first half of
+`bun run build`; `bun run md:generate` runs it alone) and `src/proxy.ts`
+rewrites `Accept: text/markdown` requests to those files. The `Link` header
+from the same `headers()` block survives on every route, so only `Vary` needs
+this treatment.
+
+The script also emits `src/lib/markdown-routes.generated.ts`, the slug list the
+proxy needs; the proxy runs on the Edge runtime and cannot read the filesystem.
+Both outputs are committed so a checkout is servable without a build first;
+never hand-edit either, the next build overwrites them. Anything the proxy cannot resolve to a static file
+falls through to the `/md/[[...path]]` route handler, which answers 404 with a
+Markdown body listing `/llms.txt`, the blog index, `/sitemap.xml` and
+`/openapi.json`. `src/app/not-found.tsx` shows the same list to humans.
+
+API failures use one JSON shape (`src/lib/api-error.ts`): a stable `error.code`
+to branch on, plus `message`, `status`, `resolution` and `documentation`.
+`src/app/api/[...unmatched]/route.ts` catches unknown `/api/*` paths so they
+return that shape instead of the HTML 404 page.
 
 ## Key Libraries
 

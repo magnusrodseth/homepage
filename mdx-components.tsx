@@ -3,6 +3,7 @@ import Image, { ImageProps } from "next/image";
 import Link from "next/link";
 import { cn } from "./src/lib/utils";
 import { Callout } from "./src/components/callout";
+import { ZoomableImage } from "./src/components/zoomable-image";
 import { MdxCard } from "./src/components/mdx-card";
 import {
   Blockquote,
@@ -12,11 +13,18 @@ import {
   H4,
   InlineCode,
   P,
-  Small,
 } from "./src/components/ui/typography";
 import { Separator } from "./src/components/ui/separator";
 
 type HTMLElementProps = React.HTMLAttributes<HTMLElement>;
+
+/** remark-figures stamps intrinsic sizes as strings; next/image wants numbers. */
+function toDimension(value: string | number | undefined): number | undefined {
+  const parsed = typeof value === "string" ? Number(value) : value;
+  return typeof parsed === "number" && Number.isFinite(parsed) && parsed > 0
+    ? parsed
+    : undefined;
+}
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -132,25 +140,51 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {...props}
       />
     ),
-    img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => {
-      const src = typeof props.src === "string" ? props.src : "";
+    img: ({
+      src,
+      alt,
+      width,
+      height,
+    }: React.ImgHTMLAttributes<HTMLImageElement>) => (
+      <ZoomableImage
+        src={typeof src === "string" ? src : ""}
+        alt={alt ?? ""}
+        width={toDimension(width)}
+        height={toDimension(height)}
+      />
+    ),
+    // remark-figures pairs each `![alt](src)` with the `_caption_` line under
+    // it; rehype-pretty-code emits its own <figure> around code blocks, which
+    // must stay unstyled or every snippet picks up the image figure's spacing.
+    figure: ({ className, ...props }: HTMLElementProps) => {
+      const isCodeBlock =
+        "data-rehype-pretty-code-figure" in props ||
+        "data-rehype-pretty-code-fragment" in props;
+
+      if (isCodeBlock) {
+        return <figure className={cn("my-6", className)} {...props} />;
+      }
+
       return (
-        <span className="flex flex-col justify-center items-center my-4 max-w-4xl mx-auto w-full">
-          <Image
-            src={src}
-            width={700}
-            height={600}
-            alt={props.alt ?? ""}
-            className="object-cover my-2 mx-auto shadow-md hover:shadow-lg transition-all duration-300 rounded-lg"
-          />
-          {props.alt && (
-            <Small className="my-2 text-center block italic w-10/12">
-              {props.alt}
-            </Small>
+        <figure
+          className={cn(
+            "my-8 flex flex-col items-center gap-3",
+            "animate-slide-enter stagger-150",
+            className
           )}
-        </span>
+          {...props}
+        />
       );
     },
+    figcaption: ({ className, ...props }: HTMLElementProps) => (
+      <figcaption
+        className={cn(
+          "max-w-prose text-center text-sm italic leading-relaxed text-muted-foreground",
+          className
+        )}
+        {...props}
+      />
+    ),
     video: (props: React.VideoHTMLAttributes<HTMLVideoElement>) => (
       <div className="flex justify-center my-4 w-full">
         <video
@@ -208,18 +242,38 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       />
     ),
     pre: ({ className, ...props }: HTMLElementProps) => (
-      <InlineCode className={cn(className)} {...props} />
-    ),
-    code: ({ className, ...props }: HTMLElementProps) => (
-      <code
+      <pre
         className={cn(
-          "relative text-primary/80 px-[0.3rem] py-[0.2rem] font-mono text-sm",
+          "my-6 overflow-x-auto rounded-lg border border-border/60 bg-muted",
+          "py-4 font-mono text-sm leading-relaxed",
           "animate-slide-enter stagger-150",
           className
         )}
         {...props}
       />
     ),
+    code: ({ className, ...props }: HTMLElementProps) => {
+      // Inside a highlighted block, shiki has already coloured every token and
+      // <pre> owns the background; the inline pill styling would draw a second
+      // box around the code. rehype-pretty-code marks those with data-language.
+      const isBlock = "data-language" in props;
+
+      if (isBlock) {
+        return (
+          <code
+            className={cn("grid font-mono text-sm", className)}
+            {...props}
+          />
+        );
+      }
+
+      return (
+        <InlineCode
+          className={cn("font-normal text-foreground", className)}
+          {...props}
+        />
+      );
+    },
     Image: (props: ImageProps) => <Image {...props} />,
     Callout,
     Card: MdxCard,

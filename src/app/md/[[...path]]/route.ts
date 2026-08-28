@@ -12,13 +12,26 @@ export const dynamic = "force-static";
 
 type Params = { params: Promise<{ path?: string[] }> };
 
+/**
+ * The 404 an agent gets. It carries the same recovery map as the HTML 404
+ * page, so a failed guess at a URL costs one request instead of a dead end.
+ */
 function notFoundMarkdown(pathname: string): string {
+  const base = siteConfig.url;
   return [
-    "# Not found",
+    "# 404 Not found",
     "",
-    `No markdown representation is available for \`${pathname}\`.`,
+    `No page exists at \`${pathname}\` on ${base}.`,
     "",
-    `Visit [${siteConfig.url}](${siteConfig.url}) for the site map.`,
+    "## Where to look next",
+    "",
+    `- [llms.txt](${base}/llms.txt): index of every page and post`,
+    `- [Blog index](${base}/md/blog.md): all writing, as Markdown`,
+    `- [sitemap.xml](${base}/sitemap.xml): every public URL`,
+    `- [openapi.json](${base}/openapi.json): machine-readable API surface`,
+    `- [Home](${base}/md/index.md)`,
+    "",
+    "Every page answers `Accept: text/markdown` with a Markdown version of itself.",
     "",
   ].join("\n");
 }

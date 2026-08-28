@@ -3,6 +3,21 @@ import path from "path";
 import matter from "gray-matter";
 import { readingTimeInMinutes } from "@/lib/readingTime";
 
+/**
+ * Publications that first ran a post. Posts written for this site have no
+ * `source` at all; the key is what the `source` frontmatter field names.
+ */
+export const POST_SOURCES = {
+  capra: "Capra Consulting",
+  kode24: "Kode24",
+} as const;
+
+export type PostSource = keyof typeof POST_SOURCES;
+
+export function isPostSource(value: unknown): value is PostSource {
+  return typeof value === "string" && value in POST_SOURCES;
+}
+
 export type BlogPostMeta = {
   slug: string;
   title: string;
@@ -11,6 +26,10 @@ export type BlogPostMeta = {
   /** BCP 47 language tag for the post body, e.g. "no" or "en". */
   lang: string;
   readingTimeMinutes: number;
+  /** Publication this post first appeared in, when it is a republication. */
+  source?: PostSource;
+  /** Canonical URL at that publication. */
+  sourceUrl?: string;
 };
 
 export type BlogPost = BlogPostMeta & {
@@ -37,6 +56,9 @@ export function getBlogPostBySlug(slug: string): BlogPost | null {
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(fileContent);
 
+  // A source is only meaningful with a URL to point at, and vice versa.
+  const hasSource = isPostSource(data.source) && Boolean(data.sourceUrl);
+
   return {
     slug,
     title: data.title,
@@ -44,6 +66,9 @@ export function getBlogPostBySlug(slug: string): BlogPost | null {
     date: data.date,
     lang: data.lang ?? DEFAULT_POST_LANG,
     readingTimeMinutes: readingTimeInMinutes(content),
+    ...(hasSource
+      ? { source: data.source as PostSource, sourceUrl: String(data.sourceUrl) }
+      : {}),
     content,
   };
 }
@@ -56,14 +81,9 @@ export function getBlogPosts(): BlogPostMeta[] {
       const post = getBlogPostBySlug(slug);
       if (!post) return null;
 
-      return {
-        slug: post.slug,
-        title: post.title,
-        description: post.description,
-        date: post.date,
-        lang: post.lang,
-        readingTimeMinutes: post.readingTimeMinutes,
-      };
+      const { content, ...meta } = post;
+      void content;
+      return meta;
     })
     .filter((post): post is BlogPostMeta => post !== null)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());

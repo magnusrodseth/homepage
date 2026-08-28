@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Metadata } from "next";
 import Socials from "@/components/socials";
-import { H1, H3, Muted, Small } from "@/components/ui/typography";
+import { H1, H2, Muted, Small } from "@/components/ui/typography";
 import { siteConfig } from "@/config/site";
 import { cn, formatDate } from "@/lib/utils";
 import IndexContent from "@/content/pages/index.mdx";
@@ -93,7 +93,7 @@ export default function Home() {
       {recentPosts.length > 0 && (
         <section className="mt-8 animate-slide-enter stagger-400">
           <div className="flex items-baseline justify-between mb-6">
-            <H3 className="text-xl">Recent writing</H3>
+            <H2 className="text-xl pb-0">Recent writing</H2>
             <Link
               href="/blog"
               className="text-sm text-muted-foreground hover:text-primary transition-colors font-mono"
@@ -142,19 +142,19 @@ export default function Home() {
       <Testimonials />
 
       <section className="mt-16 animate-slide-enter stagger-500">
-        <H3 className="mb-6 text-xl">Activity</H3>
+        <H2 className="mb-6 text-xl pb-0">Activity</H2>
 
         <div className="space-y-8">
           <div>
-            <p className="text-sm text-muted-foreground mb-3 font-mono">
+            <h3 className="text-sm text-muted-foreground mb-3 font-mono font-normal">
               GitHub
-            </p>
+            </h3>
             <GitHubContributions />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground mb-3 font-mono">
+            <h3 className="text-sm text-muted-foreground mb-3 font-mono font-normal">
               Recently Played on Spotify
-            </p>
+            </h3>
             <SpotifyRecentTracks />
           </div>
         </div>

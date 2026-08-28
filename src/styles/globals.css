@@ -158,8 +158,8 @@
   "dual-theme" crashes Next's CSS minifier on the single-space value.
 
   Only the foreground is taken from shiki. The block background stays
-  `bg-muted` (see InlineCode, which mdx-components maps <pre> onto), which is
-  already a theme token. Keep the names in step with src/lib/mdx-plugins.mjs.
+  `bg-muted`, set on the <pre> in mdx-components, which is already a theme
+  token. Keep the names in step with src/lib/mdx-plugins.mjs.
 */
 [data-theme~="github-light"] span {
   color: var(--shiki-light);
@@ -217,4 +217,84 @@ html[data-magicui-theme-vt="active"]::view-transition-new(root) {
 
 .dark .topo-fallback {
   background-image: url("/topo-fallback.svg");
+}
+
+/*
+  Code blocks.
+
+  <pre> owns the frame (bg-muted, border, vertical padding) and <code> is a
+  grid so every `[data-line]` span is a full-width row. The horizontal padding
+  therefore sits on the lines, not on <pre>: put it on the frame instead and a
+  highlighted line stops short of the block's edges.
+*/
+.mdx pre > code {
+  background: transparent;
+}
+
+.mdx pre [data-line] {
+  padding-inline: 1rem;
+}
+
+.mdx pre [data-line].line--highlighted {
+  background: hsl(var(--primary) / 0.08);
+  box-shadow: inset 2px 0 0 hsl(var(--primary) / 0.5);
+}
+
+.mdx pre .word--highlighted {
+  border-radius: 0.25rem;
+  background: hsl(var(--primary) / 0.12);
+  padding: 0.1rem 0.25rem;
+}
+
+/* rehype-pretty-code writes the fence's `title` here. */
+.mdx [data-rehype-pretty-code-title] {
+  border: 1px solid hsl(var(--border) / 0.6);
+  border-bottom: none;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background: hsl(var(--muted));
+  padding: 0.5rem 1rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.8rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.mdx [data-rehype-pretty-code-title] + pre {
+  margin-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/*
+  Lightbox (ZoomableImage).
+
+  Both animations are plain CSS so the overlay is painted in its final state on
+  the first frame; the global prefers-reduced-motion block already collapses
+  their duration for readers who ask for that.
+*/
+@keyframes lightbox-backdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lightbox-panel {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-lightbox-backdrop {
+  animation: lightbox-backdrop 0.18s ease-out both;
+}
+
+.animate-lightbox-panel {
+  animation: lightbox-panel 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
 }

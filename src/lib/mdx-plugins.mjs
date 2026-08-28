@@ -2,6 +2,7 @@ import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
+import { remarkFigures } from "./remark-figures.mjs";
 
 /**
  * Single source of truth for the MDX plugin pipeline, shared between
@@ -9,7 +10,7 @@ import rehypePrettyCode from "rehype-pretty-code";
  * Plain .mjs so the Next config can import it without a TS loader.
  */
 export const mdxPlugins = {
-  remarkPlugins: [remarkGfm],
+  remarkPlugins: [remarkGfm, remarkFigures],
   rehypePlugins: [
     rehypeSlug,
     [

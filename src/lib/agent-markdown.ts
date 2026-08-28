@@ -9,7 +9,7 @@ import {
   pageHref,
   sitePages,
 } from "@/config/pages";
-import { getBlogPostBySlug, getBlogPosts } from "@/lib/blog";
+import { getBlogPostBySlug, getBlogPosts, POST_SOURCES } from "@/lib/blog";
 import { getAllExperiences } from "@/lib/data/experience";
 import { formatDate } from "@/lib/utils";
 
@@ -75,6 +75,9 @@ export function renderBlogPost(slug: string): string | null {
     `# ${post.title}`,
     "",
     `Published: ${formatDate(post.date)}`,
+    post.source && post.sourceUrl
+      ? `Originally published at ${POST_SOURCES[post.source]}: ${post.sourceUrl}`
+      : "",
     "",
     post.description ? `> ${post.description}` : "",
     "",

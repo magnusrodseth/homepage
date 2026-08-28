@@ -1,7 +1,7 @@
 "use client";
 
 import { getAllTestimonials } from "@/lib/data/testimonials";
-import { H3, Muted, Small } from "@/components/ui/typography";
+import { H2, Muted, Small } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import {
@@ -17,7 +17,7 @@ export function Testimonials() {
 
   return (
     <section className="mt-16 animate-slide-enter stagger-450">
-      <H3 className="mb-6 text-xl">What others say</H3>
+      <H2 className="mb-6 text-xl pb-0">What others say</H2>
 
       <Carousel className="w-full max-w-3xl mx-auto" opts={{ loop: true }}>
         <CarouselContent>

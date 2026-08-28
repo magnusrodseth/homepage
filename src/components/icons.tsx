@@ -60,12 +60,14 @@ import {
   ArrowUpRight,
   Lightbulb,
   Star,
+  Maximize2,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
 
 export const Icons = {
   close: X,
+  maximize: Maximize2,
   headphones: Headphones,
   spinner: Loader2,
   chevronLeft: ChevronLeft,

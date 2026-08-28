@@ -1,0 +1,191 @@
+---
+title: "Deep Dive: deepagents, LangChains Agent Harness"
+description: "En grundig gjennomgang av deepagents, LangChains 'batteries included'-løsning for komplekse AI-agenter med innebygd planlegging, filsystem og subagenter."
+lang: "no"
+date: "2026-03-30"
+source: "capra"
+sourceUrl: "https://capraconsulting.no/vare-historier/deep-dive-deepagents-langchains-agent-harness"
+---
+![Banner: En hjerne i sele klatrer opp en fjellvegg, mens en uutstyrt hjerne står igjen på bakken](/blog/deep-dive-deepagents/banner.png)
+
+## Innledning
+
+Tenk på hva du har tilgjengelig i [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview). Filsystemverktøy som leser, skriver og søker i kode. Planlegging som bryter ned komplekse oppgaver i håndterbare steg. Oppgavesporing som holder oversikt over fremdriften. Persistent minne som husker kontekst på tvers av samtaler. Subagenter som kan delegeres spesialiserte oppgaver. Automatisk kontekststyring som forhindrer at vinduet flyter over.
+
+De fleste utviklere har kjent denne kraften. Men har du gitt mye tanke til kompleksiteten det innebærer å faktisk implementere disse egenskapene for _din egen_ agent, den som kjører i _din_ applikasjon?
+
+Si at du bygger en domenespesifikk agent for finans, forsikring eller helse. Du forventer at denne digitale medarbeideren skal være minst like kapabel som om du kastet det samme domeneproblemet til et fullverdig Claude Code-oppsett. Men å bygge alt det fra scratch? Det krever en enorm mengde kode, og det er vanskelig å få til helt riktig.
+
+Her kommer [`deepagents`](https://docs.langchain.com/oss/python/deepagents/overview) inn. Inspirert av applikasjoner som Claude Code, Deep Research og Manus, gir dette [open source-biblioteket](https://www.langchain.com/deep-agents) deg "batteries included" for agenter som takler komplekse, flerstegs oppgaver.
+
+## Hva er en Agent Harness?
+
+For å forstå hva `deepagents` er, hjelper det med en analogi.
+
+Tenk på en fjellklatrer. Klatreren selv er sterk og kompetent (det er modellen din, GPT, Claude, Gemini). Men styrke alene får deg ikke opp fjellveggen. Du trenger en **sele**: tau, karabinere, sikringsenheter, kritt-pose, og en ryggsekk med proviant. Selen gjør ikke klatreren sterkere. Den gjør klatreren _brukbar_ i krevende terreng.
+
+Det er akkurat det en **agent harness** gjør for en språkmodell. Når frontiermodellene fra de store labene allerede er ekstremt kapable, er det ikke modellen som er differensiatoren i agentiske arbeidsflyter. Det er _selen rundt den_: verktøyene, planleggingen, minnet, og kontekststyringen du instrumenterer modellen med. Som [Harrison Chase skriver](https://blog.langchain.com/deep-agents/): det er denne selen som skiller en kapabel digital medarbeider fra en som faller av fjellveggen.
+
+![Sele-metafor: Modell + Harness = Agent](/blog/deep-dive-deepagents/model-plus-harness.png)
+_En agent er mer enn bare modellen. Harness-en (selen) instrumenterer modellen med verktøy, planlegging, minne og kontekststyring, og gjør den til en kapabel digital medarbeider. Kilde: Basert på [The Anatomy of an Agent Harness](https://blog.langchain.com/the-anatomy-of-an-agent-harness/)._
+
+LangChain-økosystemet består av tre distinkte lag. Nederst har du **[LangChain](https://docs.langchain.com/oss/python/langchain/overview)** som _framework_: abstraksjoner og en mental modell for å bygge med LLM-er. Over det ligger **[LangGraph](https://docs.langchain.com/oss/python/langgraph/overview)** som _runtime_: varig utførelse, streaming, persistens og human-in-the-loop. Øverst sitter **[deepagents](https://docs.langchain.com/oss/python/deepagents/overview)** som _harness_: alt fra de to lagene under, pluss forhåndskonfigurerte prompts, filsystem, planlegging og subagenter.
+
+Et **framework** gir deg byggeklossene. En **runtime** gir deg infrastrukturen for produksjon. En **harness** tar deg fra null til fungerende agent med ett funksjonskall. Vil du forstå mer om runtime-laget, se innlegget om LangGraph.
+
+![Framework, Runtime, Harness hierarki](/blog/deep-dive-deepagents/framework-runtime-harness.png)
+_LangChain-økosystemets tre lag: Framework (LangChain) gir abstraksjoner, Runtime (LangGraph) gir infrastruktur for produksjon, og Harness (deepagents) pakker alt sammen med forhåndskonfigurerte verktøy. Kilde: Basert på [LangChain Blog](https://blog.langchain.com/agent-frameworks-runtimes-and-harnesses-oh-my/)._
+
+## Innebygde verktøy
+
+Når du oppretter en deep agent med `create_deep_agent()`, får du automatisk tilgang til et sett med kraftige verktøy, uten å måtte konfigurere noe selv.
+
+### Filsystemverktøy
+
+Agenten har seks innebygde verktøy for filoperasjoner:
+
+- `ls` : List filer med metadata (størrelse, endringstid)
+- `read_file` : Les innhold med linjenummer, støtter offset/limit for store filer
+- `write_file` : Opprett nye filer
+- `edit_file` : Utfør eksakte strengerstatninger
+- `glob` : Finn filer som matcher mønstre (f.eks. `**/*.py`)
+- `grep` : Søk i filinnhold med regex
+
+Disse dekker de vanligste behovene, men du kan utvide med egne verktøy når domenet krever det.
+
+### Planlegging med write_todos
+
+Komplekse oppgaver krever en plan. Agenten kan bryte ned flerstegs problemer med det innebygde `write_todos`-verktøyet. Før den begynner arbeidet, skriver den ut en oppgaveliste og oppdaterer statusen underveis:
+
+```python
+# Agenten produserer automatisk en struktur som dette:
+{
+    "todos": [
+        {"task": "Kartlegg API-mønstre", "status": "completed"},
+        {"task": "Implementer autentisering", "status": "in_progress"},
+        {"task": "Skriv tester", "status": "pending"}
+    ]
+}
+```
+
+Gjenkjenner du mønsteret? Det er det samme vi så i [ReAct-løkken](/blog/react-og-planlegging): tenk, planlegg, handle, observer, gjenta.
+
+### Automatisk kontekststyring
+
+To mekanismer forhindrer at kontekstvinduet fylles opp. Dette er viktig, fordi en agent som mister oversikten over sin egen kontekst, mister evnen til å resonnere effektivt.
+
+**Utkasting av store verktøyresultater:** Når et verktøyresultat overstiger 20 000 tokens, skrives det automatisk til en fil. Agenten får en referanse i stedet, og kan lese filen bit for bit ved behov. Se [LangChain-bloggen om kontekststyring](https://blog.langchain.com/context-management-for-deepagents/) for detaljer om kompresjonsstrategiene.
+
+**Oppsummering av samtalehistorikk:** Ved 170 000 tokens trigges en oppsummering. De siste 6 meldingene beholdes intakte, mens eldre meldinger komprimeres til et sammendrag.
+
+## Subagenter: Løsningen på kontekstoverbelastning
+
+Det største problemet med komplekse agenter er **kontekstoverbelastning**: når store verktøyresultater fyller opp kontekstvinduet og reduserer agentens evne til å resonnere.
+
+Subagenter løser dette elegant. Hovedagenten kan delegere en oppgave til en subagent som opererer med sin egen, isolerte kontekst. La oss se hvordan dette ser ut i kode:
+
+```python
+from deepagents import create_deep_agent
+
+research_subagent = {
+    "name": "research-agent",
+    "description": "Conducts in-depth research using web search",
+    "system_prompt": """You are a thorough researcher. Your job is to:
+    1. Break down the research question into searchable queries
+    2. Use internet_search to find relevant information
+    3. Synthesize findings into a concise summary
+
+    Keep your response under 500 words.""",
+    "tools": [internet_search],
+}
+
+agent = create_deep_agent(
+    model="claude-sonnet-4-5-20250929",
+    subagents=[research_subagent]
+)
+```
+
+Subagenten utfører kanskje ti websøk, men hovedagenten mottar kun én oppsummering. Konteksten forblir ren.
+
+![Subagent kontekstisolasjon](/blog/deep-dive-deepagents/subagent-context-isolation.png)
+_Kontekstisolasjon med subagenter: Hovedagenten (ren kontekst) delegerer oppgaver til subagenten (fylt kontekst fra mange verktøykall), og mottar kun et komprimert resultat tilbake. Kilde: Basert på [deepagents-dokumentasjonen](https://docs.langchain.com/oss/python/deepagents/overview)._
+
+I tillegg til egendefinerte subagenter har du alltid tilgang til en **general-purpose** subagent. Den har samme instruksjoner og verktøy som hovedagenten, men opererer i isolert kontekst: perfekt for kontekstisolasjon uten spesialisert oppførsel.
+
+## Lagringsbackends: Fleksibel persistens
+
+Agentens filsystem er abstrakt og modulær, og du velger selv hvor filene faktisk lagres. **StateBackend** holder midlertidige filer innenfor én samtale og er ment å bruke kortsiktig (flyktig / "ephemeral"). **FilesystemBackend** gir ekte filtilgang på disk. **StoreBackend** bruker en database for langtidsminne på tvers av samtaler. Og **CompositeBackend** lar deg kombinere disse ved å rute ulike stier til ulike backends.
+
+Den mest kraftfulle konfigurasjonen kombinerer flyktig og persistent lagring. Slik ser det ut i praksis:
+
+```python
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+composite_backend = lambda rt: CompositeBackend(
+    default=StateBackend(rt),                   # Standard: flyktig (ephemeral)
+    routes={"/memories/": StoreBackend(rt)}     # /memories/: persistent
+)
+
+agent = create_deep_agent(
+    backend=composite_backend,
+    store=InMemoryStore()
+)
+```
+
+Med denne konfigurasjonen lever vanlige filer kun i samtalen, mens alt under `/memories/` huskes på tvers av økter.
+
+## Human-in-the-Loop
+
+For sensitive operasjoner kan du konfigurere pauser før utførelse. Agenten stopper og lar deg godkjenne, redigere eller avvise operasjonen:
+
+```python
+agent = create_deep_agent(
+    tools=[edit_file, deploy_code],
+    interrupt_on={
+        "edit_file": True,     # Pause before every edit
+        "deploy_code": True    # Pause before deploy
+    },
+    checkpointer=MemorySaver()  # Required for HITL
+)
+```
+
+Et mønster vi kjenner igjen fra LangGraph, men her ferdigkonfigurert og klart til bruk.
+
+## Fra praksis: Når selen veier mer enn klatreren
+
+La meg dele en erfaring fra et klientprosjekt som illustrerer en viktig lekse.
+
+Vi bygde en uttrekkspipeline for PDF-dokumenter. Oppsettet var ambisiøst: PDF lastes opp, sendes til en deep agent som sporet oppgaver med `write_todos`, skrev til persistent minne for fremdrift, og tikket av mål etter mål. Nøyaktigheten var høy. Agenten _fungerte_.
+
+Men to ting ble raskt tydelige. For det første tok det altfor lang tid. Vi visste at uttrekket kunne gjøres raskere. For det andre var det dyrt: du betaler mange tokens for agentens resonnering i hvert steg, planleggingen, kontekststyringen, oppdatering av oppgavelisten.
+
+Så vi skrev det om. I stedet for en fullverdig deep agent brukte vi regex-basert mønstergjenkjenning på tvers av dokument-chunks (ikke semantisk søk engang!), matet alt inn i en modell, og lot den produsere strukturert output. Resultatet var en raskere, billigere, og faktisk _mer nøyaktig_ pipeline for den ustrukturerte dataen vi jobbet med.
+
+![Deepagents-pipeline vs. strukturert output-pipeline](/blog/deep-dive-deepagents/pipeline-comparison.png)
+_To tilnærminger til samme problem: Deep agent-pipelinen (venstre) med full planlegging og kontekststyring vs. den forenklede pipelinen (høyre) med regex og strukturert output. Noen ganger er den enklere veien både raskere, billigere og mer nøyaktig. Kilde: Egenutviklet._
+
+Denne erfaringen lærte meg noe viktig. Det er fristende å kaste en kraftig sele og en kapabel modell på ethvert problem, i visshet om at den _kan_ løse det. Men [som Anthropic selv skriver](https://www.anthropic.com/engineering/building-effective-agents): start enkelt, og legg til kompleksitet kun når det er nødvendig. En agent harness er et kraftig verktøy for oppgaver som _krever_ flerstegs resonnering, planlegging og konteksthåndtering. For oppgaver som kan løses med et enkelt modellkall og god prompt-design, er den overkill.
+
+Det handler ikke om å bevise at teknologien virker. Det handler om å velge riktig verktøy for jobben: hastighet, kostnad og nøyaktighet bør veie like tungt som kapabilitet.
+
+## Oppsummering
+
+`deepagents` er LangChains offisielle agent harness: et bibliotek som pakker mønstrene fra hele denne bloggserien i én abstraksjon. Innebygd planlegging, filsystemverktøy, subagenter for kontekstisolasjon, fleksible lagringsbackends, og human-in-the-loop, alt ferdigkonfigurert.
+
+Men den viktigste innsikten er kanskje denne: **En god sele gjør ikke enhver klatring til rett klatring.** Å vite _når_ du trenger en fullverdig agent harness, og når et enkelt modellkall er nok, er det som skiller en god AI-utvikler fra en som bare kaster teknologi på problemet.
+
+## Vil du ta steget?
+
+Ønsker du eller bedriften din å utforske hvordan AI-agenter kan styrke ansatte, prosesser eller applikasjoner? Ta gjerne kontakt med meg på [LinkedIn](https://www.linkedin.com/in/magnus-rodseth/). Vi i [Capra](https://www.capraconsulting.no/) har mange dyktige utviklere som jobber med nettopp dette.
+
+## Ressurser
+
+- [deepagents (GitHub)](https://github.com/langchain-ai/deepagents)
+- [deepagents dokumentasjon](https://docs.langchain.com/oss/python/deepagents/overview)
+- [Deep Agents (LangChain Blog)](https://blog.langchain.com/deep-agents/)
+- [Agent Frameworks, Runtimes, and Harnesses (LangChain Blog)](https://blog.langchain.com/agent-frameworks-runtimes-and-harnesses-oh-my/)
+- [The Anatomy of an Agent Harness (LangChain Blog)](https://blog.langchain.com/the-anatomy-of-an-agent-harness/)
+- [Context Management for Deep Agents (LangChain Blog)](https://blog.langchain.com/context-management-for-deepagents/)
+- [Building Effective Agents (Anthropic)](https://www.anthropic.com/research/building-effective-agents)
+- [Effective Harnesses for Long-Running Agents (Anthropic)](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)

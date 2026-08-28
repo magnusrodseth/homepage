@@ -60,7 +60,18 @@ const nextConfig = {
         source: "/:path*",
         headers: [
           { key: "Link", value: AGENT_LINK_HEADER },
-          { key: "Vary", value: "Accept" },
+          { key: "Vary", value: "Accept, Accept-Encoding" },
+        ],
+      },
+      {
+        // The prebuilt Markdown twins (scripts/generate-agent-markdown.ts).
+        // Served from public/, so unlike an App Router response these keep the
+        // Vary above, which is what content negotiation needs.
+        source: "/md/:path*.md",
+        headers: [
+          { key: "Content-Type", value: "text/markdown; charset=utf-8" },
+          { key: "Vary", value: "Accept, Accept-Encoding" },
+          { key: "Cache-Control", value: "public, max-age=300" },
         ],
       },
     ];
