@@ -18,6 +18,7 @@ Outside of programming, I enjoy hanging out with friends, exercising, and watchi
 - [About](/about)
 - [Contact](/contact)
 - [Privacy](/privacy)
+- [API & agent docs](/docs)
 - [Presentations](https://presentations.magnusrodseth.com)
 
 ## Contact

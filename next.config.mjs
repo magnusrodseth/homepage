@@ -6,6 +6,8 @@ const AGENT_LINK_HEADER = [
   '</.well-known/agent-skills/index.json>; rel="describedby"; type="application/json"',
   '</sitemap.xml>; rel="sitemap"; type="application/xml"',
   '</.well-known/mcp>; rel="service-desc"; type="application/json"',
+  '</openapi.json>; rel="service-desc"; type="application/json"',
+  '</docs>; rel="service-doc"; type="text/html"',
 ].join(", ");
 
 /** @type {import('next').NextConfig} */
@@ -42,6 +44,13 @@ const nextConfig = {
         hostname: "avatars.githubusercontent.com", // GitHub avatars
       },
     ],
+  },
+  async redirects() {
+    return [
+      // Conventional aliases people and crawlers try for API documentation.
+      { source: "/developers", destination: "/docs", permanent: false },
+      { source: "/api-docs", destination: "/docs", permanent: false },
+    ];
   },
   async rewrites() {
     return [

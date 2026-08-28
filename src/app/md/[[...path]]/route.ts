@@ -11,6 +11,7 @@ import {
   ABOUT_PAGE,
   CONTACT_PAGE,
   DAILY_DRIVERS_PAGE,
+  DOCS_PAGE,
   PRIVACY_PAGE,
 } from "@/config/pages";
 
@@ -20,6 +21,7 @@ const STATIC_PAGES = {
   about: [ABOUT_PAGE, "about.mdx"],
   contact: [CONTACT_PAGE, "contact.mdx"],
   privacy: [PRIVACY_PAGE, "privacy.mdx"],
+  docs: [DOCS_PAGE, "docs.mdx"],
 } as const;
 
 export const dynamic = "force-static";

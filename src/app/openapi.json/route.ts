@@ -256,7 +256,9 @@ export function GET(): Response {
             "200": {
               description: "Linkset document.",
               content: {
-                "application/linkset+json": { schema: { type: "object" } },
+                "application/linkset+json": {
+                  schema: { $ref: "#/components/schemas/Linkset" },
+                },
               },
             },
           },
@@ -272,7 +274,11 @@ export function GET(): Response {
           responses: {
             "200": {
               description: "Server descriptor.",
-              content: { "application/json": { schema: { type: "object" } } },
+              content: {
+                "application/json": {
+                  schema: { $ref: "#/components/schemas/McpDescriptor" },
+                },
+              },
             },
           },
         },
@@ -287,7 +293,11 @@ export function GET(): Response {
           responses: {
             "200": {
               description: "Server descriptor.",
-              content: { "application/json": { schema: { type: "object" } } },
+              content: {
+                "application/json": {
+                  schema: { $ref: "#/components/schemas/McpDescriptor" },
+                },
+              },
             },
           },
         },
@@ -337,7 +347,11 @@ export function GET(): Response {
           responses: {
             "200": {
               description: "Skills index.",
-              content: { "application/json": { schema: { type: "object" } } },
+              content: {
+                "application/json": {
+                  schema: { $ref: "#/components/schemas/AgentSkillsIndex" },
+                },
+              },
             },
           },
         },
@@ -453,6 +467,112 @@ export function GET(): Response {
             content: {
               type: "string",
               description: "The post body, as Markdown.",
+            },
+          },
+        },
+        McpDescriptor: {
+          type: "object",
+          required: ["name", "protocolVersion", "endpoint", "tools"],
+          properties: {
+            name: { type: "string" },
+            title: { type: "string" },
+            description: { type: "string" },
+            version: { type: "string" },
+            protocolVersion: { type: "string" },
+            instructions: { type: "string" },
+            transport: { type: "string", const: "streamable-http" },
+            endpoint: { type: "string", format: "uri" },
+            servers: {
+              type: "array",
+              items: {
+                type: "object",
+                required: ["name", "transport", "url"],
+                properties: {
+                  name: { type: "string" },
+                  transport: { type: "string" },
+                  url: { type: "string", format: "uri" },
+                  authentication: {
+                    type: "object",
+                    properties: { type: { type: "string" } },
+                  },
+                },
+              },
+            },
+            capabilities: { type: "object", additionalProperties: true },
+            tools: {
+              type: "array",
+              items: {
+                type: "object",
+                required: ["name", "description"],
+                properties: {
+                  name: { type: "string" },
+                  title: { type: "string" },
+                  description: { type: "string" },
+                  inputSchema: { type: "object", additionalProperties: true },
+                },
+              },
+            },
+            documentation: { type: "string", format: "uri" },
+            contact: { type: "string" },
+          },
+        },
+        Linkset: {
+          type: "object",
+          required: ["linkset"],
+          description: "RFC 9264 linkset. Each context object holds typed link arrays.",
+          properties: {
+            linkset: {
+              type: "array",
+              items: {
+                type: "object",
+                required: ["anchor"],
+                properties: {
+                  anchor: { type: "string", format: "uri" },
+                },
+                additionalProperties: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    required: ["href"],
+                    properties: {
+                      href: { type: "string", format: "uri" },
+                      type: { type: "string" },
+                      title: { type: "string" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        AgentSkillsIndex: {
+          type: "object",
+          required: ["version", "site", "skills"],
+          properties: {
+            $schema: { type: "string", format: "uri" },
+            version: { type: "string" },
+            site: {
+              type: "object",
+              required: ["name", "url"],
+              properties: {
+                name: { type: "string" },
+                url: { type: "string", format: "uri" },
+                description: { type: "string" },
+              },
+            },
+            skills: {
+              type: "array",
+              items: {
+                type: "object",
+                required: ["name", "type", "description", "url", "sha256"],
+                properties: {
+                  name: { type: "string" },
+                  type: { type: "string" },
+                  description: { type: "string" },
+                  url: { type: "string", format: "uri" },
+                  sha256: { type: "string", pattern: "^[0-9a-f]{64}$" },
+                },
+              },
             },
           },
         },

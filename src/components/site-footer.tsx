@@ -5,16 +5,16 @@ import BackToTop from "./back-to-top";
 import { siteConfig } from "@/config/site";
 
 /**
- * `/openapi.json` and `/llms.txt` are listed here rather than only in
- * `.well-known` documents: an agent that reads the page still finds them, and
- * a person curious about how the site is built has somewhere to click.
+ * `/docs` and `/llms.txt` are listed here rather than only in `.well-known`
+ * documents: an agent that reads the page still finds them, and a person
+ * curious about how the site is built has somewhere to click.
  */
 const FOOTER_LINKS = [
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/privacy", label: "Privacy" },
+  { href: "/docs", label: "API docs" },
   { href: "/llms.txt", label: "llms.txt" },
-  { href: "/openapi.json", label: "API" },
 ] as const;
 
 export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {

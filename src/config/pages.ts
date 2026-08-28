@@ -88,6 +88,16 @@ export const PRIVACY_PAGE: SitePage = {
   markdown: true,
 };
 
+export const DOCS_PAGE: SitePage = {
+  path: "/docs",
+  title: "API & agent docs",
+  tagline:
+    "Every way to read this site as a machine: Markdown, JSON, and MCP. No key, no rate limit.",
+  nav: false,
+  sitemap: true,
+  markdown: true,
+};
+
 export const PRESENTATIONS_PAGE: SitePage = {
   path: siteConfig.presentations,
   title: "Presentations",
@@ -106,6 +116,7 @@ export const sitePages: SitePage[] = [
   ABOUT_PAGE,
   CONTACT_PAGE,
   PRIVACY_PAGE,
+  DOCS_PAGE,
   PRESENTATIONS_PAGE,
 ];
 

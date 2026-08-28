@@ -4,6 +4,7 @@ import {
   ABOUT_PAGE,
   CONTACT_PAGE,
   DAILY_DRIVERS_PAGE,
+  DOCS_PAGE,
   PRIVACY_PAGE,
 } from "@/config/pages";
 import {
@@ -38,6 +39,7 @@ const PAGES = {
   about: () => renderStaticPage(ABOUT_PAGE, "about.mdx"),
   contact: () => renderStaticPage(CONTACT_PAGE, "contact.mdx"),
   privacy: () => renderStaticPage(PRIVACY_PAGE, "privacy.mdx"),
+  docs: () => renderStaticPage(DOCS_PAGE, "docs.mdx"),
 } as const;
 
 export const PAGE_NAMES = Object.keys(PAGES) as (keyof typeof PAGES)[];

@@ -53,6 +53,7 @@ export function GET(): Response {
     "",
     "## Optional",
     "",
+    `- [API and agent docs](${baseUrl}/docs): Every machine-readable surface, with curl examples and an MCP client config.`,
     `- [OpenAPI specification](${baseUrl}/openapi.json): Every endpoint, typed, for function calling.`,
     `- [MCP server](${baseUrl}/.well-known/mcp): Streamable HTTP at ${baseUrl}/api/mcp; read-only tools over the blog and pages.`,
     `- [Posts as JSON](${baseUrl}/api/v1/posts): The blog index; append a slug for one post with its Markdown body.`,

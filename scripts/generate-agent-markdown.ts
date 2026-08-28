@@ -25,6 +25,7 @@ import {
   ABOUT_PAGE,
   CONTACT_PAGE,
   DAILY_DRIVERS_PAGE,
+  DOCS_PAGE,
   PRIVACY_PAGE,
 } from "@/config/pages";
 
@@ -50,6 +51,7 @@ const staticPages = [
   [ABOUT_PAGE, "about.mdx"],
   [CONTACT_PAGE, "contact.mdx"],
   [PRIVACY_PAGE, "privacy.mdx"],
+  [DOCS_PAGE, "docs.mdx"],
 ] as const;
 
 for (const [page, filename] of staticPages) {
