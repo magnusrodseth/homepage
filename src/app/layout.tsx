@@ -6,7 +6,7 @@ import { GeistMono } from "geist/font/mono";
 import { cn } from "@/lib/utils";
 import { SiteFooter } from "@/components/site-footer";
 import Navbar from "@/components/navigation/navbar";
-import GridBackground from "@/components/grid-background";
+import { GpuGridBackground } from "@/components/gpu-grid/gpu-grid-background";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
@@ -77,7 +77,7 @@ export default function RootLayout({
 
         <Navbar />
 
-        <GridBackground />
+        <GpuGridBackground />
         <div className="md:container">
           <main
             id="main-content"

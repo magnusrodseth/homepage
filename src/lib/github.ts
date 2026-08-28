@@ -154,7 +154,7 @@ export async function getPinnedRepos(username: string): Promise<GitHubRepo[]> {
       user: {
         pinnedItems: {
           nodes: Array<{
-            id: string;
+            databaseId: number;
             name: string;
             nameWithOwner: string;
             description: string | null;
@@ -178,7 +178,7 @@ export async function getPinnedRepos(username: string): Promise<GitHubRepo[]> {
           pinnedItems(first: 6, types: REPOSITORY) {
             nodes {
               ... on Repository {
-                id
+                databaseId
                 name
                 nameWithOwner
                 description
@@ -212,7 +212,9 @@ export async function getPinnedRepos(username: string): Promise<GitHubRepo[]> {
     return user.pinnedItems.nodes
       .filter((repo) => !repo.isFork && !repo.isArchived)
       .map((repo) => ({
-        id: parseInt(repo.id.replace(/\D/g, ""), 10) || 0,
+        // The numeric REST id. The GraphQL node id (`R_kgDO...`) carries no
+        // digits, so parsing it collapsed every pinned repo to id 0.
+        id: repo.databaseId,
         name: repo.name,
         fullName: repo.nameWithOwner,
         description: repo.description,

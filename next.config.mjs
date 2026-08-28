@@ -11,6 +11,25 @@ const AGENT_LINK_HEADER = [
 const nextConfig = {
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   reactStrictMode: true,
+  // WGSL shaders (vgpu). `dev`/`build` run --webpack; the turbopack rule is
+  // there so a plain `next dev` works too. Next never validates WGSL, so run
+  // `npx vgpu check <file>.wgsl --require-validation` before shipping one.
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.wgsl$/,
+      loader: "@vgpu/wgsl/loader-webpack",
+      options: { minify: process.env.NODE_ENV === "production" },
+    });
+    return config;
+  },
+  turbopack: {
+    rules: {
+      "*.wgsl": {
+        loaders: ["@vgpu/wgsl/loader-webpack"],
+        as: "*.js",
+      },
+    },
+  },
   images: {
     remotePatterns: [
       {
