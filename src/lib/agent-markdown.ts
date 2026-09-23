@@ -12,6 +12,7 @@ import {
 } from "@/config/pages";
 import { getBlogPostBySlug, getBlogPosts, POST_SOURCES } from "@/lib/blog";
 import { getAllExperiences } from "@/lib/data/experience";
+import { currentBook } from "@/lib/data/current-book";
 import { formatDate } from "@/lib/utils";
 
 const PAGES_DIR = path.join(process.cwd(), "src/content/pages");
@@ -41,6 +42,14 @@ export function renderHome(): string {
     "",
     body,
     "",
+    ...(currentBook
+      ? [
+          "## Currently reading",
+          "",
+          `- [${currentBook.title}](${currentBook.url}) by ${currentBook.author}${currentBook.synopsis ? `: ${currentBook.synopsis}` : ""}`,
+          "",
+        ]
+      : []),
     "## Site map",
     "",
     ...siteMap,

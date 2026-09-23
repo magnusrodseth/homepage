@@ -43,6 +43,11 @@ const nextConfig = {
         protocol: "https",
         hostname: "avatars.githubusercontent.com", // GitHub avatars
       },
+      {
+        protocol: "https",
+        hostname: "covers.openlibrary.org", // Currently reading cover
+        pathname: "/b/id/**",
+      },
     ],
   },
   async redirects() {

@@ -10,6 +10,7 @@ import { ProfileImage } from "@/components/profile-image";
 import { Testimonials } from "@/components/testimonials";
 import { GitHubContributions } from "@/components/github-calendar";
 import { SpotifyRecentTracks } from "@/components/spotify-recent";
+import { CurrentlyReading } from "@/components/currently-reading";
 import { getBlogPosts } from "@/lib/blog";
 import { Icons } from "@/components/icons";
 
@@ -205,6 +206,7 @@ export default function Home() {
             </h3>
             <SpotifyRecentTracks />
           </div>
+          <CurrentlyReading />
         </div>
       </section>
     </div>

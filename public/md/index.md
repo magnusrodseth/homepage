@@ -10,6 +10,10 @@ I hold a Master's degree in Computer Science from the [Norwegian University of S
 
 Outside of programming, I enjoy hanging out with friends, exercising, and watching movies. You can find a [list of all my projects here](https://www.magnusrodseth.com/projects), or check out my [presentations](https://presentations.magnusrodseth.com).
 
+## Currently reading
+
+- [Vicious](https://openlibrary.org/works/OL17332806W) by V. E. Schwab: Two ambitious university friends pursue a dangerous theory about extraordinary abilities. A decade later, their rivalry has become a fight over revenge and power.
+
 ## Site map
 
 - [Projects](/projects)

@@ -22,6 +22,8 @@ No cookies are set by this site. There are no advertising or social-media tracke
 
 Two sections on the home page show data pulled from the [GitHub](https://docs.github.com/en/site-policy/privacy-policies) and [Spotify](https://www.spotify.com/legal/privacy-policy/) APIs: my own contribution graph and my own recently played tracks. Both calls are made from this site's server, about me rather than about you. Even the album art is fetched and re-served from this domain, so your browser never contacts GitHub or Spotify and neither of them sees your IP address.
 
+The currently reading book links to Open Library. Its cover comes from Open Library and is re-served from this domain, so your browser contacts Open Library only if you follow the link.
+
 ## Your rights
 
 Under the GDPR you can ask what personal data is held about you, and ask for it to be corrected or deleted. Given the above, the honest answer is that I hold nothing that identifies you, so there is usually nothing to hand over. If you think otherwise, email [magnus.rodseth@gmail.com](mailto:magnus.rodseth@gmail.com) and I will look into it and answer.
