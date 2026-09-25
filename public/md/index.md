@@ -12,7 +12,7 @@ Outside of programming, I enjoy hanging out with friends, exercising, and watchi
 
 ## Currently reading
 
-- [Vicious](https://openlibrary.org/works/OL17332806W) by V. E. Schwab: Two ambitious university friends pursue a dangerous theory about extraordinary abilities. A decade later, their rivalry has become a fight over revenge and power.
+- [The Spy and the Traitor](https://openlibrary.org/works/OL19749410W) by Ben Macintyre: The true story of a KGB officer who secretly worked for British intelligence during the Cold War.
 
 ## Site map
 
