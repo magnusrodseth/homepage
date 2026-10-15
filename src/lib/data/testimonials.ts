@@ -2,6 +2,17 @@ import { Testimonial } from "./types";
 
 export const testimonials: Testimonial[] = [
   {
+    id: "cecilie-isdahl",
+    quote:
+      "Magnus combines full-stack development and generative AI expertise with initiative and an interest in product development. At Gjensidige, he contributes across frontend, backend, AI integration and technical architecture in a multidisciplinary team. He champions AI-assisted ways of working and shares his knowledge through mentoring, blog posts and talks. We value his independence, curiosity and willingness to share knowledge.",
+    author: {
+      name: "Cecilie Isdahl",
+      role: "Technology & People Lead",
+      company: "Capra Consulting",
+      companyUrl: "https://www.capraconsulting.no",
+    },
+  },
+  {
     id: "katherine-barrios",
     quote:
       "Magnus is not only technically skilled, but also has a strong commercial understanding - a rare and highly valuable combination. He completely modernized our analytics tool without being asked. Detail-oriented, forward-thinking, and an excellent team player.",

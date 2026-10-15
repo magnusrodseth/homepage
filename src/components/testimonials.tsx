@@ -16,7 +16,7 @@ export function Testimonials() {
   const testimonials = getAllTestimonials();
 
   return (
-    <section className="mt-16 animate-slide-enter stagger-450">
+    <section id="testimonials" className="mt-16 scroll-mt-24 animate-slide-enter stagger-450">
       <H2 className="mb-6 text-xl pb-0">What others say</H2>
 
       <Carousel className="w-full max-w-3xl mx-auto" opts={{ loop: true }}>
