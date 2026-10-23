@@ -12,7 +12,7 @@ Outside of programming, I enjoy hanging out with friends, exercising, and watchi
 
 ## Currently reading
 
-- [The Spy and the Traitor](https://openlibrary.org/works/OL19749410W) by Ben Macintyre: The true story of a KGB officer who secretly worked for British intelligence during the Cold War.
+- [The Phoenix Project](https://openlibrary.org/works/OL16806686W) by Gene Kim, Kevin Behr, and George Spafford: An IT manager tackles a troubled project in a novel about DevOps, bottlenecks, and how work flows through a business.
 
 ## Site map
 
