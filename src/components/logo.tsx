@@ -1,9 +1,14 @@
+import { Signature } from "@/components/signature";
+
 const Logo = () => {
   return (
-    <div className="font-mono text-2xl" aria-hidden="true">
-      <span className="logo-type">~/magnusrodseth</span>
-      <span className="logo-cursor">_</span>
-    </div>
+    <Signature
+      name="initials"
+      className="h-7 w-auto text-foreground/75"
+      duration={1}
+      delay={0.2}
+      strokeWidth={38}
+    />
   );
 };
 
