@@ -157,6 +157,14 @@ SVG path with `pathLength=1`, drawn by a dash animation (`.signature` in
 - The SVG is `aria-hidden`; the surrounding element carries the name as text
   (`sr-only` in the heading, `aria-label` on the logo link)
 
+### Mobile navigation
+
+`src/components/navigation/mobile-navigation.tsx` is hand-written, not the
+shadcn Sheet. It is a disclosure: the menu button keeps `aria-expanded` and
+stays above the full-screen panel. While open, everything outside the menu is
+`inert` (except Next's route announcer), the page does not scroll, and Escape
+closes it and returns focus to the button.
+
 ### Environment Variables
 
 Add new env vars to `src/env.mjs` with Zod validation. Access via `import { env } from "@/env.mjs"`.
