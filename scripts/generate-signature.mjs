@@ -30,7 +30,9 @@ const KERN = { d: 120 };
 const JOIN = 60; // merge a letter's first stroke into the previous one when closer than this
 const PAD = 40; // viewBox padding, so round caps are not clipped
 
-const src = await (await fetch(FONT_URL)).text();
+const res = await fetch(FONT_URL);
+if (!res.ok) throw new Error(`Fetching ${FONT_URL} failed: ${res.status}`);
+const src = await res.text();
 const glyphs = {};
 for (const m of src.matchAll(
   /<glyph\s+unicode="([^"]+)"[^>]*?horiz-adv-x="([\d.-]+)"(?:[^>]*?d="([^"]*)")?/g
@@ -104,7 +106,6 @@ for (const [key, text] of Object.entries(SIGNATURES)) {
   out[key] = {
     text,
     viewBox: [x0, y0, w, h].map(round).join(" "),
-    width: round(w),
     strokes: strokes.map((s, i) => {
       const start = acc / total;
       acc += lengths[i];
@@ -133,7 +134,7 @@ export type SignatureStroke = {
 
 export const SIGNATURES = ${JSON.stringify(out, null, 2)} as const satisfies Record<
   string,
-  { text: string; viewBox: string; width: number; strokes: readonly SignatureStroke[] }
+  { text: string; viewBox: string; strokes: readonly SignatureStroke[] }
 >;
 
 export type SignatureName = keyof typeof SIGNATURES;

@@ -2,12 +2,12 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { ArrowUpRight } from "lucide-react";
 import { navigation } from "@/config/navigation";
 import { cn } from "@/lib/utils";
-import Socials from "../socials";
-import { ThemeToggle } from "../theme-toggle";
+import Socials from "@/components/socials";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 /**
  * The menu below `md`: a button that morphs into a close icon, over a
@@ -25,6 +25,14 @@ const MobileNavigation = () => {
   const panelId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Close on any route change, including back/forward while the menu is open.
+  // Adjusting state during render avoids an extra effect pass.
+  const [openedOn, setOpenedOn] = useState(pathname);
+  if (pathname !== openedOn) {
+    setOpenedOn(pathname);
+    setIsOpen(false);
+  }
 
   const close = useCallback((returnFocus: boolean) => {
     setIsOpen(false);
