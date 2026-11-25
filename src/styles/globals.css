@@ -103,29 +103,32 @@
   animation-delay: calc(--value(integer) * 1ms);
 }
 
-/* Terminal-style logo: CSS typing effect, no JS. */
-.logo-type {
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  vertical-align: bottom;
-  width: 0;
-  animation: logo-typing 1.2s steps(15, end) 0.2s forwards;
+/*
+ * Handwritten signature (src/components/signature.tsx). Every path has
+ * pathLength=1, so one dash of length 1 covers it; sliding the offset from 1 to
+ * 0 writes the stroke. The component staggers the strokes with inline delays.
+ * Before its delay a stroke is fully hidden: a dash parked just off the path
+ * would still paint its round cap as a dot at the start.
+ */
+.signature path {
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1;
+  animation-name: signature-write;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
 }
 
-@keyframes logo-typing {
-  to {
-    width: 15ch;
-  }
-}
-
-.logo-cursor {
-  animation: logo-blink 1.1s step-end infinite;
-}
-
-@keyframes logo-blink {
-  50% {
+@keyframes signature-write {
+  from {
+    stroke-dashoffset: 1;
     opacity: 0;
+  }
+  1% {
+    opacity: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
   }
 }
 

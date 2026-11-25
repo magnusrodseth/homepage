@@ -12,6 +12,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "ui:add": "bunx shadcn@latest add",
     "background:fallback": "node scripts/render-topo-fallback.mjs",
+    "signature:generate": "node scripts/generate-signature.mjs",
     "md:generate": "bun run scripts/generate-agent-markdown.ts"
   },
   "dependencies": {

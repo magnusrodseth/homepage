@@ -142,6 +142,29 @@ import { H1, H2, P, Muted, Small } from "@/components/ui/typography";
 - `hover-rise` - translateY on hover (custom Tailwind plugin)
 - `prefers-reduced-motion` is handled globally in `globals.css`; never add motion that bypasses it
 
+### Signature
+
+`<Signature>` (`src/components/signature.tsx`) writes by hand: "MR" in the
+navbar logo and "Magnus Rødseth" in the homepage heading. Each pen stroke is an
+SVG path with `pathLength=1`, drawn by a dash animation (`.signature` in
+`globals.css`) and staggered by inline delays, so it needs no client JS.
+
+- The paths are generated: `bun run signature:generate` runs
+  `scripts/generate-signature.mjs`, which reads the single-stroke font EMS
+  Allure (SIL OFL) and writes `src/lib/signature.generated.ts`. Never hand-edit
+  the output. Add a variant to `SIGNATURES` in the script
+- EMS Allure has no "ø"; the script writes an "o" and adds the slash as a last stroke
+- The SVG is `aria-hidden`; the surrounding element carries the name as text
+  (`sr-only` in the heading, `aria-label` on the logo link)
+
+### Mobile navigation
+
+`src/components/navigation/mobile-navigation.tsx` is hand-written, not the
+shadcn Sheet. It is a disclosure: the menu button keeps `aria-expanded` and
+stays above the full-screen panel. While open, everything outside the menu is
+`inert` (except Next's route announcer), the page does not scroll, and Escape
+closes it and returns focus to the button.
+
 ### Environment Variables
 
 Add new env vars to `src/env.mjs` with Zod validation. Access via `import { env } from "@/env.mjs"`.
@@ -268,7 +291,7 @@ return that shape instead of the HTML 404 page.
 | `lucide-react` | Icons |
 | `next-themes` | Light/dark theme with a system default |
 
-The GitHub contribution calendar is rendered server-side (`src/components/github-calendar.tsx` + `getContributionCalendar` in `src/lib/github.ts`); the navbar logo's typing effect is pure CSS (`.logo-type` in `globals.css`). Do not reintroduce client-side libraries for these: the old `react-github-calendar` caused production hydration errors (React #418) because its SSR output depends on render-time dates.
+The GitHub contribution calendar is rendered server-side (`src/components/github-calendar.tsx` + `getContributionCalendar` in `src/lib/github.ts`); the handwritten name (navbar logo and homepage heading) is pure CSS too, see Signature below. Do not reintroduce client-side libraries for these: the old `react-github-calendar` caused production hydration errors (React #418) because its SSR output depends on render-time dates.
 
 ## Naming Conventions
 

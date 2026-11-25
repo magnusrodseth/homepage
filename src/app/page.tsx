@@ -11,6 +11,7 @@ import { Testimonials } from "@/components/testimonials";
 import { GitHubContributions } from "@/components/github-calendar";
 import { SpotifyRecentTracks } from "@/components/spotify-recent";
 import { CurrentlyReading } from "@/components/currently-reading";
+import { Signature } from "@/components/signature";
 import { getBlogPosts } from "@/lib/blog";
 import { Icons } from "@/components/icons";
 
@@ -99,16 +100,14 @@ export default function Home() {
           <p className="animate-slide-enter text-xl sm:text-2xl text-muted-foreground">
             Hi! I&apos;m
           </p>
-          <H1
-            className={cn(
-              "animate-slide-enter stagger-100 uppercase text-4xl sm:text-5xl font-extrabold tracking-tight -mt-1",
-              // The gradient runs light-to-mid on dark and dark-to-mid on light, so
-              // the name keeps its contrast against either background.
-              "bg-linear-to-r text-transparent bg-clip-text",
-              "from-indigo-700 to-indigo-400 dark:from-indigo-100 dark:to-indigo-400"
-            )}
-          >
-            {siteConfig.name}
+          <H1 className="animate-slide-enter stagger-100 mt-1">
+            <span className="sr-only">{siteConfig.name}</span>
+            <Signature
+              name="name"
+              delay={0.4}
+              strokeWidth={48}
+              className="w-full max-w-md h-auto"
+            />
           </H1>
         </div>
 
