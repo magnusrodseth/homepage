@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { outlineNumeralsFont } from "@/lib/fonts";
 import { cn, formatDate } from "@/lib/utils";
 import { H3, Muted } from "@/components/ui/typography";
 import { Icons } from "@/components/icons";
@@ -125,7 +126,8 @@ export function ProjectsExplorer({ projects }: { projects: ProjectItem[] }) {
                 <H3
                   aria-hidden="true"
                   className={cn(
-                    "animate-slide-enter font-sans text-9xl",
+                    outlineNumeralsFont.className,
+                    "animate-slide-enter text-9xl",
                     "text-transparent pointer-events-none select-none",
                     "absolute -top-10 -left-6 md:-left-12"
                   )}
