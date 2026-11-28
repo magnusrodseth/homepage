@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import { outlineNumeralsFont } from "@/lib/fonts";
 import { cn, formatDate } from "@/lib/utils";
 import { H1, H3, Muted, Small } from "@/components/ui/typography";
 import BackLink from "@/components/back-link";
@@ -65,7 +66,8 @@ export default function BlogPage() {
                 <H3
                   aria-hidden="true"
                   className={cn(
-                    "animate-slide-enter font-sans text-9xl",
+                    outlineNumeralsFont.className,
+                    "animate-slide-enter text-9xl",
                     "text-transparent pointer-events-none select-none",
                     "absolute -top-10 -left-6 md:-left-12"
                   )}
